@@ -1,8 +1,11 @@
 package org.seer.ciljssa.support;
 
+import lombok.Data;
+
 import java.io.File;
 import java.util.Objects;
 
+@Data
 public class DirectoryIndexer {
 
     public interface FileHandler {

@@ -1,13 +1,18 @@
 package org.seer.ciljssa.services;
 
 import com.github.javaparser.JavaParser;
+import com.github.javaparser.ParseException;
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
+import com.github.javaparser.ast.visitor.CloneVisitor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.seer.ciljssa.context.AnalysisContext;
 import org.seer.ciljssa.context.AnalysisRequestContext;
 import org.seer.ciljssa.support.DirectoryIndexer;
+
+import java.io.IOException;
 
 
 @Data
@@ -22,17 +27,19 @@ public class AnalysisService {
 
     // TODO: Currently close to being able to read all class names from a directory. Need to wrap into a context.
     public AnalysisContext getAllClassNames(String filepath) {
+        AnalysisContext result = new AnalysisContext();
         JavaParser parser = new JavaParser();
         DirectoryIndexer index = new DirectoryIndexer(DirectoryIndexer.Language.JAVA,
                 (level, path, file) -> {
                     try {
-                        new VoidVisitorAdapter<Object>() {
+                        parser.parse(file).getResult().get().accept(new VoidVisitorAdapter<Object>() {
                             @Override
-                            public void visit(ClassOrInterfaceDeclaration n, Object arg) {
+                            public void visit(ClassOrInterfaceDeclaration n, Object arg){
                                 super.visit(n, arg);
+                                System.out.println(n.getName());
                             }
-                        }.visit(parser.parse(file), null);
-                    } catch (Exception e){
+                        }, null);
+                    } catch (IOException e){
                         e.printStackTrace();
                     }
                 });
