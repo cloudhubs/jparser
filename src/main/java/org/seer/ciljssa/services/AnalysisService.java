@@ -7,10 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.seer.ciljssa.context.AnalysisContext;
 import org.seer.ciljssa.context.AnalysisRequestContext;
-import org.seer.ciljssa.context.AnalysisResultsContext;
 import org.seer.ciljssa.support.DirectoryIndexer;
 
-import java.io.File;
 
 @Data
 @NoArgsConstructor
