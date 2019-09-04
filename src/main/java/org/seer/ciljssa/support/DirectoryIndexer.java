@@ -8,18 +8,18 @@ import java.util.Objects;
 @Data
 public class DirectoryIndexer {
 
-    public interface FileHandler {
-        void handle(int level, String path, File file);
+    public interface IFileHandler {
+        Object handle(int level, String path, File file);
     }
 
     public enum Language {
             JAVA, CSH, CPP, C, PYTHON, RUBY, OTHER
     }
 
-    private FileHandler fileHandler;
+    private IFileHandler fileHandler;
     private Language language;
 
-    public DirectoryIndexer(Language language, FileHandler fileHandler) {
+    public DirectoryIndexer(Language language, IFileHandler fileHandler) {
         this.fileHandler = fileHandler;
         this.language = language;
     }
@@ -43,8 +43,15 @@ public class DirectoryIndexer {
     private boolean filter(File file){
         switch(language) {
             case JAVA:
-                if (file.getName().endsWith(".java")) return true; else return false;
+                return file.getName().endsWith(".java");
+            case CSH:
+            case CPP:
+            case C:
+            case PYTHON:
+            case RUBY:
+            case OTHER:
+            default:
+                return false;
         }
-        return false;
     }
 }

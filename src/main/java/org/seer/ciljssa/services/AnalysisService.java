@@ -34,13 +34,15 @@ public class AnalysisService {
                     try {
                         parser.parse(file).getResult().get().accept(new VoidVisitorAdapter<Object>() {
                             @Override
-                            public void visit(ClassOrInterfaceDeclaration n, Object arg){
+                            public void visit(ClassOrInterfaceDeclaration n, Object arg) {
                                 super.visit(n, arg);
                                 System.out.println(n.getName());
                             }
                         }, null);
-                    } catch (IOException e){
+                        return parser.parse(file);
+                    } catch (IOException e) {
                         e.printStackTrace();
+                        return null;
                     }
                 });
         return new AnalysisContext();
