@@ -1,5 +1,6 @@
 package org.seer.ciljssa.context;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,8 @@ import java.util.ArrayList;
 @NoArgsConstructor
 public class AnalysisContext {
 
+    private boolean succeeded = false;
+
     private AnalysisRequestContext requestContext;
     private String language;
 
@@ -20,17 +23,27 @@ public class AnalysisContext {
 
     private String[] classNames;
     private String[] interfaceNames;
-    private String[] constructors;
 
-    public AnalysisContext(AnalysisRequestContext requestContext){
+    @JsonProperty(value = "declarations")
+    private ClassInterfaceWrapper[] classesAndInterfaces;
+
+    public AnalysisContext(AnalysisRequestContext requestContext) {
         this.requestContext = requestContext;
+        this.classesAndInterfaces = new ClassInterfaceWrapper[0];
+    }
+
+    public AnalysisContext(AnalysisRequestContext requestContext, ArrayList<ClassOrInterfaceDeclaration> classOrInterfaces){
+        this.requestContext = requestContext;
+        this.classesAndInterfaces = generateClassesAndInterfaces(classOrInterfaces);
         //TODO: Nab the file name and language via Javaparser.
     }
 
-    public void setClassesAndInterfaces(ArrayList<ClassOrInterfaceDeclaration> classOrInterfaces) {
+    public ClassInterfaceWrapper[] generateClassesAndInterfaces(ArrayList<ClassOrInterfaceDeclaration> classOrInterfaces) {
         ArrayList<ClassInterfaceWrapper> clsList = new ArrayList<>();
         for(ClassOrInterfaceDeclaration cls : classOrInterfaces) {
             clsList.add(new ClassInterfaceWrapper(cls));
         }
+        return clsList.toArray(new ClassInterfaceWrapper[0]);
     }
 }
+

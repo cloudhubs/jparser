@@ -7,6 +7,8 @@ import org.seer.ciljssa.services.AnalysisService;
 import org.seer.ciljssa.services.RetreivalService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+
 @RestController
 public class SourceSecController {
 
@@ -27,15 +29,16 @@ public class SourceSecController {
     @PostMapping(value = "/analyze/basic_file")
     public @ResponseBody AnalysisResultsContext basicAnaalysis(@RequestBody AnalysisRequestContext requestContext){
         AnalysisContext context = retreivalService.retrieveFileFromPath(requestContext.getFilepath());
-
-        AnalysisResultsContext results = analysisService.analyzeContext(context);
-        return new AnalysisResultsContext();
+        System.out.println("-> Basic file analysis:");
+        AnalysisResultsContext result = new AnalysisResultsContext(context, requestContext);
+        return result;
     }
 
     @RequestMapping(value = "/analyze/directory/all_classes", method = RequestMethod.POST)
     public AnalysisResultsContext getAllClassesInDirectoryFiles(@RequestBody AnalysisRequestContext requestContext){
         AnalysisContext context = analysisService.getAllClassNames(requestContext.getFilepath());
-        return new AnalysisResultsContext(context, requestContext);
+        AnalysisResultsContext result = new AnalysisResultsContext(context, requestContext);
+        return result;
     }
 
 }

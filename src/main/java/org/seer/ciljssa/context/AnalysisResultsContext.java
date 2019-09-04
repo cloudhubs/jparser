@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class AnalysisResultsContext {
 
+    private String fileName;
     private AnalysisContext context;
     private AnalysisRequestContext request;
 

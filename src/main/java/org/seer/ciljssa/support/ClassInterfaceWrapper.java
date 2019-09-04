@@ -1,5 +1,7 @@
 package org.seer.ciljssa.support;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.ConstructorDeclaration;
 import lombok.Data;
@@ -17,7 +19,7 @@ public class ClassInterfaceWrapper {
      * This is just my assumption, so this enum may be unnecessarily complex.
      */
     enum ClassOrInterface {
-        CLASS("Class"), INTERFACE("Interface");
+        Class("Class"), Interface("Interface");
         private final String value;
 
         ClassOrInterface(final String val){
@@ -30,20 +32,20 @@ public class ClassInterfaceWrapper {
         }
     }
 
+    @JsonIgnore
     private ClassOrInterfaceDeclaration cls;
 
+    @JsonProperty(value = "declaration_type")
     private ClassOrInterface classOrInterface;
+    private String instanceName;
 
     private String[] constructors;
     private String[] methods;
 
-    // Not needed for Spring JSON?
-    public ClassInterfaceWrapper(){
-    }
-
     public ClassInterfaceWrapper(ClassOrInterfaceDeclaration cls){
         this.cls = cls;
-        this.classOrInterface = isClass() ? ClassOrInterface.CLASS : ClassOrInterface.INTERFACE;
+        this.classOrInterface = isClass() ? ClassOrInterface.Class : ClassOrInterface.Interface;
+        this.instanceName = cls.getNameAsString();
         this.constructors = generateConstructors();
         this.methods = generateMethods();
     }
@@ -62,7 +64,7 @@ public class ClassInterfaceWrapper {
             ConstructorDeclaration cd = (ConstructorDeclaration) obj;
             constructors.add(cd.getNameAsString());
         });
-        return (String[]) constructors.toArray();
+        return constructors.toArray(new String[0]);
     }
 
     private String[] generateMethods() {

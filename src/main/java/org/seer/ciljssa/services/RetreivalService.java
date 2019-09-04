@@ -4,6 +4,8 @@ import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.seer.ciljssa.context.AnalysisContext;
 import org.seer.ciljssa.context.AnalysisRequestContext;
 
@@ -11,7 +13,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
+@Data
+@NoArgsConstructor
 public class RetreivalService {
+
+    AnalysisRequestContext requestContext;
 
     public AnalysisContext retrieveFileFromPath(String path){
         File file = new File(path);
@@ -20,13 +26,9 @@ public class RetreivalService {
 
     public AnalysisContext retrieveContextFromFile(File file){
         JavaParser parser = new JavaParser();
-        AnalysisContext context = new AnalysisContext();
-
         ArrayList<ClassOrInterfaceDeclaration> classOrInterfaces = new ArrayList<>();
-
         try {
             CompilationUnit unit = parser.parse(file).getResult().get();
-            context.setRequestContext(new AnalysisRequestContext(file.getPath()));
             unit.accept(new VoidVisitorAdapter<Object>(){
                 @Override
                 public void visit(ClassOrInterfaceDeclaration n, Object arg){
@@ -36,12 +38,12 @@ public class RetreivalService {
             }, null);
         } catch (FileNotFoundException e){
             e.printStackTrace();
-            context.setRequestContext(new AnalysisRequestContext(file.getPath()));
         }
-
-        context.setClassesAndInterfaces(classOrInterfaces);
-
-        return new AnalysisContext();
+        AnalysisContext context = new AnalysisContext(this.requestContext, classOrInterfaces);
+        if (context.getClassesAndInterfaces().length > 0) {
+            context.setSucceeded(true);
+        }
+        return context;
     }
 
 }
