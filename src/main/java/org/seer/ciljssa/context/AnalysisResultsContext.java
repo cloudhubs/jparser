@@ -6,11 +6,22 @@ import lombok.Data;
 public class AnalysisResultsContext {
 
     private AnalysisContext context;
+    private AnalysisRequestContext request;
 
-    private int httpCode;
+    private int httpResult;
 
-    public AnalysisResultsContext(int httpCode){
+    public AnalysisResultsContext(AnalysisContext context, AnalysisRequestContext request) {
+        this.context = context;
+        this.request = request;
+    }
 
+    public AnalysisResultsContext() {
+        this.httpResult = 500;
+    }
+
+    public AnalysisResultsContext setStatus(int status) {
+        httpResult = status;
+        return this;
     }
 
 }

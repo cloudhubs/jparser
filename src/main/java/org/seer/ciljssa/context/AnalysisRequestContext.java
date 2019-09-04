@@ -1,12 +1,15 @@
 package org.seer.ciljssa.context;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
+@NoArgsConstructor
 public class AnalysisRequestContext {
 
     private String filepath;
 
+    public AnalysisRequestContext(String filepath) {
+        this.filepath = filepath;
+    }
 }
