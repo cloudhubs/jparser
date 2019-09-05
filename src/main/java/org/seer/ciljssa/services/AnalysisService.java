@@ -11,13 +11,14 @@ import org.seer.ciljssa.context.AnalysisResultsContext;
 @NoArgsConstructor
 public class AnalysisService {
 
+    //TODO: This service seems to just kind of wrap other methods. Put the actual analysis in this
+
     public AnalysisContext basicAnalysis(AnalysisRequestContext requestContext){
         AnalysisContext results = new AnalysisContext(requestContext);
 
         return results;
     }
 
-    // TODO: Currently close to being able to read all class names from a directory. Need to wrap into a context.
     public AnalysisContext getAllClassNames(String filepath) {
 
         return new AnalysisContext();

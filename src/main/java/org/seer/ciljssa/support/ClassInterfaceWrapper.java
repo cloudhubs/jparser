@@ -2,13 +2,16 @@ package org.seer.ciljssa.support;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.github.javaparser.ast.body.AnnotationDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.ConstructorDeclaration;
+import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.expr.AnnotationExpr;
 import lombok.Data;
+import org.apache.tomcat.util.http.Parameters;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 @Data
 public class ClassInterfaceWrapper {
@@ -37,17 +40,18 @@ public class ClassInterfaceWrapper {
 
     @JsonProperty(value = "declaration_type")
     private ClassOrInterface classOrInterface;
-    private String instanceName;
+    @JsonProperty(value = "method_description")
+    private MethodInfoWrapper[] methods;
 
+    private String instanceName;
     private String[] constructors;
-    private String[] methods;
 
     public ClassInterfaceWrapper(ClassOrInterfaceDeclaration cls){
         this.cls = cls;
         this.classOrInterface = isClass() ? ClassOrInterface.Class : ClassOrInterface.Interface;
         this.instanceName = cls.getNameAsString();
-        this.constructors = generateConstructors();
-        this.methods = generateMethods();
+        this.constructors = createConstructors();
+        this.methods = createMethodInfoWrappers();
     }
 
     public boolean isClass() {
@@ -58,17 +62,39 @@ public class ClassInterfaceWrapper {
         return cls.isInterface();
     }
 
-    private String[] generateConstructors() {
-        ArrayList<String> constructors = new ArrayList<>();
+    private String[] createConstructors() {
+        ArrayList<String> cds = new ArrayList<>();
         Arrays.stream(cls.getConstructors().toArray()).forEach(obj -> {
             ConstructorDeclaration cd = (ConstructorDeclaration) obj;
-            constructors.add(cd.getNameAsString());
+            cds.add(cd.getNameAsString());
         });
-        return constructors.toArray(new String[0]);
+        return cds.toArray(new String[0]);
     }
 
-    private String[] generateMethods() {
-        return new String[]{};
+    private MethodInfoWrapper[] createMethodInfoWrappers() {
+        ArrayList<MethodInfoWrapper> mds = new ArrayList<>();
+        Arrays.stream(cls.getMethods().toArray()).forEach(obj -> {
+            MethodDeclaration cd = (MethodDeclaration) obj;
+            AnnotationExpr[] annos = cd.getAnnotations().toArray(new AnnotationExpr[0]);
+            //Parameters[] pars = cd.getParameters().toArray(new Parameters[0]);
+
+            ArrayList<String> annotations = new ArrayList<>();
+            ArrayList<String> params = new ArrayList<>();
+
+            Arrays.stream(annos).forEach(x -> {annotations.add(x.getMetaModel().toString()); }); //TODO: This should be fleshed out, just part of prototyping
+            //Arrays.stream(pars).forEach(x -> {params.add(x.toString());});
+
+            MethodInfoWrapper md = new MethodInfoWrapper();
+
+            md.setAccessor(cd.getAccessSpecifier().asString());
+            md.setAnnotations(annotations.toArray(new String[0]));
+            md.setMethodName(cd.getNameAsString());
+            md.setReturnType(cd.getTypeAsString());
+            md.setStaticMethod(cd.isStatic());
+            //md.setMethodParams(params.toArray(new String[0]));
+            mds.add(md);
+        });
+        return mds.toArray(new MethodInfoWrapper[0]);
     }
 
 }

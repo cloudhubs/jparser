@@ -41,6 +41,11 @@ public class ExampleClass {
             this.altered = true;
             return this;
         }
+
+        @Deprecated
+        private boolean exampleMethod(int x){
+            return false;
+        }
     }
 
     public ExampleClass() {
@@ -48,5 +53,13 @@ public class ExampleClass {
         this.memberOne = new SubClass();
         this.memberTwo = "Default value";
         this.memberThree = 0.0;
+    }
+
+    public String[] anotherExampleMethod(String x, String y, boolean z, double q) {
+        String[] test = new String[3];
+        test[0] = x;
+        test[1] = y;
+        test[2] = z ? q + "" : (q - 10) + "";
+        return test;
     }
 }
