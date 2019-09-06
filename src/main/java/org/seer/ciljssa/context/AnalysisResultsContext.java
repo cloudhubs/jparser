@@ -14,9 +14,10 @@ public class AnalysisResultsContext {
 
     @JsonProperty(value = "result")
     private ArrayList<AnalysisContext> context;
-    private AnalysisRequestContext request;
 
+    private AnalysisRequestContext request;
     private int httpResult;
+    //TODO: Language in here not in context
 
     public AnalysisResultsContext(AnalysisContext context, AnalysisRequestContext request) {
         this.context = new ArrayList<>();

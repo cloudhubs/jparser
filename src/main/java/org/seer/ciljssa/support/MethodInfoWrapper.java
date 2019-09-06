@@ -16,10 +16,10 @@ public class MethodInfoWrapper {
     private String methodName;
     @JsonProperty(value = "return_type")
     private String returnType;
-    private String accessor;
-    @JsonProperty(value = "static_method")
-    private boolean staticMethod;
     @JsonProperty(value = "parameters")
     private String[] methodParams;
+    @JsonProperty(value = "static_method")
+    private boolean staticMethod;
+    private String accessor;
     private String[] annotations;
 }

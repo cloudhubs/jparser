@@ -13,7 +13,6 @@ import java.util.ArrayList;
 
 @Data
 @NoArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class AnalysisContext {
 
     private boolean succeeded = false;
@@ -25,8 +24,9 @@ public class AnalysisContext {
     private File sourceFile;
     @JsonProperty(value = "file_name")
     private String stringifiedFile;
-
+    @JsonProperty(value = "classes")
     private String[] classNames;
+    @JsonProperty(value = "interfaces")
     private String[] interfaceNames;
 
     @JsonProperty(value = "declarations")
@@ -43,6 +43,8 @@ public class AnalysisContext {
         //TODO: Nab the file name and language via Javaparser.
     }
 
+    //TODO: For some reason only subclasses are being recognized as classes within a file. This needs to be addressed
+
     private String getFileName(String file) {
         String out = file;
         out = out.substring(file.lastIndexOf('/') + 1, file.length());
@@ -50,13 +52,23 @@ public class AnalysisContext {
     }
 
     private String[] createClassNames() {
-        String[] output = new String[0];
-        return output;
+        ArrayList<String> output = new ArrayList<>();
+        for (ClassInterfaceWrapper classesAndInterface : this.classesAndInterfaces) {
+            if (classesAndInterface.isClass()) {
+                output.add(classesAndInterface.getInstanceName());
+            }
+        }
+        return output.toArray(new String[0]);
     }
 
     private String[] createInterfaceNames() {
-        String[] output = new String[0];
-        return output;
+        ArrayList<String> output = new ArrayList<>();
+        for (ClassInterfaceWrapper classesAndInterface : this.classesAndInterfaces) {
+            if (classesAndInterface.isInterface()) {
+                output.add(classesAndInterface.getInstanceName());
+            }
+        }
+        return output.toArray(new String[0]);
     }
 
     private ClassInterfaceWrapper[] generateClassesAndInterfaces(ArrayList<ClassOrInterfaceDeclaration> classOrInterfaces) {
