@@ -17,14 +17,12 @@ import java.util.ArrayList;
 @NoArgsConstructor
 public class RetreivalService {
 
-    AnalysisRequestContext requestContext;
-
-    public AnalysisContext retrieveFileFromPath(String path){
+    public AnalysisContext retrieveFileFromPath(String path, AnalysisRequestContext requestContext){
         File file = new File(path);
-        return retrieveContextFromFile(file);
+        return retrieveContextFromFile(file, requestContext);
     }
 
-    public AnalysisContext retrieveContextFromFile(File file){
+    public AnalysisContext retrieveContextFromFile(File file, AnalysisRequestContext requestContext){
         JavaParser parser = new JavaParser();
         ArrayList<ClassOrInterfaceDeclaration> classOrInterfaces = new ArrayList<>();
         try {
@@ -39,7 +37,7 @@ public class RetreivalService {
         } catch (FileNotFoundException e){
             e.printStackTrace();
         }
-        AnalysisContext context = new AnalysisContext(this.requestContext, classOrInterfaces);
+        AnalysisContext context = new AnalysisContext(requestContext, classOrInterfaces);
         if (context.getClassesAndInterfaces().length > 0) {
             context.setSucceeded(true);
         }

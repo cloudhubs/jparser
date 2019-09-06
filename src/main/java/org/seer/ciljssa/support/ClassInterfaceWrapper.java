@@ -1,6 +1,7 @@
 package org.seer.ciljssa.support;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.javaparser.ast.body.AnnotationDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 @Data
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class ClassInterfaceWrapper {
 
     /**
@@ -70,6 +72,8 @@ public class ClassInterfaceWrapper {
         });
         return cds.toArray(new String[0]);
     }
+
+    //TODO: Separate constructor into its own methodinfowrapper
 
     private MethodInfoWrapper[] createMethodInfoWrappers() {
         ArrayList<MethodInfoWrapper> mds = new ArrayList<>();

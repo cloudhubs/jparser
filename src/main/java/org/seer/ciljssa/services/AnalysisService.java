@@ -14,13 +14,11 @@ public class AnalysisService {
     //TODO: This service seems to just kind of wrap other methods. Put the actual analysis in this
 
     public AnalysisContext basicAnalysis(AnalysisRequestContext requestContext){
-        AnalysisContext results = new AnalysisContext(requestContext);
-
+        AnalysisContext results = new AnalysisContext();
         return results;
     }
 
     public AnalysisContext getAllClassNames(String filepath) {
-
         return new AnalysisContext();
     }
 

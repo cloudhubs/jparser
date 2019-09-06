@@ -28,7 +28,7 @@ public class SourceSecController {
 
     @PostMapping(value = "/analyze/basic_file")
     public @ResponseBody AnalysisResultsContext basicAnaalysis(@RequestBody AnalysisRequestContext requestContext){
-        AnalysisContext context = retreivalService.retrieveFileFromPath(requestContext.getFilepath());
+        AnalysisContext context = retreivalService.retrieveFileFromPath(requestContext.getFilepath(), requestContext);
         System.out.println("-> Basic file analysis:");
         AnalysisResultsContext result = new AnalysisResultsContext(context, requestContext);
         return result;
@@ -37,7 +37,14 @@ public class SourceSecController {
     @RequestMapping(value = "/analyze/directory/all_classes", method = RequestMethod.POST)
     public AnalysisResultsContext getAllClassesInDirectoryFiles(@RequestBody AnalysisRequestContext requestContext){
         AnalysisContext context = analysisService.getAllClassNames(requestContext.getFilepath());
-        AnalysisResultsContext result = new AnalysisResultsContext(context, requestContext);
+        AnalysisResultsContext result;
+        if(context.isSucceeded()) {
+            result = new AnalysisResultsContext(context, requestContext);
+            result.setHttpResult(200);
+        } else {
+            result = new AnalysisResultsContext(new AnalysisContext(), requestContext);
+            result.setHttpResult(500);
+        }
         return result;
     }
 
