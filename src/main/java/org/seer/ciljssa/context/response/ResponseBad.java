@@ -3,15 +3,21 @@ package org.seer.ciljssa.context.response;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.seer.ciljssa.context.AnalysisResultsContext;
 
-public class ResponseOk implements IHandledResponse {
+public class ResponseBad implements IHandledResponse {
 
     @JsonProperty(value = "results")
     private AnalysisResultsContext resultsContext;
-    @JsonProperty(value = "http_response")
-    int httpStatus;
+    @JsonProperty(value = "http_status")
+    private int httpStatus;
+    @JsonProperty(value = "error_message")
+    private String[] message;
 
-    public ResponseOk(AnalysisResultsContext context) {
+    public ResponseBad(AnalysisResultsContext context) {
         this.resultsContext = context;
+    }
+
+    public void setErrorMessage(String[] message) {
+        this.message = message;
     }
 
     @Override
@@ -21,7 +27,7 @@ public class ResponseOk implements IHandledResponse {
 
     @Override
     public boolean isOkResponse() {
-        return true;
+        return false;
     }
 
     @Override
@@ -31,6 +37,6 @@ public class ResponseOk implements IHandledResponse {
 
     @Override
     public int getHttpStatus() {
-        return httpStatus;
+        return this.httpStatus;
     }
 }

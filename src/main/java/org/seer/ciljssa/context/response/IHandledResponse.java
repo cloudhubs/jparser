@@ -5,10 +5,7 @@ import org.seer.ciljssa.context.AnalysisResultsContext;
 
 public interface IHandledResponse {
 
-    @JsonProperty(value = "http_response")
-    int httpStatus = 500;
-
-    AnalysisResultsContext getResultContext();
+    AnalysisResultsContext getResultsContext();
     boolean isOkResponse();
     void setHttpStatus(int status);
     int getHttpStatus();

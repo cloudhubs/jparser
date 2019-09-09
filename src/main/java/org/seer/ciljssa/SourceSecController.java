@@ -3,12 +3,16 @@ package org.seer.ciljssa;
 import org.seer.ciljssa.context.AnalysisContext;
 import org.seer.ciljssa.context.AnalysisRequestContext;
 import org.seer.ciljssa.context.AnalysisResultsContext;
+import org.seer.ciljssa.context.response.IHandledResponse;
+import org.seer.ciljssa.context.response.ResponseBad;
+import org.seer.ciljssa.context.response.ResponseOk;
 import org.seer.ciljssa.services.AnalysisService;
 import org.seer.ciljssa.services.DirectoryService;
 import org.seer.ciljssa.services.RetreivalService;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.nio.file.NotDirectoryException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,37 +36,58 @@ public class SourceSecController {
         return "Greetings from Source Code Security Controller";
     }
 
-    @PostMapping(value = "/analyze/getcontext")
-    public @ResponseBody AnalysisResultsContext basicAnaalysis(@RequestBody AnalysisRequestContext requestContext){
-        AnalysisContext context = retreivalService.retrieveContextFromPath(requestContext.getFilepath(), requestContext);
+    @PostMapping(value = "/analyze")
+    public @ResponseBody IHandledResponse basicAnaalysis(@RequestBody AnalysisRequestContext requestContext){
+        AnalysisContext context = new AnalysisContext();
+        try {
+            context = retreivalService.retrieveContextFromPath(requestContext.getFilepath(), requestContext);
+        } catch (FileNotFoundException e) {
+            System.out.println("FileNotFoundException handled in SourcesSecController.");
+        }
         AnalysisResultsContext result = new AnalysisResultsContext();
-
-        // TODO: This doesn't actually catch a file that can't be found.
         result.addAnalysisContext(context);
         result.setRequest(requestContext);
         result.setPath(requestContext.getFilepath()); // Redundant code if override setRequest to automate this
-        return result;
+        return handleResult(result);
     }
 
-    @PostMapping(value = "/analyze/directory/getcontext")
-    public @ResponseBody AnalysisResultsContext getAllClassesInDirectoryFiles(@RequestBody AnalysisRequestContext requestContext){
-        ArrayList<File> files = new ArrayList<>();
+    @PostMapping(value = "/analyze/directory")
+    public @ResponseBody IHandledResponse getAllClassesInDirectoryFiles(@RequestBody AnalysisRequestContext requestContext){
         ArrayList<AnalysisContext> contexts = new ArrayList<>();
         AnalysisResultsContext result = new AnalysisResultsContext();
         try {
-            files = directoryService.getFilesFromDirectory(requestContext.getFilepath());
+            ArrayList<File> files = directoryService.getFilesFromDirectory(requestContext.getFilepath());
             contexts = retreivalService.retrieveContextFromFiles(files, requestContext);
         } catch (NotDirectoryException e) {
-            e.printStackTrace();
+            System.out.println("NotDirectoryException handled in SourceSecController.");
         }
         result.setContexts(contexts);
         result.setPath(requestContext.getFilepath());
         result.setRequest(requestContext);
-        return result;
+        return handleResult(result);
     }
 
-    private AnalysisResultsContext handleResult(AnalysisResultsContext context) {
-
+    private IHandledResponse handleResult(AnalysisResultsContext context) {
+        if (context.succeeded()) {
+            ResponseOk response = new ResponseOk(context);
+            response.setHttpStatus(200);
+            return response;
+        } else {
+            String[] message = new String[2];
+            if (context.getFailedContexts() > 1) {
+                message[0] = "There were multiple failed context requests. Failed requests: ";
+                message[0] += context.getFailedContexts();
+            } else if (context.getFailedContexts() == 1) {
+                message[0] = "There was a failed context request.";
+            } else if (context.getContexts().size() == 0) {
+                message[0] = "The list of contexts failed to initialize.";
+            }
+            message[1] = "Check your request for typos and verify the path provided is a valid file path / directory.";
+            ResponseBad response = new ResponseBad(context);
+            response.setHttpStatus(500);
+            response.setErrorMessage(message);
+            return response;
+        }
     }
 
 }

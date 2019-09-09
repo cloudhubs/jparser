@@ -17,7 +17,7 @@ import java.util.ArrayList;
 @NoArgsConstructor
 public class RetreivalService {
 
-    public AnalysisContext retrieveContextFromPath(String path, AnalysisRequestContext requestContext) {
+    public AnalysisContext retrieveContextFromPath(String path, AnalysisRequestContext requestContext) throws FileNotFoundException {
         File file = new File(path);
         return retrieveContextFromFile(file, requestContext);
     }
@@ -50,21 +50,17 @@ public class RetreivalService {
         return contexts;
     }
 
-    private AnalysisContext retrieveContextFromFile(File file, AnalysisRequestContext requestContext) {
+    private AnalysisContext retrieveContextFromFile(File file, AnalysisRequestContext requestContext) throws FileNotFoundException {
         JavaParser parser = new JavaParser();
         ArrayList<ClassOrInterfaceDeclaration> classOrInterfaces = new ArrayList<>();
-        try {
-            CompilationUnit unit = parser.parse(file).getResult().get();
-            unit.accept(new VoidVisitorAdapter<Object>(){
-                @Override
-                public void visit(ClassOrInterfaceDeclaration n, Object arg){
-                    super.visit(n, arg);
-                    classOrInterfaces.add(n);
-                }
-            }, null);
-        } catch (FileNotFoundException e){
-            e.printStackTrace();
-        }
+        CompilationUnit unit = parser.parse(file).getResult().get();
+        unit.accept(new VoidVisitorAdapter<Object>(){
+            @Override
+            public void visit(ClassOrInterfaceDeclaration n, Object arg){
+                super.visit(n, arg);
+                classOrInterfaces.add(n);
+            }
+        }, null);
         AnalysisContext context = new AnalysisContext(classOrInterfaces);
         context.setFileName(file.getName());
         context.setFilePath(file.getPath());
