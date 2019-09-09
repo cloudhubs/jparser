@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 public class AnalysisRequestContext {
 
     private String filepath;
-    private String language;
+    private String language; // Useless
 
 }

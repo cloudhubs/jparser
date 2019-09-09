@@ -26,10 +26,10 @@ public class ClassInterfaceWrapper {
 
     @JsonProperty(value = "declaration_type")
     private String classOrInterface;
-    @JsonProperty(value = "method_description")
-    private MethodInfoWrapper[] methods;
     @JsonProperty(value = "name")
     private String instanceName;
+    @JsonProperty(value = "method_description")
+    private MethodInfoWrapper[] methods;
     private MethodInfoWrapper[] constructors;
 
     public ClassInterfaceWrapper(ClassOrInterfaceDeclaration cls){
@@ -40,8 +40,9 @@ public class ClassInterfaceWrapper {
         this.methods = createMethodInfoWrappers();
     }
 
+    @JsonIgnore
     public boolean isClass() {
-        return cls.isInnerClass() || cls.isLocalClassDeclaration();
+        return cls.isClassOrInterfaceDeclaration() && !cls.isInterface();
     }
 
     @JsonIgnore

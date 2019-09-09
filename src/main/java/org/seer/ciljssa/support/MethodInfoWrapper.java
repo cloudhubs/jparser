@@ -22,4 +22,5 @@ public class MethodInfoWrapper {
     private boolean staticMethod;
     private String accessor;
     private String[] annotations;
+
 }

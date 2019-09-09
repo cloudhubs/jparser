@@ -38,8 +38,6 @@ public class AnalysisContext {
         //TODO: Nab the file name and language via Javaparser.
     }
 
-    //TODO: For some reason only subclasses are being recognized as classes within a file. This needs to be addressed
-
     private String[] createClassNames() {
         ArrayList<String> output = new ArrayList<>();
         for (ClassInterfaceWrapper classesAndInterface : this.classesAndInterfaces) {
