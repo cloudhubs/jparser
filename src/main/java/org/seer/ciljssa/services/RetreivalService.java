@@ -17,12 +17,40 @@ import java.util.ArrayList;
 @NoArgsConstructor
 public class RetreivalService {
 
-    public AnalysisContext retrieveFileFromPath(String path, AnalysisRequestContext requestContext){
+    public AnalysisContext retrieveContextFromPath(String path, AnalysisRequestContext requestContext) {
         File file = new File(path);
         return retrieveContextFromFile(file, requestContext);
     }
 
-    public AnalysisContext retrieveContextFromFile(File file, AnalysisRequestContext requestContext){
+    public ArrayList<AnalysisContext> retrieveContextFromFiles(ArrayList<File> files, AnalysisRequestContext requestContext) {
+        JavaParser parser = new JavaParser();
+        ArrayList<AnalysisContext> contexts = new ArrayList<>();
+        for (File file : files) {
+            ArrayList<ClassOrInterfaceDeclaration> classOrInterfaces = new ArrayList<>();
+            try {
+                CompilationUnit unit = parser.parse(file).getResult().get();
+                unit.accept(new VoidVisitorAdapter<Object>(){
+                    @Override
+                    public void visit(ClassOrInterfaceDeclaration n, Object arg){
+                        super.visit(n, arg);
+                        classOrInterfaces.add(n);
+                    }
+                }, null);
+            } catch (FileNotFoundException e){
+                e.printStackTrace();
+            }
+            AnalysisContext context = new AnalysisContext(classOrInterfaces);
+            context.setFileName(file.getName());
+            context.setFilePath(file.getPath());
+            if (context.getClassesAndInterfaces().length > 0) {
+                context.setSucceeded(true);
+            }
+            contexts.add(context);
+        }
+        return contexts;
+    }
+
+    private AnalysisContext retrieveContextFromFile(File file, AnalysisRequestContext requestContext) {
         JavaParser parser = new JavaParser();
         ArrayList<ClassOrInterfaceDeclaration> classOrInterfaces = new ArrayList<>();
         try {
@@ -37,7 +65,9 @@ public class RetreivalService {
         } catch (FileNotFoundException e){
             e.printStackTrace();
         }
-        AnalysisContext context = new AnalysisContext(requestContext, classOrInterfaces);
+        AnalysisContext context = new AnalysisContext(classOrInterfaces);
+        context.setFileName(file.getName());
+        context.setFilePath(file.getPath());
         if (context.getClassesAndInterfaces().length > 0) {
             context.setSucceeded(true);
         }

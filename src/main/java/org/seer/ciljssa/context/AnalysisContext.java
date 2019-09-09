@@ -17,13 +17,12 @@ public class AnalysisContext {
 
     private boolean succeeded = false;
 
-    private AnalysisRequestContext requestContext;
-    private String language;
-
     @JsonIgnore
     private File sourceFile;
     @JsonProperty(value = "file_name")
-    private String stringifiedFile;
+    private String fileName;
+    @JsonProperty(value = "file_path")
+    private String filePath;
     @JsonProperty(value = "classes")
     private String[] classNames;
     @JsonProperty(value = "interfaces")
@@ -32,24 +31,14 @@ public class AnalysisContext {
     @JsonProperty(value = "declarations")
     private ClassInterfaceWrapper[] classesAndInterfaces;
 
-    public AnalysisContext(AnalysisRequestContext requestContext, ArrayList<ClassOrInterfaceDeclaration> classOrInterfaces){
-        this.requestContext = requestContext;
+    public AnalysisContext(ArrayList<ClassOrInterfaceDeclaration> classOrInterfaces){
         this.classesAndInterfaces = generateClassesAndInterfaces(classOrInterfaces);
-        this.sourceFile = new File(requestContext.getFilepath());
-        this.language = requestContext.getLanguage();
-        this.stringifiedFile = getFileName(requestContext.getFilepath());
         this.classNames = createClassNames();
         this.interfaceNames = createInterfaceNames();
         //TODO: Nab the file name and language via Javaparser.
     }
 
     //TODO: For some reason only subclasses are being recognized as classes within a file. This needs to be addressed
-
-    private String getFileName(String file) {
-        String out = file;
-        out = out.substring(file.lastIndexOf('/') + 1, file.length());
-        return out;
-    }
 
     private String[] createClassNames() {
         ArrayList<String> output = new ArrayList<>();

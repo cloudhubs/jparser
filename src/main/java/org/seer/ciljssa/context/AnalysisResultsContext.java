@@ -3,6 +3,7 @@ package org.seer.ciljssa.context;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 
@@ -13,30 +14,19 @@ public class AnalysisResultsContext {
     private String path;
 
     @JsonProperty(value = "result")
-    private ArrayList<AnalysisContext> context;
+    private ArrayList<AnalysisContext> contexts;
+    @JsonProperty(value = "failed_contexts")
+    private int failedContexts;
 
     private AnalysisRequestContext request;
-    private int httpResult;
     //TODO: Language in here not in context
 
-    public AnalysisResultsContext(AnalysisContext context, AnalysisRequestContext request) {
-        this.context = new ArrayList<>();
-        this.context.add(context);
-        this.request = request;
-    }
-
-    public AnalysisResultsContext(ArrayList<AnalysisContext> contexts, AnalysisRequestContext request) {
-        this.context = contexts;
-        this.request = request;
-    }
-
     public AnalysisResultsContext() {
-        this.httpResult = 500;
+        this.contexts = new ArrayList<>();
     }
 
-    public AnalysisResultsContext setStatus(int status) {
-        httpResult = status;
-        return this;
+    public void addAnalysisContext(AnalysisContext context) {
+        this.contexts.add(context);
     }
 
 }
