@@ -1,16 +1,25 @@
 package org.seer.ciljssa.context;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.seer.ciljssa.wrappers.ClassInterfaceWrapper;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.NoArgsConstructor;
-import org.seer.ciljssa.support.ClassInterfaceWrapper;
+import lombok.Data;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.stream.Collectors;
+import java.util.List;
+import java.io.File;
+
+//TODO: For friday, what would be good:
+//      - Annotations all information regarding them in result
+//      - Specifications on some sample queries?
+//      - Query to get body from a MethodDeclaration inside a context
+//      - Tidying and best practice
+//      - Deal with other TODOs
+//      - Handle as many exceptions and errors as possible
+//      - What else?
 
 @Data
 @NoArgsConstructor
@@ -36,11 +45,11 @@ public class AnalysisContext {
         this.classesAndInterfaces = generateClassesAndInterfaces(classOrInterfaces);
         this.classNames = createClassNames();
         this.interfaceNames = createInterfaceNames();
-        //TODO: Nab the file name and language via Javaparser.
+        //TODO: Nab the file name and language via JavaParser.
     }
 
     private String[] createClassNames() {
-        ArrayList<String> output = new ArrayList<>();
+        List<String> output = new ArrayList<>(); //TODO: Best Practice
         for (ClassInterfaceWrapper classesAndInterface : this.classesAndInterfaces) {
             if (classesAndInterface.isClass()) {
                 output.add(classesAndInterface.getInstanceName());

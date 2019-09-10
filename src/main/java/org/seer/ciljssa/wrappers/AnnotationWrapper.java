@@ -1,4 +1,4 @@
-package org.seer.ciljssa.support;
+package org.seer.ciljssa.wrappers;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -6,11 +6,8 @@ import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.expr.MarkerAnnotationExpr;
 import com.github.javaparser.ast.expr.NormalAnnotationExpr;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
-import com.github.javaparser.metamodel.PropertyMetaModel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @NoArgsConstructor
 @Data

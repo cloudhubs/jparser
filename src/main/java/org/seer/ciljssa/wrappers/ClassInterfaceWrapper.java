@@ -1,4 +1,4 @@
-package org.seer.ciljssa.support;
+package org.seer.ciljssa.wrappers;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
