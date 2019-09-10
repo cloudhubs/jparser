@@ -21,6 +21,6 @@ public class MethodInfoWrapper {
     @JsonProperty(value = "static_method")
     private boolean staticMethod;
     private String accessor;
-    private String[] annotations;
+    private AnnotationWrapper[] annotations;
 
 }

@@ -58,16 +58,23 @@ public class ClassInterfaceWrapper {
             AnnotationExpr[] annos = cd.getAnnotations().toArray(new AnnotationExpr[0]);
             Parameter[] pars = cd.getParameters().toArray(new Parameter[0]);
 
-            ArrayList<String> annotations = new ArrayList<>();
+            ArrayList<AnnotationWrapper> annotations = new ArrayList<>();
             ArrayList<String> params = new ArrayList<>();
 
-            Arrays.stream(annos).forEach(x -> annotations.add(x.getMetaModel().toString())); //TODO: This should be fleshed out, just part of prototyping
+            Arrays.stream(annos).forEach(x -> {
+                AnnotationWrapper y = new AnnotationWrapper();
+                y.setAnnotationMetaModel(x.getMetaModel().toString());
+                y.setAsString(x.getName().asString());
+                y.setPackageName(x.getMetaModel().getPackageName());
+                y.setMetaModelFieldName(x.getMetaModel().getMetaModelFieldName());
+                annotations.add(y);
+            }); //TODO: This should be fleshed out, just part of prototyping
             Arrays.stream(pars).forEach(x -> params.add(x.toString()));
 
             MethodInfoWrapper md = new MethodInfoWrapper();
 
             md.setAccessor(cd.getAccessSpecifier().asString());
-            md.setAnnotations(annotations.toArray(new String[0]));
+            md.setAnnotations(annotations.toArray(new AnnotationWrapper[0]));
             md.setMethodName(cd.getNameAsString());
             md.setMethodParams(params.toArray(new String[0]));
             mds.add(md);
@@ -84,16 +91,23 @@ public class ClassInterfaceWrapper {
             AnnotationExpr[] annos = cd.getAnnotations().toArray(new AnnotationExpr[0]);
             Parameter[] pars = cd.getParameters().toArray(new Parameter[0]);
 
-            ArrayList<String> annotations = new ArrayList<>();
+            ArrayList<AnnotationWrapper> annotations = new ArrayList<>();
             ArrayList<String> params = new ArrayList<>();
 
-            Arrays.stream(annos).forEach(x -> annotations.add(x.getMetaModel().toString())); //TODO: This should be fleshed out, just part of prototyping
+            Arrays.stream(annos).forEach(x -> {
+                AnnotationWrapper y = new AnnotationWrapper();
+                y.setAnnotationMetaModel(x.getMetaModel().toString());
+                y.setAsString(x.getName().asString());
+                y.setPackageName(x.getMetaModel().getPackageName());
+                y.setMetaModelFieldName(x.getMetaModel().getMetaModelFieldName());
+                annotations.add(y);
+            });
             Arrays.stream(pars).forEach(x -> params.add(x.toString()));
 
             MethodInfoWrapper md = new MethodInfoWrapper();
 
             md.setAccessor(cd.getAccessSpecifier().asString());
-            md.setAnnotations(annotations.toArray(new String[0]));
+            md.setAnnotations(annotations.toArray(new AnnotationWrapper[0]));
             md.setMethodName(cd.getNameAsString());
             md.setReturnType(cd.getTypeAsString());
             md.setStaticMethod(cd.isStatic());
