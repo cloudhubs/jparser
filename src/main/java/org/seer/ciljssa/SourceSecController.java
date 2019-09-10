@@ -15,7 +15,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.NotDirectoryException;
 import java.util.ArrayList;
-import java.util.Arrays;
+
+// TODO: Catch IllegalStateException for propper error handling. Unnecessary on correct code, but good practice
 
 @RestController
 public class SourceSecController {
@@ -37,7 +38,7 @@ public class SourceSecController {
     }
 
     @PostMapping(value = "/analyze")
-    public @ResponseBody IHandledResponse basicAnaalysis(@RequestBody AnalysisRequestContext requestContext){
+    public @ResponseBody IHandledResponse basicAnalysis(@RequestBody AnalysisRequestContext requestContext){
         AnalysisContext context = new AnalysisContext();
         try {
             context = retreivalService.retrieveContextFromPath(requestContext.getFilepath(), requestContext);
@@ -48,6 +49,23 @@ public class SourceSecController {
         result.addAnalysisContext(context);
         result.setRequest(requestContext);
         result.setPath(requestContext.getFilepath()); // Redundant code if override setRequest to automate this
+        return handleResult(result);
+    }
+
+    @PostMapping("/analyze/class")
+    public @ResponseBody IHandledResponse analyzeClassFromFile(@RequestParam String name,
+                                                               @RequestBody AnalysisRequestContext requestContext) {
+        AnalysisContext context = new AnalysisContext();
+        try {
+            context = retreivalService.retrieveContextFromPath(requestContext.getFilepath(), requestContext);
+        } catch (FileNotFoundException e) {
+            System.out.println("FileNotFoundException handled in SourcesSecController.");
+        }
+        AnalysisResultsContext result = new AnalysisResultsContext();
+        context.filterByClass(name);
+        result.addAnalysisContext(context);
+        result.setRequest(requestContext);
+        result.setPath(requestContext.getFilepath());
         return handleResult(result);
     }
 

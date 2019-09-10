@@ -17,7 +17,7 @@ public class ExampleController {
     private String[] users;
 
     public ExampleController() {
-        users = new String[128]; // System supports 128 users
+        this.users = new String[128]; // System supports 128 users
     }
 
     @RequestMapping(value = "/example")

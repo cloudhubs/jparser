@@ -9,6 +9,8 @@ import org.seer.ciljssa.support.ClassInterfaceWrapper;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
@@ -63,6 +65,14 @@ public class AnalysisContext {
             clsList.add(new ClassInterfaceWrapper(cls));
         }
         return clsList.toArray(new ClassInterfaceWrapper[0]);
+    }
+
+    public AnalysisContext filterByClass(String name) {
+        setClassNames(Arrays.stream(this.classNames).filter(x -> x.equals(name)).toArray(String[]::new));
+        this.setClassesAndInterfaces(Arrays.stream(this.getClassesAndInterfaces())
+                .filter(x -> x.getInstanceName().equals(name)).toArray(ClassInterfaceWrapper[]::new));
+        this.interfaceNames = new String[0];
+        return this;
     }
 }
 

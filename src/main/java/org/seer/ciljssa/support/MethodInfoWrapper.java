@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,10 +19,10 @@ public class MethodInfoWrapper {
     @JsonProperty(value = "return_type")
     private String returnType;
     @JsonProperty(value = "parameters")
-    private String[] methodParams;
+    private ArrayList<String[]> methodParams;
     @JsonProperty(value = "static_method")
     private boolean staticMethod;
     private String accessor;
-    private AnnotationWrapper[] annotations;
+    private ArrayList<AnnotationWrapper> annotations;
 
 }

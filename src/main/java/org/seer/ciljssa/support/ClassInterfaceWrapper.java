@@ -3,15 +3,13 @@ package org.seer.ciljssa.support;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.github.javaparser.ast.body.ConstructorDeclaration;
-import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.*;
 import com.github.javaparser.ast.expr.AnnotationExpr;
 import lombok.Data;
-import com.github.javaparser.ast.body.Parameter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -28,7 +26,6 @@ public class ClassInterfaceWrapper {
     private String classOrInterface;
     @JsonProperty(value = "name")
     private String instanceName;
-    @JsonProperty(value = "method_description")
     private MethodInfoWrapper[] methods;
     private MethodInfoWrapper[] constructors;
 
@@ -55,28 +52,13 @@ public class ClassInterfaceWrapper {
         ArrayList<MethodInfoWrapper> mds = new ArrayList<>();
         Arrays.stream(cls.getConstructors().toArray()).forEach(obj -> {
             ConstructorDeclaration cd = (ConstructorDeclaration) obj;
-            AnnotationExpr[] annos = cd.getAnnotations().toArray(new AnnotationExpr[0]);
-            Parameter[] pars = cd.getParameters().toArray(new Parameter[0]);
-
-            ArrayList<AnnotationWrapper> annotations = new ArrayList<>();
-            ArrayList<String> params = new ArrayList<>();
-
-            Arrays.stream(annos).forEach(x -> {
-                AnnotationWrapper y = new AnnotationWrapper();
-                y.setAnnotationMetaModel(x.getMetaModel().toString());
-                y.setAsString(x.getName().asString());
-                y.setPackageName(x.getMetaModel().getPackageName());
-                y.setMetaModelFieldName(x.getMetaModel().getMetaModelFieldName());
-                annotations.add(y);
-            }); //TODO: This should be fleshed out, just part of prototyping
-            Arrays.stream(pars).forEach(x -> params.add(x.toString()));
 
             MethodInfoWrapper md = new MethodInfoWrapper();
+            md.setAnnotations(initAnnotations(cd.getAnnotations()));
+            md.setMethodParams(initParameters(cd.getParameters()));
 
             md.setAccessor(cd.getAccessSpecifier().asString());
-            md.setAnnotations(annotations.toArray(new AnnotationWrapper[0]));
             md.setMethodName(cd.getNameAsString());
-            md.setMethodParams(params.toArray(new String[0]));
             mds.add(md);
         });
         return mds.toArray(new MethodInfoWrapper[0]);
@@ -88,33 +70,50 @@ public class ClassInterfaceWrapper {
         ArrayList<MethodInfoWrapper> mds = new ArrayList<>();
         Arrays.stream(cls.getMethods().toArray()).forEach(obj -> {
             MethodDeclaration cd = (MethodDeclaration) obj;
-            AnnotationExpr[] annos = cd.getAnnotations().toArray(new AnnotationExpr[0]);
-            Parameter[] pars = cd.getParameters().toArray(new Parameter[0]);
-
-            ArrayList<AnnotationWrapper> annotations = new ArrayList<>();
-            ArrayList<String> params = new ArrayList<>();
-
-            Arrays.stream(annos).forEach(x -> {
-                AnnotationWrapper y = new AnnotationWrapper();
-                y.setAnnotationMetaModel(x.getMetaModel().toString());
-                y.setAsString(x.getName().asString());
-                y.setPackageName(x.getMetaModel().getPackageName());
-                y.setMetaModelFieldName(x.getMetaModel().getMetaModelFieldName());
-                annotations.add(y);
-            });
-            Arrays.stream(pars).forEach(x -> params.add(x.toString()));
 
             MethodInfoWrapper md = new MethodInfoWrapper();
+            md.setAnnotations(initAnnotations(cd.getAnnotations()));
+            md.setMethodParams(initParameters(cd.getParameters()));
 
             md.setAccessor(cd.getAccessSpecifier().asString());
-            md.setAnnotations(annotations.toArray(new AnnotationWrapper[0]));
             md.setMethodName(cd.getNameAsString());
             md.setReturnType(cd.getTypeAsString());
             md.setStaticMethod(cd.isStatic());
-            md.setMethodParams(params.toArray(new String[0]));
             mds.add(md);
         });
         return mds.toArray(new MethodInfoWrapper[0]);
+    }
+
+    private ArrayList<String[]> initParameters(List<Parameter> list) {
+        ArrayList<String[]> output = new ArrayList<>();
+        String[] iter;
+        for (Parameter p : list) {
+            if (p.toString().startsWith("@")) {
+                String current = p.toString();
+                iter = new String[2];
+                iter[0] = current.substring(current.indexOf(' ') + 1);
+                iter[1] = current.substring(0, current.indexOf(' '));
+            } else {
+                iter = new String[1];
+                iter[0] = p.toString();
+            }
+            output.add(iter);
+        }
+
+        return output;
+    }
+
+    private ArrayList<AnnotationWrapper> initAnnotations(List<AnnotationExpr> list) {
+        ArrayList<AnnotationWrapper> annotations = new ArrayList<>();
+        for (AnnotationExpr exp : list) {
+            AnnotationWrapper y = new AnnotationWrapper();
+            y.setAnnotation(exp);
+            y.setAnnotationMetaModel(exp.getMetaModel().toString());
+            y.setAsString(exp.getName().asString());
+            y.setMetaModelFieldName(exp.getMetaModel().getMetaModelFieldName());
+            annotations.add(y);
+        }
+        return annotations;
     }
 
 }
