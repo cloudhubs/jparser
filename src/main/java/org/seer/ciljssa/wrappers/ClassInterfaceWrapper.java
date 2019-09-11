@@ -48,8 +48,7 @@ public class ClassInterfaceWrapper {
     }
 
     private MethodInfoWrapper[] createConstructors() {
-        ArrayList<MethodInfoWrapper> cds = new ArrayList<>();
-        ArrayList<MethodInfoWrapper> mds = new ArrayList<>();
+        List<MethodInfoWrapper> mds = new ArrayList<>();
         Arrays.stream(cls.getConstructors().toArray()).forEach(obj -> {
             ConstructorDeclaration cd = (ConstructorDeclaration) obj;
 
@@ -67,7 +66,7 @@ public class ClassInterfaceWrapper {
     //TODO: Separate constructor into its own methodinfowrapper
 
     private MethodInfoWrapper[] createMethodInfoWrappers() {
-        ArrayList<MethodInfoWrapper> mds = new ArrayList<>();
+        List<MethodInfoWrapper> mds = new ArrayList<>();
         Arrays.stream(cls.getMethods().toArray()).forEach(obj -> {
             MethodDeclaration cd = (MethodDeclaration) obj;
 
@@ -84,8 +83,8 @@ public class ClassInterfaceWrapper {
         return mds.toArray(new MethodInfoWrapper[0]);
     }
 
-    private ArrayList<String[]> initParameters(List<Parameter> list) {
-        ArrayList<String[]> output = new ArrayList<>();
+    private List<String[]> initParameters(List<Parameter> list) {
+        List<String[]> output = new ArrayList<>();
         String[] iter;
         for (Parameter p : list) {
             if (p.toString().startsWith("@")) {
@@ -103,8 +102,8 @@ public class ClassInterfaceWrapper {
         return output;
     }
 
-    private ArrayList<AnnotationWrapper> initAnnotations(List<AnnotationExpr> list) {
-        ArrayList<AnnotationWrapper> annotations = new ArrayList<>();
+    private List<AnnotationWrapper> initAnnotations(List<AnnotationExpr> list) {
+        List<AnnotationWrapper> annotations = new ArrayList<>();
         for (AnnotationExpr exp : list) {
             AnnotationWrapper y = new AnnotationWrapper();
             y.setAnnotation(exp);

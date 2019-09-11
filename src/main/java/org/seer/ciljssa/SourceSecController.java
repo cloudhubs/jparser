@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.NotDirectoryException;
 import java.util.ArrayList;
+import java.util.List;
 
 // TODO: Catch IllegalStateException for propper error handling. Unnecessary on correct code, but good practice
 
@@ -27,7 +28,7 @@ public class SourceSecController {
     private DirectoryService directoryService;
 
     public SourceSecController(){
-        analysisService = new AnalysisService();
+        analysisService = new AnalysisService(); // never used
         retreivalService = new RetreivalService();
         directoryService = new DirectoryService();
     }
@@ -71,10 +72,10 @@ public class SourceSecController {
 
     @PostMapping(value = "/analyze/directory")
     public @ResponseBody IHandledResponse getAllInDirectory(@RequestBody AnalysisRequestContext requestContext) {
-        ArrayList<AnalysisContext> contexts = new ArrayList<>();
+        List<AnalysisContext> contexts = new ArrayList<>();
         AnalysisResultsContext result = new AnalysisResultsContext();
         try {
-            ArrayList<File> files = directoryService.getFilesFromDirectory(requestContext.getFilepath());
+            List<File> files = directoryService.getFilesFromDirectory(requestContext.getFilepath());
             contexts = retreivalService.retrieveContextFromFiles(files, requestContext);
         } catch (NotDirectoryException e) {
             System.out.println("NotDirectoryException handled in SourceSecController.");
@@ -87,10 +88,10 @@ public class SourceSecController {
 
     @PostMapping(value = "/analyze/directory/smart")
     public @ResponseBody IHandledResponse getAllInDirectorySmart(@RequestBody AnalysisRequestContext requestContext) {
-        ArrayList<AnalysisContext> contexts = new ArrayList<>();
+        List<AnalysisContext> contexts = new ArrayList<>();
         AnalysisResultsContext result = new AnalysisResultsContext();
         try {
-            ArrayList<File> files = directoryService.getFilesFromDirectorySmart(requestContext.getFilepath());
+            List<File> files = directoryService.getFilesFromDirectorySmart(requestContext.getFilepath());
             contexts = retreivalService.retrieveContextFromFiles(files, requestContext);
         } catch (NotDirectoryException e) {
             System.out.println("NotDirectoryException handled in SourceSecController.");

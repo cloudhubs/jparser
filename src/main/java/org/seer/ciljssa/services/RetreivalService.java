@@ -12,6 +12,7 @@ import org.seer.ciljssa.context.AnalysisRequestContext;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -22,11 +23,11 @@ public class RetreivalService {
         return retrieveContextFromFile(file, requestContext);
     }
 
-    public ArrayList<AnalysisContext> retrieveContextFromFiles(ArrayList<File> files, AnalysisRequestContext requestContext) {
+    public List<AnalysisContext> retrieveContextFromFiles(List<File> files, AnalysisRequestContext requestContext) {
         JavaParser parser = new JavaParser();
-        ArrayList<AnalysisContext> contexts = new ArrayList<>();
+        List<AnalysisContext> contexts = new ArrayList<>();
         for (File file : files) {
-            ArrayList<ClassOrInterfaceDeclaration> classOrInterfaces = new ArrayList<>();
+            List<ClassOrInterfaceDeclaration> classOrInterfaces = new ArrayList<>();
             try {
                 CompilationUnit unit = parser.parse(file).getResult().get();
                 unit.accept(new VoidVisitorAdapter<Object>(){
@@ -52,7 +53,7 @@ public class RetreivalService {
 
     private AnalysisContext retrieveContextFromFile(File file, AnalysisRequestContext requestContext) throws FileNotFoundException {
         JavaParser parser = new JavaParser();
-        ArrayList<ClassOrInterfaceDeclaration> classOrInterfaces = new ArrayList<>();
+        List<ClassOrInterfaceDeclaration> classOrInterfaces = new ArrayList<>();
         CompilationUnit unit = parser.parse(file).getResult().get();
         unit.accept(new VoidVisitorAdapter<Object>(){
             @Override

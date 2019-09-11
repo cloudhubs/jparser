@@ -9,13 +9,14 @@ import java.io.File;
 import java.nio.file.NotDirectoryException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
 public class DirectoryService {
 
-    public ArrayList<File> getFilesFromDirectory(String path) throws NotDirectoryException {
+    public List<File> getFilesFromDirectory(String path) throws NotDirectoryException {
         ArrayList<File> files = new ArrayList<>();
         File file = new File(path);
         if(file.isDirectory()) {
@@ -30,8 +31,8 @@ public class DirectoryService {
         }
     }
 
-    public ArrayList<File> getFilesFromDirectorySmart(String path) throws NotDirectoryException {
-        ArrayList<File> files = new ArrayList<>();
+    public List<File> getFilesFromDirectorySmart(String path) throws NotDirectoryException {
+        List<File> files;
         File file = new File(path);
         if(file.isDirectory()) {
             files = getFilesFromDirectoryAndSubdirectory(path);
@@ -41,8 +42,8 @@ public class DirectoryService {
         }
     }
 
-    private ArrayList<File> getFilesFromDirectoryAndSubdirectory(String path) {
-        ArrayList<File> files = new ArrayList<>();
+    private List<File> getFilesFromDirectoryAndSubdirectory(String path) {
+        List<File> files = new ArrayList<>();
         File file = new File(path);
         if(file.isDirectory()) {
             Arrays.stream(file.listFiles()).forEach(f -> {

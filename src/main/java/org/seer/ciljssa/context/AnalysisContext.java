@@ -41,7 +41,7 @@ public class AnalysisContext {
     @JsonProperty(value = "declarations")
     private ClassInterfaceWrapper[] classesAndInterfaces;
 
-    public AnalysisContext(ArrayList<ClassOrInterfaceDeclaration> classOrInterfaces){
+    public AnalysisContext(List<ClassOrInterfaceDeclaration> classOrInterfaces){
         this.classesAndInterfaces = generateClassesAndInterfaces(classOrInterfaces);
         this.classNames = createClassNames();
         this.interfaceNames = createInterfaceNames();
@@ -59,7 +59,7 @@ public class AnalysisContext {
     }
 
     private String[] createInterfaceNames() {
-        ArrayList<String> output = new ArrayList<>();
+        List<String> output = new ArrayList<>();
         for (ClassInterfaceWrapper classesAndInterface : this.classesAndInterfaces) {
             if (classesAndInterface.isInterface()) {
                 output.add(classesAndInterface.getInstanceName());
@@ -68,8 +68,8 @@ public class AnalysisContext {
         return output.toArray(new String[0]);
     }
 
-    private ClassInterfaceWrapper[] generateClassesAndInterfaces(ArrayList<ClassOrInterfaceDeclaration> classOrInterfaces) {
-        ArrayList<ClassInterfaceWrapper> clsList = new ArrayList<>();
+    private ClassInterfaceWrapper[] generateClassesAndInterfaces(List<ClassOrInterfaceDeclaration> classOrInterfaces) {
+        List<ClassInterfaceWrapper> clsList = new ArrayList<>();
         for(ClassOrInterfaceDeclaration cls : classOrInterfaces) {
             clsList.add(new ClassInterfaceWrapper(cls));
         }

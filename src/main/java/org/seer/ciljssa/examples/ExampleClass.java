@@ -3,6 +3,7 @@ package org.seer.ciljssa.examples;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class is just an example class with a sub class and interface definition for my own analysis purposes.
@@ -11,9 +12,9 @@ import java.util.ArrayList;
 @Data
 public class ExampleClass {
 
-    protected final int MAGICNUMBER = 10;
+    protected static final int MAGICNUMBER = 10;
 
-    private ArrayList<IExampleInterface> otherExamples;
+    private List<IExampleInterface> otherExamples;
     private SubClass memberOne;
     private String memberTwo;
     private double memberThree;
@@ -24,7 +25,7 @@ public class ExampleClass {
     }
 
     @Data
-    public class SubClass {
+    public static class SubClass {
 
         int subMember;
         boolean altered = false;

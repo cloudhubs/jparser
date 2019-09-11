@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -14,7 +15,7 @@ public class AnalysisResultsContext {
 
     private String path;
 
-    private ArrayList<AnalysisContext> contexts;
+    private List<AnalysisContext> contexts;
 
     @JsonIgnore
     private int failedContexts = 0;
@@ -33,7 +34,7 @@ public class AnalysisResultsContext {
         }
     }
 
-    public void setContexts(ArrayList<AnalysisContext> ctx) {
+    public void setContexts(List<AnalysisContext> ctx) {
         this.contexts = ctx;
         this.failedContexts = 0;
         for (AnalysisContext c : ctx) {
