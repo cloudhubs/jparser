@@ -3,6 +3,7 @@ package org.seer.ciljssa.services;
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,19 +29,13 @@ public class RetreivalService {
         List<AnalysisContext> contexts = new ArrayList<>();
         for (File file : files) {
             List<ClassOrInterfaceDeclaration> classOrInterfaces = new ArrayList<>();
+            CompilationUnit unit = new CompilationUnit();
             try {
-                CompilationUnit unit = parser.parse(file).getResult().get();
-                unit.accept(new VoidVisitorAdapter<Object>(){
-                    @Override
-                    public void visit(ClassOrInterfaceDeclaration n, Object arg){
-                        super.visit(n, arg);
-                        classOrInterfaces.add(n);
-                    }
-                }, null);
+                unit = parser.parse(file).getResult().get();
             } catch (FileNotFoundException e){
                 e.printStackTrace();
             }
-            AnalysisContext context = new AnalysisContext(classOrInterfaces);
+            AnalysisContext context = new AnalysisContext(unit);
             context.setFileName(file.getName());
             context.setFilePath(file.getPath());
             if (context.getClassesAndInterfaces().length > 0) {
@@ -62,7 +57,7 @@ public class RetreivalService {
                 classOrInterfaces.add(n);
             }
         }, null);
-        AnalysisContext context = new AnalysisContext(classOrInterfaces);
+        AnalysisContext context = new AnalysisContext(unit);
         context.setFileName(file.getName());
         context.setFilePath(file.getPath());
         if (context.getClassesAndInterfaces().length > 0) {

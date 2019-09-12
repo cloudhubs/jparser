@@ -56,11 +56,15 @@ public class ExampleClass {
         this.memberThree = 0.0;
     }
 
-    public String[] anotherExampleMethod(String x, String y, boolean z, double q) {
+    public String[] anotherExampleMethod(String x, int y, boolean z, double q) {
         String[] test = new String[3];
         test[0] = x;
-        test[1] = y;
+        test[1] = subroutine(y) + "";
         test[2] = z ? q + "" : (q - 10) + "";
         return test;
+    }
+
+    public int subroutine(int num) {
+        return num *= 100;
     }
 }

@@ -2,6 +2,7 @@ package org.seer.ciljssa.wrappers;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.github.javaparser.ast.body.MethodDeclaration;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,5 +25,9 @@ public class MethodInfoWrapper {
     private boolean staticMethod;
     private String accessor;
     private List<AnnotationWrapper> annotations;
+    @JsonProperty(value = "subroutines")
+    private MethodInfoWrapper[] subMethods;
+    @JsonProperty(value = "constructors")
+    private MethodInfoWrapper[] constructors;
 
 }

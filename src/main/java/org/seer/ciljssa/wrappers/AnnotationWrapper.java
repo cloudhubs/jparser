@@ -1,6 +1,7 @@
 package org.seer.ciljssa.wrappers;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.expr.MarkerAnnotationExpr;
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Data
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class AnnotationWrapper {
 
     @JsonIgnore
@@ -22,6 +24,7 @@ public class AnnotationWrapper {
     private String annotationMetaModel;
     private String metaModelFieldName;
     private String packageName;
+    private String allowedRoles; // Only valid if is @AllowedRoles or similar annotation.
 
     public void setAsString(String inp) {
         this.asString = (inp.startsWith("@") ? "" : "@") + inp;

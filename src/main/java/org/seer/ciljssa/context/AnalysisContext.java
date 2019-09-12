@@ -1,7 +1,9 @@
 package org.seer.ciljssa.context;
 
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import org.seer.ciljssa.wrappers.ClassInterfaceWrapper;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.NoArgsConstructor;
@@ -29,6 +31,11 @@ public class AnalysisContext {
 
     @JsonIgnore
     private File sourceFile;
+    @JsonIgnore
+    private CompilationUnit analysisUnit;
+    @JsonIgnore
+    private List<ClassOrInterfaceDeclaration> classOrInterfaceDeclarations;
+
     @JsonProperty(value = "file_name")
     private String fileName;
     @JsonProperty(value = "file_path")
@@ -41,11 +48,11 @@ public class AnalysisContext {
     @JsonProperty(value = "declarations")
     private ClassInterfaceWrapper[] classesAndInterfaces;
 
-    public AnalysisContext(List<ClassOrInterfaceDeclaration> classOrInterfaces){
-        this.classesAndInterfaces = generateClassesAndInterfaces(classOrInterfaces);
+    public AnalysisContext(CompilationUnit unit) {
+        this.analysisUnit = unit;
+        this.classesAndInterfaces = generateClassesAndInterfaces();
         this.classNames = createClassNames();
         this.interfaceNames = createInterfaceNames();
-        //TODO: Nab the file name and language via JavaParser.
     }
 
     private String[] createClassNames() {
@@ -68,11 +75,20 @@ public class AnalysisContext {
         return output.toArray(new String[0]);
     }
 
-    private ClassInterfaceWrapper[] generateClassesAndInterfaces(List<ClassOrInterfaceDeclaration> classOrInterfaces) {
+    private ClassInterfaceWrapper[] generateClassesAndInterfaces() {
+        List<ClassOrInterfaceDeclaration> classOrInterfaces = new ArrayList<>();
+        this.analysisUnit.accept(new VoidVisitorAdapter<Object>() {
+            @Override
+            public void visit(ClassOrInterfaceDeclaration n, Object arg) {
+                super.visit(n, arg);
+                classOrInterfaces.add(n);
+            }
+        }, null);
         List<ClassInterfaceWrapper> clsList = new ArrayList<>();
         for(ClassOrInterfaceDeclaration cls : classOrInterfaces) {
-            clsList.add(new ClassInterfaceWrapper(cls));
+            clsList.add(new ClassInterfaceWrapper(cls, this.analysisUnit));
         }
+        this.classOrInterfaceDeclarations = classOrInterfaces;
         return clsList.toArray(new ClassInterfaceWrapper[0]);
     }
 
