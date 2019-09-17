@@ -1,8 +1,10 @@
 package org.seer.ciljssa.context.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 import org.seer.ciljssa.context.AnalysisResultsContext;
 
+@Data
 public class ResponseBad implements IHandledResponse {
 
     @JsonProperty(value = "results")
@@ -15,6 +17,8 @@ public class ResponseBad implements IHandledResponse {
     public ResponseBad(AnalysisResultsContext context) {
         this.resultsContext = context;
     }
+
+    public ResponseBad(){};
 
     public void setErrorMessage(String[] message) {
         this.message = message;

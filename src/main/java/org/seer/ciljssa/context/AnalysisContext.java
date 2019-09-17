@@ -1,5 +1,6 @@
 package org.seer.ciljssa.context;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -25,9 +26,9 @@ import java.io.File;
 
 @Data
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class AnalysisContext {
 
-    private boolean succeeded = false;
 
     @JsonIgnore
     private File sourceFile;
@@ -36,6 +37,7 @@ public class AnalysisContext {
     @JsonIgnore
     private List<ClassOrInterfaceDeclaration> classOrInterfaceDeclarations;
 
+    private boolean succeeded = false;
     @JsonProperty(value = "file_name")
     private String fileName;
     @JsonProperty(value = "file_path")
