@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 // TODO: Catch IllegalStateException for propper error handling. Unnecessary on correct code, but good practice
+//       - consumes and produces tags for all mappings
+//       - service annotations
 
 @RestController
 public class SourceSecController {
