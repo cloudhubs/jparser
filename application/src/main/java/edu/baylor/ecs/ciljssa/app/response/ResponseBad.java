@@ -5,7 +5,7 @@ import edu.baylor.ecs.ciljssa.context.AnalysisResultsContext;
 import lombok.Data;
 
 @Data
-public class ResponseBad implements IHandledResponse {
+public class ResponseBad extends BaseResponse implements IHandledResponse {
 
     @JsonProperty(value = "results")
     private AnalysisResultsContext resultsContext;
