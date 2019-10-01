@@ -1,7 +1,9 @@
-package edu.baylor.ecs.ciljssa.context;
+package edu.baylor.ecs.ciljssa.app.context;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import edu.baylor.ecs.ciljssa.context.AnalysisContext;
+import edu.baylor.ecs.ciljssa.context.JSSAContext;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -9,7 +11,7 @@ import java.util.List;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class AnalysisResultsContext {
+public class AnalysisResultsContext extends JSSAContext {
 
     private String path;
 
@@ -18,7 +20,7 @@ public class AnalysisResultsContext {
     @JsonIgnore
     private int failedContexts = 0;
 
-    private AnalysisRequestContext request;
+    private RequestContext request;
     //TODO: Language in here not in context
 
     public AnalysisResultsContext() {

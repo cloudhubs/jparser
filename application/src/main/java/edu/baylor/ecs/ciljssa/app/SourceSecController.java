@@ -5,8 +5,8 @@ import edu.baylor.ecs.ciljssa.app.response.BaseResponse;
 import edu.baylor.ecs.ciljssa.app.response.OkResponse;
 import edu.baylor.ecs.ciljssa.app.response.ResponseCode;
 import edu.baylor.ecs.ciljssa.context.AnalysisContext;
-import edu.baylor.ecs.ciljssa.context.AnalysisRequestContext;
-import edu.baylor.ecs.ciljssa.context.AnalysisResultsContext;
+import edu.baylor.ecs.ciljssa.app.context.RequestContext;
+import edu.baylor.ecs.ciljssa.app.context.AnalysisResultsContext;
 import edu.baylor.ecs.ciljssa.app.services.AnalysisService;
 import edu.baylor.ecs.ciljssa.app.services.DirectoryService;
 import edu.baylor.ecs.ciljssa.app.services.RetreivalService;
@@ -42,14 +42,9 @@ public class SourceSecController {
     }
 
     @PostMapping(value = "/analyze")
-    public @ResponseBody BaseResponse basicAnalysis(@RequestBody AnalysisRequestContext requestContext){
-        AnalysisContext context = new AnalysisContext();
-        try {
-            context = retreivalService.retrieveContextFromPath(requestContext.getFilepath(), requestContext);
-        } catch (FileNotFoundException e) {
-            System.out.println("FileNotFoundException handled in SourcesSecController.");
-        }
-        AnalysisResultsContext result = new AnalysisResultsContext();
+    public @ResponseBody BaseResponse basicAnalysis(@RequestBody RequestContext requestContext){
+        AnalysisContext context = retreivalService.retrieveContextFromPath(requestContext);
+        AnalysisResultsContext result = new AnalysisResultsContext(); // TODO: BUILDER
         result.addAnalysisContext(context);
         result.setRequest(requestContext);
         result.setPath(requestContext.getFilepath()); // Redundant code if override setRequest to automate this
@@ -58,13 +53,8 @@ public class SourceSecController {
 
     @PostMapping("/analyze/class")
     public @ResponseBody BaseResponse analyzeClassFromFile(@RequestParam String name,
-                                                               @RequestBody AnalysisRequestContext requestContext) {
-        AnalysisContext context = new AnalysisContext();
-        try {
-            context = retreivalService.retrieveContextFromPath(requestContext.getFilepath(), requestContext);
-        } catch (FileNotFoundException e) {
-            System.out.println("FileNotFoundException handled in SourcesSecController.");
-        }
+                                                               @RequestBody RequestContext requestContext) {
+        AnalysisContext context = retreivalService.retrieveContextFromPath(requestContext);
         AnalysisResultsContext result = new AnalysisResultsContext();
         context.filterByClass(name);
         result.addAnalysisContext(context);
@@ -74,7 +64,7 @@ public class SourceSecController {
     }
 
     @PostMapping(value = "/analyze/directory")
-    public @ResponseBody BaseResponse getAllInDirectory(@RequestBody AnalysisRequestContext requestContext) {
+    public @ResponseBody BaseResponse getAllInDirectory(@RequestBody RequestContext requestContext) {
         List<AnalysisContext> contexts = new ArrayList<>();
         AnalysisResultsContext result = new AnalysisResultsContext();
         try {
@@ -90,7 +80,7 @@ public class SourceSecController {
     }
 
     @PostMapping(value = "/analyze/directory/smart")
-    public @ResponseBody BaseResponse getAllInDirectorySmart(@RequestBody AnalysisRequestContext requestContext) {
+    public @ResponseBody BaseResponse getAllInDirectorySmart(@RequestBody RequestContext requestContext) {
         List<AnalysisContext> contexts = new ArrayList<>();
         AnalysisResultsContext result = new AnalysisResultsContext();
         try {

@@ -1,11 +1,11 @@
-package edu.baylor.ecs.ciljssa.context;
+package edu.baylor.ecs.ciljssa.app.context;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class AnalysisRequestContext {
+public class RequestContext {
 
     private String filepath;
     private String language; // Useless

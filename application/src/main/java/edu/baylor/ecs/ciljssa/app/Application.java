@@ -1,6 +1,8 @@
 package edu.baylor.ecs.ciljssa.app;
 
-import edu.baylor.ecs.ciljssa.app.response.ResponseBad;
+import edu.baylor.ecs.ciljssa.app.response.BadResponse;
+import edu.baylor.ecs.ciljssa.app.response.BaseResponse;
+import edu.baylor.ecs.ciljssa.app.response.ResponseCode;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -45,10 +47,11 @@ public class Application {
         @ExceptionHandler
         @ResponseStatus(value= HttpStatus.NOT_FOUND)
         @ResponseBody
-        public IHandledResponse requestHandlingNoHandlerFound(final NoHandlerFoundException ex) {
-            IHandledResponse response = new ResponseBad();
-            response.setHttpStatus(404);
-            String[] error = {"The request method was not found.", ex.getHttpMethod() + ": " + ex.getRequestURL() + ex.toString()};
+        public BaseResponse requestHandlingNoHandlerFound(final NoHandlerFoundException ex) {
+            String error = "The request method was not found.\n" +  ex.getHttpMethod() + ": " + ex.getRequestURL() + ex.toString();
+            BaseResponse response = new BadResponse();
+            response.setResponseCode(ResponseCode.NOT_FOUND);
+            response.setResponseMessage(error);
             return response;
         }
     }

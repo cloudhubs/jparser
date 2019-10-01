@@ -2,10 +2,9 @@ package edu.baylor.ecs.ciljssa.app.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import edu.baylor.ecs.ciljssa.context.AnalysisResultsContext;
+import edu.baylor.ecs.ciljssa.app.context.AnalysisResultsContext;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

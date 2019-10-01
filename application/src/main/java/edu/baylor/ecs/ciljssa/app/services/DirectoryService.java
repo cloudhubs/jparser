@@ -1,7 +1,5 @@
 package edu.baylor.ecs.ciljssa.app.services;
 
-import com.google.common.base.Predicates;
-import com.google.common.collect.Iterables;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
