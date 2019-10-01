@@ -1,6 +1,5 @@
 package edu.baylor.ecs.ciljssa.app;
 
-import edu.baylor.ecs.ciljssa.app.response.IHandledResponse;
 import edu.baylor.ecs.ciljssa.app.response.ResponseBad;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

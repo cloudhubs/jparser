@@ -1,11 +1,12 @@
 package edu.baylor.ecs.ciljssa.app;
 
+import edu.baylor.ecs.ciljssa.app.response.BadResponse;
+import edu.baylor.ecs.ciljssa.app.response.BaseResponse;
+import edu.baylor.ecs.ciljssa.app.response.OkResponse;
+import edu.baylor.ecs.ciljssa.app.response.ResponseCode;
 import edu.baylor.ecs.ciljssa.context.AnalysisContext;
 import edu.baylor.ecs.ciljssa.context.AnalysisRequestContext;
 import edu.baylor.ecs.ciljssa.context.AnalysisResultsContext;
-import edu.baylor.ecs.ciljssa.app.response.ResponseOk;
-import edu.baylor.ecs.ciljssa.app.response.IHandledResponse;
-import edu.baylor.ecs.ciljssa.app.response.ResponseBad;
 import edu.baylor.ecs.ciljssa.app.services.AnalysisService;
 import edu.baylor.ecs.ciljssa.app.services.DirectoryService;
 import edu.baylor.ecs.ciljssa.app.services.RetreivalService;
@@ -41,7 +42,7 @@ public class SourceSecController {
     }
 
     @PostMapping(value = "/analyze")
-    public @ResponseBody IHandledResponse basicAnalysis(@RequestBody AnalysisRequestContext requestContext){
+    public @ResponseBody BaseResponse basicAnalysis(@RequestBody AnalysisRequestContext requestContext){
         AnalysisContext context = new AnalysisContext();
         try {
             context = retreivalService.retrieveContextFromPath(requestContext.getFilepath(), requestContext);
@@ -52,11 +53,11 @@ public class SourceSecController {
         result.addAnalysisContext(context);
         result.setRequest(requestContext);
         result.setPath(requestContext.getFilepath()); // Redundant code if override setRequest to automate this
-        return handleResult(result);
+        return handleResult(result, ResponseCode.OK);
     }
 
     @PostMapping("/analyze/class")
-    public @ResponseBody IHandledResponse analyzeClassFromFile(@RequestParam String name,
+    public @ResponseBody BaseResponse analyzeClassFromFile(@RequestParam String name,
                                                                @RequestBody AnalysisRequestContext requestContext) {
         AnalysisContext context = new AnalysisContext();
         try {
@@ -69,11 +70,11 @@ public class SourceSecController {
         result.addAnalysisContext(context);
         result.setRequest(requestContext);
         result.setPath(requestContext.getFilepath());
-        return handleResult(result);
+        return handleResult(result, ResponseCode.OK);
     }
 
     @PostMapping(value = "/analyze/directory")
-    public @ResponseBody IHandledResponse getAllInDirectory(@RequestBody AnalysisRequestContext requestContext) {
+    public @ResponseBody BaseResponse getAllInDirectory(@RequestBody AnalysisRequestContext requestContext) {
         List<AnalysisContext> contexts = new ArrayList<>();
         AnalysisResultsContext result = new AnalysisResultsContext();
         try {
@@ -85,11 +86,11 @@ public class SourceSecController {
         result.setContexts(contexts);
         result.setPath(requestContext.getFilepath());
         result.setRequest(requestContext);
-        return handleResult(result);
+        return handleResult(result, ResponseCode.OK);
     }
 
     @PostMapping(value = "/analyze/directory/smart")
-    public @ResponseBody IHandledResponse getAllInDirectorySmart(@RequestBody AnalysisRequestContext requestContext) {
+    public @ResponseBody BaseResponse getAllInDirectorySmart(@RequestBody AnalysisRequestContext requestContext) {
         List<AnalysisContext> contexts = new ArrayList<>();
         AnalysisResultsContext result = new AnalysisResultsContext();
         try {
@@ -101,28 +102,34 @@ public class SourceSecController {
         result.setContexts(contexts);
         result.setPath(requestContext.getFilepath());
         result.setRequest(requestContext);
-        return handleResult(result);
+        return handleResult(result, ResponseCode.OK);
     }
 
-    private IHandledResponse handleResult(AnalysisResultsContext context) {
+    /**
+     * Handles the result and determines if the result has succeeded or not.
+     * @param context The results context to wrap into a result
+     * @param code The resulting response code that should be attributed to the response if it succeeded
+     * @return A response message
+     */
+    private BaseResponse handleResult(AnalysisResultsContext context, ResponseCode code) {
+        BaseResponse response;
         if (context.succeeded()) {
-            ResponseOk response = new ResponseOk(context);
-            response.setHttpStatus(200);
+            response = new OkResponse(context, code);
             return response;
         } else {
-            String[] message = new String[2];
+            ResponseCode responseCode = ResponseCode.INTERNAL_ERROR;
+            String message = "";
             if (context.getFailedContexts() > 1) {
-                message[0] = "There were multiple failed context requests. Failed requests: ";
-                message[0] += context.getFailedContexts();
+                message = "There were multiple failed context requests. Failed request count: ";
+                message += context.getFailedContexts();
             } else if (context.getFailedContexts() == 1) {
-                message[0] = "There was a failed context request.";
+                message = "There was a failed context request.";
             } else if (context.getContexts().size() == 0) {
-                message[0] = "The list of contexts failed to initialize.";
+                message = "The list of contexts failed to initialize.";
+                responseCode = ResponseCode.NOT_FOUND;
             }
-            message[1] = "Check your request for typos and verify the path provided is a valid file path / directory.";
-            ResponseBad response = new ResponseBad(context);
-            response.setHttpStatus(500);
-            response.setErrorMessage(message);
+            message += "\nCheck your request for typos and verify the path provided is a valid file path / directory.";
+            response = new BadResponse(message, responseCode);
             return response;
         }
     }

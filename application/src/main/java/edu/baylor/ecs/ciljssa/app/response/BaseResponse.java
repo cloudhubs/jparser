@@ -1,44 +1,37 @@
 package edu.baylor.ecs.ciljssa.app.response;
 
-
-import org.springframework.web.bind.annotation.ResponseBody;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import edu.baylor.ecs.ciljssa.context.AnalysisResultsContext;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
+@Data
 @XmlRootElement
+@AllArgsConstructor
 @XmlAccessorType(XmlAccessType.FIELD)
-public class BaseResponse implements Serializable {
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+public abstract class BaseResponse implements Serializable {
 
+    @JsonProperty(value = "response")
     private ResponseCode responseCode;
 
+    @JsonProperty(value = "detailed_response")
     private String responseMessage;
 
+    @JsonProperty(value = "message_type")
+    private ResponseType responseType;
+
     public BaseResponse() {
+        this.responseCode = ResponseCode.OK;
     }
 
-    public BaseResponse(ResponseCode responseCode, String responseMessage) {
-        this.responseCode = responseCode;
-        this.responseMessage = responseMessage;
-    }
-
-    public ResponseCode getResponseCode() {
-        return responseCode;
-    }
-
-    public void setResponseCode(ResponseCode code) {
-        this.responseCode = code;
-    }
-
-    public String getResponseMessage() {
-        return responseMessage;
-    }
-
-    public void setResponseMessage(String responseMessage) {
-        this.responseMessage = responseMessage;
-    }
-
+    public abstract AnalysisResultsContext get();
 
 }

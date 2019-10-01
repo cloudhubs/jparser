@@ -2,22 +2,23 @@ package edu.baylor.ecs.ciljssa.app.response;
 
 public enum ResponseCode {
 
-    INTERNAL_ERROR(500, "Internal server error"),
-
-    NOT_FOUND(404, "Request could not be found");
+    INTERNAL_ERROR(500, "Internal Server Error"),
+    OK(200, "OK"),
+    CREATED(201, "Created"),
+    NOT_FOUND(404, "Not Found");
 
     private final int code;
 
-    private final String reason;
+    private final String label;
 
-    private ResponseCode(int code, String reason) {
+    private ResponseCode(int code, String label) {
         this.code = code;
-        this.reason = reason;
+        this.label = label;
     }
 
     public int getCode() {
         return code;
     }
 
-    public String getReason() {return reason; }
+    public String getReason() {return label; }
 }
