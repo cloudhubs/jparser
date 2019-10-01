@@ -4,6 +4,7 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.nio.file.NotDirectoryException;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
+@Service
 public class DirectoryService {
 
     public List<File> getFilesFromDirectory(String path) throws NotDirectoryException {

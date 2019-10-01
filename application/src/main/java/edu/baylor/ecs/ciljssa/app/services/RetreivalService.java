@@ -8,6 +8,7 @@ import edu.baylor.ecs.ciljssa.context.AnalysisContext;
 import edu.baylor.ecs.ciljssa.context.AnalysisRequestContext;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
+@Service
 public class RetreivalService {
 
     public AnalysisContext retrieveContextFromPath(String path, AnalysisRequestContext requestContext) throws FileNotFoundException {

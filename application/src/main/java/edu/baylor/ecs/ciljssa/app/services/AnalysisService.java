@@ -5,10 +5,12 @@ import edu.baylor.ecs.ciljssa.context.AnalysisRequestContext;
 import edu.baylor.ecs.ciljssa.context.AnalysisResultsContext;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Service;
 
 
 @Data
 @NoArgsConstructor
+@Service
 public class AnalysisService {
 
     //TODO: This service seems to just kind of wrap other methods. Put the actual analysis in this
