@@ -1,6 +1,8 @@
 package edu.baylor.ecs.ciljssa.app.response;
 
 
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -10,29 +12,24 @@ import java.io.Serializable;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class BaseResponse implements Serializable {
 
-    protected ResponseCode responseCode;
+    private ResponseCode responseCode;
 
-    protected String responseMessage;
+    private String responseMessage;
 
     public BaseResponse() {
     }
 
     public BaseResponse(ResponseCode responseCode, String responseMessage) {
-        this.responseCode  = responseCode;
+        this.responseCode = responseCode;
         this.responseMessage = responseMessage;
-    }
-
-    public BaseResponse(int responseCode, String responseMEssage) {
-        this.responseCode = new ResponseCode(responseCode);
-        this.responseMessage = responseMEssage;
     }
 
     public ResponseCode getResponseCode() {
         return responseCode;
     }
 
-    public void setResponseCode(int responseCode, String reason) {
-        this.responseCode = new ResponseCode(responseCode, reason);
+    public void setResponseCode(ResponseCode code) {
+        this.responseCode = code;
     }
 
     public String getResponseMessage() {

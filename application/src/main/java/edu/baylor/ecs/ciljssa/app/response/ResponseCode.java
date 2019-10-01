@@ -10,7 +10,7 @@ public enum ResponseCode {
 
     private final String reason;
 
-    ResponseCode(int code, String reason) {
+    private ResponseCode(int code, String reason) {
         this.code = code;
         this.reason = reason;
     }
