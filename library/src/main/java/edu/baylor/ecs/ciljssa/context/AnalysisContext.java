@@ -2,6 +2,7 @@ package edu.baylor.ecs.ciljssa.context;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import edu.baylor.ecs.ciljssa.wrappers.ClassInterfaceWrapper;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.Data;
 
@@ -20,6 +21,7 @@ import java.util.Arrays;
 //          The analysis service should only call methods created here, so any new analysis I need can
 //          be made into part of the maven library.
 @Data
+@EqualsAndHashCode
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class AnalysisContext extends JSSAContext {

@@ -5,11 +5,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import edu.baylor.ecs.ciljssa.context.AnalysisContext;
 import edu.baylor.ecs.ciljssa.context.JSSAContext;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@EqualsAndHashCode
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class AnalysisResultsContext extends JSSAContext {
 
