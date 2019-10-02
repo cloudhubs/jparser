@@ -2,6 +2,13 @@
 //TODO: This class is deprecated and will be removed and replaced by 3 classes:
 //      ComponentWrapper <- (ClassWrapper, InterfaceWrapper)
 
+package edu.baylor.ecs.ciljssa.wrappers;
+
+@Deprecated
+public class ClassInterfaceWrapper {
+
+}
+
 //package edu.baylor.ecs.ciljssa.wrappers;
 //
 //import com.fasterxml.jackson.annotation.JsonIgnore;
