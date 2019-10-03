@@ -5,7 +5,8 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import edu.baylor.ecs.ciljssa.context.AnalysisContext;
-import edu.baylor.ecs.ciljssa.wrappers.ClassInterfaceWrapper;
+import edu.baylor.ecs.ciljssa.model.ClassOrInterface;
+import edu.baylor.ecs.ciljssa.wrappers.ComponentWrapper;
 import lombok.Builder;
 
 import java.io.File;
@@ -21,10 +22,10 @@ public class AnalysisContextBuilder {
     private File sourceFile;
     private String fileName;
     private String filePath;
-    private String[] classNames;
-    private String[] interfaceNames;
+    private List<String> classNames;
+    private List<String> interfaceNames;
     private boolean succeeded = false;
-    private ClassInterfaceWrapper[] classesAndInterfaces;
+    private List<ComponentWrapper> classesAndInterfaces;
     private List<ClassOrInterfaceDeclaration> classOrInterfaceDeclarations;
 
     public AnalysisContextBuilder(File file) {
@@ -42,7 +43,7 @@ public class AnalysisContextBuilder {
 
         context.setClassOrInterfaceDeclarations(this.classOrInterfaceDeclarations);
         context.setClassesAndInterfaces(this.classesAndInterfaces); // Must be run first
-        context.setSucceeded(this.classesAndInterfaces.length != 0);
+        context.setSucceeded(this.classesAndInterfaces.size() != 0);
         context.setInterfaceNames(this.interfaceNames);
         context.setFilePath(this.sourceFile.getPath());
         context.setFileName(this.sourceFile.getName());
@@ -62,27 +63,27 @@ public class AnalysisContextBuilder {
         return this;
     }
 
-    private String[] createClassNames() {
+    private List<String> createClassNames() {
         List<String> output = new ArrayList<>(); //TODO: Best Practice
-        for (ClassInterfaceWrapper classesAndInterface : this.classesAndInterfaces) {
-            if (classesAndInterface.isClass()) {
+        for (ComponentWrapper classesAndInterface : this.classesAndInterfaces) {
+            if (classesAndInterface.getClassOrInterface().equals(ClassOrInterface.CLASS)) {
                 output.add(classesAndInterface.getInstanceName());
             }
         }
-        return output.toArray(new String[0]);
+        return output;
     }
 
-    private String[] createInterfaceNames() {
+    private List<String> createInterfaceNames() {
         List<String> output = new ArrayList<>();
-        for (ClassInterfaceWrapper classesAndInterface : this.classesAndInterfaces) {
-            if (classesAndInterface.isInterface()) {
+        for (ComponentWrapper classesAndInterface : this.classesAndInterfaces) {
+            if (classesAndInterface.getClassOrInterface().equals(ClassOrInterface.INTERFACE)) {
                 output.add(classesAndInterface.getInstanceName());
             }
         }
-        return output.toArray(new String[0]);
+        return output;
     }
 
-    private ClassInterfaceWrapper[] generateClassesAndInterfaces() {
+    private List<ComponentWrapper> generateClassesAndInterfaces() {
         List<ClassOrInterfaceDeclaration> classOrInterfaces = new ArrayList<>();
         this.unit.accept(new VoidVisitorAdapter<Object>() {
             @Override
@@ -91,12 +92,13 @@ public class AnalysisContextBuilder {
                 classOrInterfaces.add(n);
             }
         }, null);
-        List<ClassInterfaceWrapper> clsList = new ArrayList<>();
+        List<ComponentWrapper> clsList = new ArrayList<>();
         for(ClassOrInterfaceDeclaration cls : classOrInterfaces) {
-            clsList.add(new ClassInterfaceWrapper(cls, this.unit));
+            ComponentBuilder builder = new ComponentBuilder(cls);
+            clsList.add(builder.build());
         }
         this.classOrInterfaceDeclarations = classOrInterfaces;
-        return clsList.toArray(new ClassInterfaceWrapper[0]);
+        return clsList;
     }
 
     private CompilationUnit generateCompilationUnit() {

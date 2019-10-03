@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Data;
 
 import java.util.Arrays;
+import java.util.stream.Collectors;
 //TODO: For friday, what would be good:
 //      - Annotations all information regarding them in result
 //      - Specifications on some sample queries?
@@ -25,11 +26,12 @@ import java.util.Arrays;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class AnalysisContext extends JSSAContext {
+    //TODO: Change to return classesandinterfaces
     public AnalysisContext filterByClass(String name) {
-        setClassNames(Arrays.stream(this.classNames).filter(x -> x.equals(name)).toArray(String[]::new));
-        this.setClassesAndInterfaces(Arrays.stream(this.getClassesAndInterfaces())
-                .filter(x -> x.getInstanceName().equals(name)).toArray(ClassInterfaceWrapper[]::new));
-        this.interfaceNames = new String[0];
+        setClassNames(this.classNames.stream().filter(x -> x.equals(name)).collect(Collectors.toList()));
+        this.setClassesAndInterfaces(this.getClassesAndInterfaces().stream()
+                .filter(x -> x.getInstanceName().equals(name)).collect(Collectors.toList()));
+        //this.interfaceNames = new String[0];
         return this;
     }
 }

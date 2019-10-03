@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import edu.baylor.ecs.ciljssa.wrappers.ClassInterfaceWrapper;
+import edu.baylor.ecs.ciljssa.wrappers.ComponentWrapper;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -29,10 +30,10 @@ public abstract class JSSAContext {
     @JsonProperty(value = "file_path")
     protected String filePath;
     @JsonProperty(value = "classes")
-    protected String[] classNames;
+    protected List<String> classNames;
     @JsonProperty(value = "interfaces")
-    protected String[] interfaceNames;
+    protected List<String> interfaceNames;
     @JsonProperty(value = "declarations")
-    protected ClassInterfaceWrapper[] classesAndInterfaces;
+    protected List<ComponentWrapper> classesAndInterfaces;
 
 }

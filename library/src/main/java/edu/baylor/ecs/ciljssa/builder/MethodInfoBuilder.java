@@ -3,6 +3,7 @@ package edu.baylor.ecs.ciljssa.builder;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
+import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import edu.baylor.ecs.ciljssa.model.MethodParam;
@@ -74,7 +75,16 @@ public class MethodInfoBuilder {
     }
 
     private List<AnnotationWrapper> generateAnnotations() {
-
+        List<AnnotationWrapper> annotations = new ArrayList<>();
+        for (AnnotationExpr exp : this.methodDeclaration.getAnnotations()) {
+            AnnotationWrapper y = new AnnotationWrapper();
+            y.setAnnotation(exp);
+            y.setAnnotationMetaModel(exp.getMetaModel().toString());
+            y.setAsString(exp.getName().asString());
+            y.setMetaModelFieldName(exp.getMetaModel().getMetaModelFieldName());
+            annotations.add(y);
+        }
+        return annotations;
     }
 
     public MethodInfoBuilder withMethodName(String name) {
