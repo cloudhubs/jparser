@@ -7,14 +7,12 @@ import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import edu.baylor.ecs.ciljssa.context.AnalysisContext;
 import edu.baylor.ecs.ciljssa.model.ClassOrInterface;
 import edu.baylor.ecs.ciljssa.wrappers.ComponentWrapper;
-import lombok.Builder;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Builder
 public class AnalysisContextBuilder {
 
     private CompilationUnit unit;
