@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 @Data
 @NoArgsConstructor
 @Service
+//TODO: Make this a library functionality too
 public class DirectoryService {
 
     public List<File> getFilesFromDirectory(String path) throws NotDirectoryException {

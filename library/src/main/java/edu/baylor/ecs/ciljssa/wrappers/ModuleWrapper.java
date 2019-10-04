@@ -4,7 +4,7 @@ import java.util.List;
 
 public class ModuleWrapper {
 
-    private List<ComponentWrapper> componentWrappers;
+    private List<IComponent> componentWrappers;
 
     public ModuleWrapper() {
 

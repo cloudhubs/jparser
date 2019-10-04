@@ -7,8 +7,10 @@ import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import edu.baylor.ecs.ciljssa.builder.AnalysisContextBuilder;
 import edu.baylor.ecs.ciljssa.context.AnalysisContext;
 import edu.baylor.ecs.ciljssa.app.context.RequestContext;
+import edu.baylor.ecs.ciljssa.factory.context.AnalysisContextFactory;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -21,6 +23,9 @@ import java.util.List;
 @Service
 public class RetreivalService {
 
+    @Autowired
+    private AnalysisContextFactory factory;
+
     public AnalysisContext retrieveContextFromPath(RequestContext requestContext) {
         File file = new File(requestContext.getFilepath());
         return retrieveContextFromFile(file);
@@ -29,14 +34,14 @@ public class RetreivalService {
     public List<AnalysisContext> retrieveContextFromFiles(List<File> files, RequestContext requestContext) {
         List<AnalysisContext> contexts = new ArrayList<>();
         for (File file : files) {
-            AnalysisContext context = new AnalysisContextBuilder(file).build();
+            AnalysisContext context = factory.createAnalysisContextFromFile(file);
             contexts.add(context);
         }
         return contexts;
     }
 
     private AnalysisContext retrieveContextFromFile(File file) {
-        return new AnalysisContextBuilder(file).build();
+        return factory.createAnalysisContextFromFile(file);
     }
 
 }

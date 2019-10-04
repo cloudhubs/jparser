@@ -1,54 +1,74 @@
 package edu.baylor.ecs.ciljssa.builder;
 
-import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import edu.baylor.ecs.ciljssa.context.AnalysisContext;
-import edu.baylor.ecs.ciljssa.model.ClassOrInterface;
-import edu.baylor.ecs.ciljssa.wrappers.ComponentWrapper;
+import edu.baylor.ecs.ciljssa.wrappers.IComponent;
+import lombok.NoArgsConstructor;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class AnalysisContextBuilder {
 
     private CompilationUnit unit;
-
     private File sourceFile;
     private String fileName;
     private String filePath;
     private List<String> classNames;
     private List<String> interfaceNames;
     private boolean succeeded = false;
-    private List<ComponentWrapper> classesAndInterfaces;
+    private List<IComponent> classesAndInterfaces;
     private List<ClassOrInterfaceDeclaration> classOrInterfaceDeclarations;
 
-    public AnalysisContextBuilder(File file) {
-        this.sourceFile = file;
-    }
-
     public AnalysisContext build() {
-        this.unit = generateCompilationUnit();
-        this.classOrInterfaceDeclarations = generateClassOrInterfaceDeclarations();
-        this.classesAndInterfaces = generateClassesAndInterfaces();
-        this.interfaceNames = createInterfaceNames();
-        this.classNames = createClassNames();
-
         AnalysisContext context = new AnalysisContext();
-
         context.setClassOrInterfaceDeclarations(this.classOrInterfaceDeclarations);
         context.setClassesAndInterfaces(this.classesAndInterfaces); // Must be run first
-        context.setSucceeded(this.classesAndInterfaces.size() != 0);
+        context.setSucceeded(this.succeeded);
         context.setInterfaceNames(this.interfaceNames);
-        context.setFilePath(this.sourceFile.getPath());
-        context.setFileName(this.sourceFile.getName());
+        context.setFilePath(this.filePath);
+        context.setFileName(this.fileName);
         context.setClassNames(this.classNames);
         context.setSourceFile(this.sourceFile);
         context.setAnalysisUnit(this.unit);
-        return new AnalysisContext();
+        return context;
+    }
+
+    public AnalysisContextBuilder withClassNames(List<String> classNames) {
+        this.classNames = classNames;
+        return this;
+    }
+
+    public AnalysisContextBuilder withInterfaceNames(List<String> interfaceNames) {
+        this.interfaceNames = interfaceNames;
+        return this;
+    }
+
+    public AnalysisContextBuilder withCompilationUnit(CompilationUnit unit) {
+        this.unit = unit;
+        return this;
+    }
+
+    public AnalysisContextBuilder isSucceeded() {
+        this.succeeded = true;
+        return this;
+    }
+
+    public AnalysisContextBuilder withClassesAndInterfaces(List<IComponent> cls) {
+        this.classesAndInterfaces = cls;
+        return this;
+    }
+
+    public AnalysisContextBuilder withClassOrInterfaceDeclarations(List<ClassOrInterfaceDeclaration> cls) {
+        this.classOrInterfaceDeclarations = cls;
+        return this;
+    }
+
+    public AnalysisContextBuilder withSourceFile(File source) {
+        this.sourceFile = source;
+        return this;
     }
 
     public AnalysisContextBuilder withFilePath(String fp) {
@@ -59,67 +79,6 @@ public class AnalysisContextBuilder {
     public AnalysisContextBuilder withFileName(String fn) {
         this.fileName = fn;
         return this;
-    }
-
-    private List<String> createClassNames() {
-        List<String> output = new ArrayList<>(); // TODO: Best Practice
-        for (ComponentWrapper classesAndInterface : this.classesAndInterfaces) {
-            if (classesAndInterface.getClassOrInterface().equals(ClassOrInterface.CLASS)) {
-                output.add(classesAndInterface.getInstanceName());
-            }
-        }
-        return output;
-    }
-
-    private List<String> createInterfaceNames() {
-        List<String> output = new ArrayList<>();
-        for (ComponentWrapper classesAndInterface : this.classesAndInterfaces) {
-            if (classesAndInterface.getClassOrInterface().equals(ClassOrInterface.INTERFACE)) {
-                output.add(classesAndInterface.getInstanceName());
-            }
-        }
-        return output;
-    }
-
-    private List<ComponentWrapper> generateClassesAndInterfaces() {
-        List<ClassOrInterfaceDeclaration> classOrInterfaces = new ArrayList<>();
-        this.unit.accept(new VoidVisitorAdapter<Object>() {
-            @Override
-            public void visit(ClassOrInterfaceDeclaration n, Object arg) {
-                super.visit(n, arg);
-                classOrInterfaces.add(n);
-            }
-        }, null);
-        List<ComponentWrapper> clsList = new ArrayList<>();
-        for(ClassOrInterfaceDeclaration cls : classOrInterfaces) {
-            ComponentBuilder builder = new ComponentBuilder(cls);
-            clsList.add(builder.build());
-        }
-        this.classOrInterfaceDeclarations = classOrInterfaces;
-        return clsList;
-    }
-
-    private CompilationUnit generateCompilationUnit() {
-        JavaParser parser = new JavaParser();
-        CompilationUnit unit = null;
-        try {
-            unit = parser.parse(sourceFile).getResult().get();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace(); // TODO: Logger
-        }
-        return unit;
-    }
-
-    private List<ClassOrInterfaceDeclaration> generateClassOrInterfaceDeclarations() {
-        List<ClassOrInterfaceDeclaration> output = new ArrayList<>();
-        unit.accept(new VoidVisitorAdapter<Object>(){
-            @Override
-            public void visit(ClassOrInterfaceDeclaration n, Object arg){
-                super.visit(n, arg);
-                output.add(n);
-            }
-        }, null);
-        return output;
     }
 
 }

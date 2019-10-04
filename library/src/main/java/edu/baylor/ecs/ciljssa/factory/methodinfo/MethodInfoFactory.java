@@ -1,4 +1,4 @@
-package edu.baylor.ecs.ciljssa.factory.impl;
+package edu.baylor.ecs.ciljssa.factory.methodinfo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.javaparser.ast.body.MethodDeclaration;
@@ -11,36 +11,30 @@ import edu.baylor.ecs.ciljssa.model.MethodParam;
 import edu.baylor.ecs.ciljssa.wrappers.AnnotationWrapper;
 import edu.baylor.ecs.ciljssa.wrappers.IComponent;
 import edu.baylor.ecs.ciljssa.wrappers.MethodInfoWrapper;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class MethodInfoFactory {
 
-    private MethodDeclaration methodDeclaration;
-    private IComponent parentComponent;
-
-    public MethodInfoFactory(MethodDeclaration d, IComponent parent) {
-        this.methodDeclaration = d;
-        this.parentComponent = parent;
-    }
-
-    public MethodInfoWrapper createMethodInfoWrapper() {
-        MethodInfoWrapper output = new MethodInfoBuilder().withParentComponent(this.parentComponent)
-                .withAccessor(this.methodDeclaration.getAccessSpecifier().asString())
-                .withAnnotations(generateAnnotations())
-                .withMethodName(this.methodDeclaration.getNameAsString())
-                .withMethodParams(generateMethodParams())
-                .withSubMethods(generateSubmethods())
-                .withReturnType(this.methodDeclaration.getTypeAsString())
-                .asStaticMethod(this.methodDeclaration.isStatic())
+    public MethodInfoWrapper createMethodInfoWrapper(MethodDeclaration dec, IComponent parent) {
+        MethodInfoWrapper output = new MethodInfoBuilder().withParentComponent(parent)
+                .withAccessor(dec.getAccessSpecifier().asString())
+                .withAnnotations(generateAnnotations(dec))
+                .withMethodParams(generateMethodParams(dec))
+                .withSubMethods(generateSubmethods(dec))
+                .withMethodName(dec.getNameAsString())
+                .withReturnType(dec.getTypeAsString())
+                .asStaticMethod(dec.isStatic())
                 .build();
         return output;
     }
 
-    private List<MethodParam> generateMethodParams() {
+    private List<MethodParam> generateMethodParams(MethodDeclaration dec) {
         List<MethodParam> output = new ArrayList<>();
-        List<Parameter> list = this.methodDeclaration.getParameters();
+        List<Parameter> list = dec.getParameters();
         for (Parameter p : list) {
 //            if (p.getAnnotations().size() > 0) {
 //               TODO: Investigate this...
@@ -56,9 +50,9 @@ public class MethodInfoFactory {
         return output;
     }
 
-    private List<AnnotationWrapper> generateAnnotations() {
+    private List<AnnotationWrapper> generateAnnotations(MethodDeclaration dec) {
         List<AnnotationWrapper> annotations = new ArrayList<>();
-        for (AnnotationExpr exp : this.methodDeclaration.getAnnotations()) {
+        for (AnnotationExpr exp : dec.getAnnotations()) {
             AnnotationWrapper y = new AnnotationWrapper();
             y.setAnnotation(exp);
             y.setAnnotationMetaModel(exp.getMetaModel().toString());
@@ -69,9 +63,9 @@ public class MethodInfoFactory {
         return annotations;
     }
 
-    private List<MethodInfoWrapper> generateSubmethods() {
+    private List<MethodInfoWrapper> generateSubmethods(MethodDeclaration dec) {
         List<MethodInfoWrapper> subCalls = new ArrayList<>();
-        this.methodDeclaration.accept(new VoidVisitorAdapter<Object>() {
+        dec.accept(new VoidVisitorAdapter<Object>() {
             @Override
             public void visit(MethodCallExpr n, Object arg) {
                 super.visit(n, arg);
