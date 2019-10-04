@@ -62,7 +62,7 @@ public class AnalysisContextBuilder {
     }
 
     private List<String> createClassNames() {
-        List<String> output = new ArrayList<>(); //TODO: Best Practice
+        List<String> output = new ArrayList<>(); // TODO: Best Practice
         for (ComponentWrapper classesAndInterface : this.classesAndInterfaces) {
             if (classesAndInterface.getClassOrInterface().equals(ClassOrInterface.CLASS)) {
                 output.add(classesAndInterface.getInstanceName());

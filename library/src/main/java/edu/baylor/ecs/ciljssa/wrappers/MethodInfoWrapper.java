@@ -16,7 +16,7 @@ import java.util.List;
 public class MethodInfoWrapper {
 
     @JsonIgnore
-    private ComponentWrapper parentComponent;
+    private IComponent parentComponent;
 
     @JsonProperty(value = "method_name")
     private String methodName;

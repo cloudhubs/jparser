@@ -2,9 +2,6 @@ package edu.baylor.ecs.ciljssa.app.response;
 
 import edu.baylor.ecs.ciljssa.app.context.AnalysisResultsContext;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement
 public class BadResponse extends BaseResponse {
 
     public BadResponse() {

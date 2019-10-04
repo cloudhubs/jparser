@@ -64,22 +64,6 @@ public class SourceSecController {
     }
 
     @PostMapping(value = "/analyze/directory")
-    public @ResponseBody BaseResponse getAllInDirectory(@RequestBody RequestContext requestContext) {
-        List<AnalysisContext> contexts = new ArrayList<>();
-        AnalysisResultsContext result = new AnalysisResultsContext();
-        try {
-            List<File> files = directoryService.getFilesFromDirectory(requestContext.getFilepath());
-            contexts = retreivalService.retrieveContextFromFiles(files, requestContext);
-        } catch (NotDirectoryException e) {
-            System.out.println("NotDirectoryException handled in SourceSecController.");
-        }
-        result.setContexts(contexts);
-        result.setPath(requestContext.getFilepath());
-        result.setRequest(requestContext);
-        return handleResult(result, ResponseCode.OK);
-    }
-
-    @PostMapping(value = "/analyze/directory/smart")
     public @ResponseBody BaseResponse getAllInDirectorySmart(@RequestBody RequestContext requestContext) {
         List<AnalysisContext> contexts = new ArrayList<>();
         AnalysisResultsContext result = new AnalysisResultsContext();

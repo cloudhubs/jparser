@@ -3,9 +3,7 @@ package edu.baylor.ecs.ciljssa.app.response;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.baylor.ecs.ciljssa.app.context.AnalysisResultsContext;
 
-import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement
 public class OkResponse extends BaseResponse {
 
     @JsonProperty(value = "results")

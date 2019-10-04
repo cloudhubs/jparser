@@ -7,12 +7,12 @@ import edu.baylor.ecs.ciljssa.model.ClassOrInterface;
 
 import java.util.List;
 
-public interface ComponentWrapper {
+public interface IComponent {
 
     ClassOrInterfaceDeclaration getCls();
     void setCls(ClassOrInterfaceDeclaration cls);
-    CompilationUnit getAnalysisUnit();
-    void setAnalysisUnit(CompilationUnit unit);
+//    CompilationUnit getAnalysisUnit();
+//    void setAnalysisUnit(CompilationUnit unit);
     List<MethodDeclaration> getMethodDeclarations();
     void setMethodDeclarations(List<MethodDeclaration> list);
     ClassOrInterface getClassOrInterface();

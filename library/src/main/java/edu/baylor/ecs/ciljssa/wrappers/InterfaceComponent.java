@@ -13,7 +13,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class InterfaceWrapper implements ComponentWrapper {
+public class InterfaceComponent implements IComponent {
 
     @JsonIgnore
     private ClassOrInterfaceDeclaration cls;
@@ -34,10 +34,10 @@ public class InterfaceWrapper implements ComponentWrapper {
         return cls;
     }
 
-    @Override
-    public CompilationUnit getAnalysisUnit() {
-        return analysisUnit;
-    }
+//    @Override
+//    public CompilationUnit getAnalysisUnit() {
+//        return analysisUnit;
+//    }
 
     @Override
     public List<MethodDeclaration> getMethodDeclarations() {

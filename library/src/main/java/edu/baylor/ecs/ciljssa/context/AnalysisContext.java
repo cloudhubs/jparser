@@ -1,12 +1,10 @@
 package edu.baylor.ecs.ciljssa.context;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import edu.baylor.ecs.ciljssa.wrappers.ClassInterfaceWrapper;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.Data;
 
-import java.util.Arrays;
 import java.util.stream.Collectors;
 //TODO: For friday, what would be good:
 //      - Annotations all information regarding them in result
