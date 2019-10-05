@@ -1,6 +1,7 @@
 package edu.baylor.ecs.ciljssa.factory.methodinfo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.expr.AnnotationExpr;
@@ -28,6 +29,18 @@ public class MethodInfoFactory {
                 .withMethodName(dec.getNameAsString())
                 .withReturnType(dec.getTypeAsString())
                 .asStaticMethod(dec.isStatic())
+                .build();
+        return output;
+    }
+
+    public MethodInfoWrapper createMethodInfoWrapperFromConstructor(ConstructorDeclaration x, IComponent parent) {
+        MethodInfoWrapper output = new MethodInfoBuilder().withParentComponent(parent)
+                .withAccessor(x.getAccessSpecifier().asString())
+                .withAnnotations(generateAnnotations(x.asMethodDeclaration()))
+                .withMethodParams(generateMethodParams(x.asMethodDeclaration()))
+                .withSubMethods(generateSubmethods(x.asMethodDeclaration()))
+                .withMethodName(x.getNameAsString())
+                .asStaticMethod(x.isStatic())
                 .build();
         return output;
     }
@@ -74,8 +87,8 @@ public class MethodInfoFactory {
         }, null);
         return subCalls;
     }
-
     //TODO: Resolve this!!!
+
     private MethodInfoWrapper createMethodInfoWrapperFromExpr(MethodCallExpr call) {
         MethodInfoWrapper out = new MethodInfoWrapper();
         List<MethodParam> arguments = new ArrayList<>();
@@ -89,5 +102,4 @@ public class MethodInfoFactory {
         out.setMethodParams(arguments);
         return out;
     }
-
 }

@@ -19,12 +19,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@NoArgsConstructor
 @Service
 public class RetreivalService {
 
-    @Autowired
     private AnalysisContextFactory factory;
+
+    public RetreivalService() {
+        this.factory = new AnalysisContextFactory();
+    }
 
     public AnalysisContext retrieveContextFromPath(RequestContext requestContext) {
         File file = new File(requestContext.getFilepath());

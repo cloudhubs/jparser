@@ -1,5 +1,6 @@
 package edu.baylor.ecs.ciljssa.factory.component;
 
+import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
@@ -27,16 +28,17 @@ public abstract class AbstractComponentFactory implements IComponentFactory {
         return mds;
     }
 
+    //TODO: See old commits
     protected List<MethodInfoWrapper> createConstructors(ClassOrInterfaceDeclaration cls, IComponent parent) {
         List<MethodInfoWrapper> mds = new ArrayList<>();
         MethodInfoFactory factory = new MethodInfoFactory();
-        if (!cls.isInterface()) {
-            List<ConstructorDeclaration> consts = cls.getConstructors();
+        /*if (!cls.isInterface()) {
+            List<ConstructorDeclaration> consts = cls.getConstructors(); // TODO: Does not work with constructors
             consts.forEach(x -> {
-                MethodInfoWrapper wrap = factory.createMethodInfoWrapper(x.asMethodDeclaration(), parent);
+                MethodInfoWrapper wrap = factory.createMethodInfoWrapperFromConstructor(x, parent);
                 mds.add(wrap);
             });
-        }
+        }*/
         return mds;
     }
 
