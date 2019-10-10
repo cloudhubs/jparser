@@ -1,6 +1,6 @@
 package edu.baylor.ecs.ciljssa.factory.methodinfo;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.github.javaparser.ast.DataKey;
 import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
@@ -8,10 +8,10 @@ import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import edu.baylor.ecs.ciljssa.builder.MethodInfoBuilder;
+import edu.baylor.ecs.ciljssa.component.IContainerComponent;
 import edu.baylor.ecs.ciljssa.model.MethodParam;
-import edu.baylor.ecs.ciljssa.wrappers.AnnotationWrapper;
-import edu.baylor.ecs.ciljssa.wrappers.IComponent;
-import edu.baylor.ecs.ciljssa.wrappers.MethodInfoWrapper;
+import edu.baylor.ecs.ciljssa.component.impl.AnnotationComponent;
+import edu.baylor.ecs.ciljssa.component.impl.MethodInfoComponent;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
@@ -20,8 +20,8 @@ import java.util.List;
 @NoArgsConstructor
 public class MethodInfoFactory {
 
-    public MethodInfoWrapper createMethodInfoWrapper(MethodDeclaration dec, IComponent parent) {
-        MethodInfoWrapper output = new MethodInfoBuilder().withParentComponent(parent)
+    public MethodInfoComponent createMethodInfoWrapper(MethodDeclaration dec, IContainerComponent parent) {
+        MethodInfoComponent output = new MethodInfoBuilder().withParentComponent(parent)
                 .withAccessor(dec.getAccessSpecifier().asString())
                 .withAnnotations(generateAnnotations(dec))
                 .withMethodParams(generateMethodParams(dec))
@@ -33,8 +33,8 @@ public class MethodInfoFactory {
         return output;
     }
 
-    public MethodInfoWrapper createMethodInfoWrapperFromConstructor(ConstructorDeclaration x, IComponent parent) {
-        MethodInfoWrapper output = new MethodInfoBuilder().withParentComponent(parent)
+    public MethodInfoComponent createMethodInfoWrapperFromConstructor(ConstructorDeclaration x, IContainerComponent parent) {
+        MethodInfoComponent output = new MethodInfoBuilder().withParentComponent(parent)
                 .withAccessor(x.getAccessSpecifier().asString())
                 .withAnnotations(generateAnnotations(x.asMethodDeclaration()))
                 .withMethodParams(generateMethodParams(x.asMethodDeclaration()))
@@ -63,10 +63,10 @@ public class MethodInfoFactory {
         return output;
     }
 
-    private List<AnnotationWrapper> generateAnnotations(MethodDeclaration dec) {
-        List<AnnotationWrapper> annotations = new ArrayList<>();
+    private List<AnnotationComponent> generateAnnotations(MethodDeclaration dec) {
+        List<AnnotationComponent> annotations = new ArrayList<>();
         for (AnnotationExpr exp : dec.getAnnotations()) {
-            AnnotationWrapper y = new AnnotationWrapper();
+            AnnotationComponent y = new AnnotationComponent();
             y.setAnnotation(exp);
             y.setAnnotationMetaModel(exp.getMetaModel().toString());
             y.setAsString(exp.getName().asString());
@@ -76,8 +76,8 @@ public class MethodInfoFactory {
         return annotations;
     }
 
-    private List<MethodInfoWrapper> generateSubmethods(MethodDeclaration dec) {
-        List<MethodInfoWrapper> subCalls = new ArrayList<>();
+    private List<MethodInfoComponent> generateSubmethods(MethodDeclaration dec) {
+        List<MethodInfoComponent> subCalls = new ArrayList<>();
         dec.accept(new VoidVisitorAdapter<Object>() {
             @Override
             public void visit(MethodCallExpr n, Object arg) {
@@ -87,15 +87,14 @@ public class MethodInfoFactory {
         }, null);
         return subCalls;
     }
-    //TODO: Resolve this!!!
 
-    private MethodInfoWrapper createMethodInfoWrapperFromExpr(MethodCallExpr call) {
-        MethodInfoWrapper out = new MethodInfoWrapper();
+    private MethodInfoComponent createMethodInfoWrapperFromExpr(MethodCallExpr call) {
+        MethodInfoComponent out = new MethodInfoComponent();
         List<MethodParam> arguments = new ArrayList<>();
         call.getArguments().stream().forEach(x -> {
             MethodParam param = new MethodParam();
-            param.setParameterName(x.asNameExpr().getName().getIdentifier());
-            param.setParameterType(x.asNameExpr().calculateResolvedType().toString());
+            //param.setParameterName(x.asNameExpr().getName().getIdentifier());
+            //param.setParameterType(x.asNameExpr().calculateResolvedType().toString());
             arguments.add(new MethodParam());
         });
         out.setMethodName(call.getNameAsExpression().getName().toString());

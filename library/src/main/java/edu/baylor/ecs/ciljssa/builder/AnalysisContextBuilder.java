@@ -3,7 +3,7 @@ package edu.baylor.ecs.ciljssa.builder;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import edu.baylor.ecs.ciljssa.context.AnalysisContext;
-import edu.baylor.ecs.ciljssa.wrappers.IComponent;
+import edu.baylor.ecs.ciljssa.component.IComponent;
 import lombok.NoArgsConstructor;
 
 import java.io.File;

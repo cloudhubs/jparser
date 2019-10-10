@@ -25,7 +25,6 @@ import java.util.List;
 @RestController
 public class SourceSecController {
 
-
     private AnalysisService analysisService;
     private RetreivalService retreivalService;
     private DirectoryService directoryService;

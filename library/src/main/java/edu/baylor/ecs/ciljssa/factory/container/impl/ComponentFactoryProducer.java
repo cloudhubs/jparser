@@ -1,6 +1,6 @@
-package edu.baylor.ecs.ciljssa.factory.component.impl;
+package edu.baylor.ecs.ciljssa.factory.container.impl;
 
-import edu.baylor.ecs.ciljssa.factory.component.AbstractComponentFactory;
+import edu.baylor.ecs.ciljssa.factory.container.AbstractComponentFactory;
 import edu.baylor.ecs.ciljssa.model.ClassOrInterface;
 
 public class ComponentFactoryProducer {

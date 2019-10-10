@@ -1,4 +1,4 @@
-package edu.baylor.ecs.ciljssa.wrappers;
+package edu.baylor.ecs.ciljssa.component.impl;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -7,16 +7,22 @@ import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.expr.MarkerAnnotationExpr;
 import com.github.javaparser.ast.expr.NormalAnnotationExpr;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
+import edu.baylor.ecs.ciljssa.component.IComponent;
+import edu.baylor.ecs.ciljssa.component.InstanceType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
 @Data
+@NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class AnnotationWrapper {
+public class AnnotationComponent implements IComponent {
 
     @JsonIgnore
     private AnnotationExpr annotation;
+    @JsonIgnore
+    private final InstanceType instanceType = InstanceType.ANNOTATIONCOMPONENT;
+    @JsonIgnore
+    private IComponent parentComponent;
 
     @JsonProperty(value = "name")
     private String asString;
@@ -47,6 +53,26 @@ public class AnnotationWrapper {
         }
     }
 
+    @Override
+    public String getPathToComponent() {
+        return parentComponent.getPathToComponent();
+    }
+
+    @Override
+    public String getSourceAsString() {
+        return annotation.toString();
+    }
+
+    @Override
+    public String getInstanceName() {
+        return annotation.getNameAsString();
+    }
+
+    @Override
+    public InstanceType getInstanceType() {
+        return instanceType;
+    }
 }
+
 
 

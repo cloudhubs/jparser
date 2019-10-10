@@ -1,27 +1,33 @@
-package edu.baylor.ecs.ciljssa.factory.component;
+package edu.baylor.ecs.ciljssa.factory.container;
 
-import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.AnnotationExpr;
+import edu.baylor.ecs.ciljssa.component.IContainerComponent;
 import edu.baylor.ecs.ciljssa.factory.methodinfo.MethodInfoFactory;
-import edu.baylor.ecs.ciljssa.wrappers.AnnotationWrapper;
-import edu.baylor.ecs.ciljssa.wrappers.IComponent;
-import edu.baylor.ecs.ciljssa.wrappers.MethodInfoWrapper;
+import edu.baylor.ecs.ciljssa.component.impl.AnnotationComponent;
+import edu.baylor.ecs.ciljssa.component.IComponent;
+import edu.baylor.ecs.ciljssa.component.impl.MethodInfoComponent;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractComponentFactory implements IComponentFactory {
 
-    protected List<MethodInfoWrapper> createMethods(ClassOrInterfaceDeclaration cls, IComponent parent) {
-        List<MethodInfoWrapper> mds = new ArrayList<>();
+    private Long idEnumerator = 0l;
+
+    protected Long getId() {
+        idEnumerator++;
+        return idEnumerator;
+    }
+
+    protected List<MethodInfoComponent> createMethods(ClassOrInterfaceDeclaration cls, IContainerComponent parent) {
+        List<MethodInfoComponent> mds = new ArrayList<>();
         MethodInfoFactory factory = new MethodInfoFactory();
         if (!cls.isInterface()) {
             List<MethodDeclaration> consts = cls.getMethods();
             consts.forEach(x -> {
-                MethodInfoWrapper wrap = factory.createMethodInfoWrapper(x, parent);
+                MethodInfoComponent wrap = factory.createMethodInfoWrapper(x, parent);
                 mds.add(wrap);
             });
         }
@@ -29,8 +35,8 @@ public abstract class AbstractComponentFactory implements IComponentFactory {
     }
 
     //TODO: See old commits
-    protected List<MethodInfoWrapper> createConstructors(ClassOrInterfaceDeclaration cls, IComponent parent) {
-        List<MethodInfoWrapper> mds = new ArrayList<>();
+    protected List<MethodInfoComponent> createConstructors(ClassOrInterfaceDeclaration cls, IComponent parent) {
+        List<MethodInfoComponent> mds = new ArrayList<>();
         MethodInfoFactory factory = new MethodInfoFactory();
         /*if (!cls.isInterface()) {
             List<ConstructorDeclaration> consts = cls.getConstructors(); // TODO: Does not work with constructors
@@ -42,10 +48,10 @@ public abstract class AbstractComponentFactory implements IComponentFactory {
         return mds;
     }
 
-    protected List<AnnotationWrapper> initAnnotations(ClassOrInterfaceDeclaration cls) {
-        List<AnnotationWrapper> annotations = new ArrayList<>();
+    protected List<AnnotationComponent> initAnnotations(ClassOrInterfaceDeclaration cls) {
+        List<AnnotationComponent> annotations = new ArrayList<>();
         for (AnnotationExpr exp : cls.getAnnotations()) {
-            AnnotationWrapper y = new AnnotationWrapper();
+            AnnotationComponent y = new AnnotationComponent();
             y.setAnnotation(exp);
             y.setAnnotationMetaModel(exp.getMetaModel().toString());
             y.setAsString(exp.getName().asString());

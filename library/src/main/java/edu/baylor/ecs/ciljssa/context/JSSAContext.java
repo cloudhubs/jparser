@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import edu.baylor.ecs.ciljssa.wrappers.IComponent;
+import edu.baylor.ecs.ciljssa.component.IComponent;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

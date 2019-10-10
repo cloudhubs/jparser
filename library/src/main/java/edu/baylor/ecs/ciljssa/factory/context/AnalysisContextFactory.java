@@ -6,10 +6,10 @@ import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import edu.baylor.ecs.ciljssa.builder.AnalysisContextBuilder;
 import edu.baylor.ecs.ciljssa.context.AnalysisContext;
-import edu.baylor.ecs.ciljssa.factory.component.AbstractComponentFactory;
-import edu.baylor.ecs.ciljssa.factory.component.impl.ComponentFactoryProducer;
+import edu.baylor.ecs.ciljssa.factory.container.AbstractComponentFactory;
+import edu.baylor.ecs.ciljssa.factory.container.impl.ComponentFactoryProducer;
 import edu.baylor.ecs.ciljssa.model.ClassOrInterface;
-import edu.baylor.ecs.ciljssa.wrappers.IComponent;
+import edu.baylor.ecs.ciljssa.component.IComponent;
 import lombok.NoArgsConstructor;
 
 import java.io.File;
@@ -31,6 +31,7 @@ public class AnalysisContextFactory {
                 .withClassesAndInterfaces(createClassesAndInterfaces(unit))
                 .withInterfaceNames(createInterfaceNames(cls))
                 .withClassOrInterfaceDeclarations(cls)
+                .isSucceeded()
                 .build();
         return context;
     }
