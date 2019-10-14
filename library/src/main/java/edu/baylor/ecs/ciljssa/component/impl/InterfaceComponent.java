@@ -7,8 +7,11 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import edu.baylor.ecs.ciljssa.component.ClassOrInterfaceComponent;
+import edu.baylor.ecs.ciljssa.component.IComponent;
 import edu.baylor.ecs.ciljssa.component.IContainerComponent;
-import edu.baylor.ecs.ciljssa.component.InstanceType;
+import edu.baylor.ecs.ciljssa.model.ContainerStereotype;
+import edu.baylor.ecs.ciljssa.model.InstanceType;
 import edu.baylor.ecs.ciljssa.model.ClassOrInterface;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,45 +19,15 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Data
-@NoArgsConstructor
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class InterfaceComponent implements IContainerComponent {
+public class InterfaceComponent extends ClassOrInterfaceComponent implements IContainerComponent {
 
-    private Long id;
+    public InterfaceComponent() {
+        this.classOrInterface = ClassOrInterface.INTERFACE;
+    }
 
-    @JsonIgnore
-    private ClassOrInterfaceDeclaration cls;
-    @JsonIgnore
-    private CompilationUnit analysisUnit;
-    @JsonIgnore
-    private List<MethodDeclaration> methodDeclarations;
-    @JsonIgnore
-    private String rawSource;
-    @JsonIgnore
-    private final InstanceType instanceType = InstanceType.INTERFACECOMPONENT;
-
-    @JsonProperty
-    private String path;
-    @JsonProperty(value = "declaration_type")
-    private ClassOrInterface classOrInterface;
-    @JsonProperty(value = "name")
-    private String instanceName;
-    private List<MethodInfoComponent> methods;
-    private List<AnnotationComponent> annotations;
-
-    @Override
     public ClassOrInterfaceDeclaration getCls() {
-        return cls;
-    }
-
-    @Override
-    public List<MethodDeclaration> getMethodDeclarations() {
-        return methodDeclarations;
-    }
-
-    @Override
-    public ClassOrInterface getClassOrInterface() {
-        return ClassOrInterface.INTERFACE;
+        return this.cls;
     }
 
     @Override
@@ -63,22 +36,32 @@ public class InterfaceComponent implements IContainerComponent {
     }
 
     @Override
+    public void setPathToComponent(String path) {
+        this.path = path;
+    }
+
+    @Override
     public String getPackageName() {
-        if (analysisUnit.getPackageDeclaration().isPresent()) {
-            return analysisUnit.getPackageDeclaration().get().getNameAsString();
+        if (this.analysisUnit.getPackageDeclaration().isPresent()) {
+            return this.analysisUnit.getPackageDeclaration().get().getNameAsString();
         } else {
             return "NA";
         }
     }
 
     @Override
-    public String getSourceAsString() {
-        return this.rawSource;
+    public void setPackageName(String name) {
+        this.packageName = name;
     }
 
     @Override
     public String getInstanceName() {
-        return instanceName;
+        return this.instanceName;
+    }
+
+    @Override
+    public void setInstanceName(String name) {
+        this.instanceName = name;
     }
 
     @Override
@@ -87,8 +70,72 @@ public class InterfaceComponent implements IContainerComponent {
     }
 
     @Override
-    public List<MethodInfoComponent> getMethods() {
-        return methods;
+    public void setInstanceType(InstanceType type) {
+        this.instanceType = type;
     }
 
+    @Override
+    public IComponent getParentComponent() {
+        return this.parentComponent;
+    }
+
+    @Override
+    public void setParentComponent(IComponent component) {
+        this.parentComponent = component;
+    }
+
+    @Override
+    public ContainerStereotype getContainerStereotype() {
+        return stereotype;
+    }
+
+    @Override
+    public void setContainerStereotype(ContainerStereotype stereotype) {
+        this.stereotype = stereotype;
+    }
+
+    @Override
+    public List<IComponent> getSubComponents() {
+        return null; // Do nothing
+    }
+
+    @Override
+    @Deprecated
+    public void setSubComponents(List<IComponent> subComponents) {
+        this.metaSubComponent = (MetaSubComponent) subComponents.get(0);
+    }
+
+    public void setSubComponents(MetaSubComponent comp) {
+        this.metaSubComponent = comp;
+    }
+
+    @Override
+    public CompilationUnit getCompilationUnit() {
+        return this.analysisUnit;
+    }
+
+    @Override
+    public void setCompilationUnit(CompilationUnit unit) {
+        this.analysisUnit = unit;
+    }
+
+    @Override
+    public List<MethodDeclaration> getMethodDeclarations() {
+        return this.methodDeclarations;
+    }
+
+    @Override
+    public void setMethodDeclarations(List<MethodDeclaration> list) {
+        this.methodDeclarations = list;
+    }
+
+    @Override
+    public List<MethodInfoComponent> getMethods() {
+        return this.methods;
+    }
+
+    @Override
+    public void setMethods(List<MethodInfoComponent> list) {
+        this.methods = list;
+    }
 }

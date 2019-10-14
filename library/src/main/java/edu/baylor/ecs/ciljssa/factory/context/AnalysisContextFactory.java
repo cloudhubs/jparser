@@ -20,13 +20,17 @@ import java.util.List;
 @NoArgsConstructor
 public class AnalysisContextFactory {
 
+    /**
+     * TODO: Create modules via module factory, inside module factory create classes, then methods etc.
+     *       Then, populate module and system specific fields upward.
+     * @param file
+     * @return
+     */
     public AnalysisContext createAnalysisContextFromFile(File file) {
         CompilationUnit unit = createCompilationUnit(file);
         List<ClassOrInterfaceDeclaration> cls = createClassOrInterfaceDeclarations(unit);
         AnalysisContext context = new AnalysisContextBuilder()
                 .withSourceFile(file)
-                .withFileName(file.getName())
-                .withFilePath(file.getPath())
                 .withClassNames(createClassNames(cls))
                 .withClassesAndInterfaces(createClassesAndInterfaces(unit))
                 .withInterfaceNames(createInterfaceNames(cls))

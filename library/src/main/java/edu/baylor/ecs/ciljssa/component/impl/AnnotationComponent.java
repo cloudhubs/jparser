@@ -8,7 +8,7 @@ import com.github.javaparser.ast.expr.MarkerAnnotationExpr;
 import com.github.javaparser.ast.expr.NormalAnnotationExpr;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import edu.baylor.ecs.ciljssa.component.IComponent;
-import edu.baylor.ecs.ciljssa.component.InstanceType;
+import edu.baylor.ecs.ciljssa.model.InstanceType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -20,7 +20,7 @@ public class AnnotationComponent implements IComponent {
     @JsonIgnore
     private AnnotationExpr annotation;
     @JsonIgnore
-    private final InstanceType instanceType = InstanceType.ANNOTATIONCOMPONENT;
+    private InstanceType instanceType = InstanceType.ANNOTATIONCOMPONENT;
     @JsonIgnore
     private IComponent parentComponent;
 
@@ -31,9 +31,15 @@ public class AnnotationComponent implements IComponent {
     private String metaModelFieldName;
     private String packageName;
     private String allowedRoles; // Only valid if is @AllowedRoles or similar annotation.
+    private String pathToComponent;
+    private String instanceName;
 
     public void setAsString(String inp) {
         this.asString = (inp.startsWith("@") ? "" : "@") + inp;
+    }
+
+    public String getAsString() {
+        return this.asString;
     }
 
     /**
@@ -59,8 +65,8 @@ public class AnnotationComponent implements IComponent {
     }
 
     @Override
-    public String getSourceAsString() {
-        return annotation.toString();
+    public void setPathToComponent(String path) {
+        this.pathToComponent = path;
     }
 
     @Override
@@ -69,8 +75,18 @@ public class AnnotationComponent implements IComponent {
     }
 
     @Override
+    public void setInstanceName(String name) {
+        this.instanceName = name;
+    }
+
+    @Override
     public InstanceType getInstanceType() {
         return instanceType;
+    }
+
+    @Override
+    public void setInstanceType(InstanceType type) {
+        this.instanceType = type;
     }
 }
 

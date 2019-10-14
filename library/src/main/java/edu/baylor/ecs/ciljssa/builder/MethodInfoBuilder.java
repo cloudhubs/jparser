@@ -15,6 +15,7 @@ public class MethodInfoBuilder {
     private String methodName;
     private String returnType;
     private String accessor;
+    private String rawSource;
     private boolean staticMethod;
     private List<MethodParam> methodParams;
     private List<AnnotationComponent> annotations; // Method annotations
@@ -30,6 +31,8 @@ public class MethodInfoBuilder {
         output.setMethodParams(this.methodParams);
         output.setSubMethods(this.subMethods);
         output.setReturnType(this.returnType);
+        output.setRawSource(this.rawSource);
+        output.setStaticMethod(staticMethod);
         return output;
     }
 
@@ -70,6 +73,11 @@ public class MethodInfoBuilder {
 
     public MethodInfoBuilder withParentComponent(IContainerComponent wrap) {
         this.parentComponent = wrap;
+        return this;
+    }
+
+    public MethodInfoBuilder withRawSource(String source) {
+        this.rawSource = source;
         return this;
     }
 

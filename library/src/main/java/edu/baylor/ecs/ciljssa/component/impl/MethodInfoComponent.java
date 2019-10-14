@@ -2,27 +2,25 @@ package edu.baylor.ecs.ciljssa.component.impl;
 
 import com.fasterxml.jackson.annotation.*;
 import edu.baylor.ecs.ciljssa.component.IComponent;
-import edu.baylor.ecs.ciljssa.component.IContainerComponent;
-import edu.baylor.ecs.ciljssa.component.InstanceType;
+import edu.baylor.ecs.ciljssa.model.InstanceType;
 import edu.baylor.ecs.ciljssa.model.MethodParam;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
-@NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class MethodInfoComponent implements IComponent {
 
     private Long id;
 
-    private IContainerComponent parentComponent;
+    private IComponent parentComponent;
     @JsonIgnore
     private String rawSource;
     @JsonIgnore
-    private final InstanceType instanceType = InstanceType.METHODCOMPONENT;
+    private InstanceType instanceType;
+    private String path;
 
     private String accessor;
     @JsonProperty(value = "method_name")
@@ -36,10 +34,21 @@ public class MethodInfoComponent implements IComponent {
     @JsonProperty(value = "subroutines")
     private List<MethodInfoComponent> subMethods;
     private List<AnnotationComponent> annotations;
+    @JsonProperty(value = "package_name")
+    private String packageName;
+
+    public MethodInfoComponent() {
+        this.instanceType = InstanceType.METHODCOMPONENT;
+    }
 
     @Override
     public String getPathToComponent() {
         return parentComponent.getPathToComponent();
+    }
+
+    @Override
+    public void setPathToComponent(String path) {
+        this.path = path + "::MethodDeclaration::" + this.methodName;
     }
 
     @Override
@@ -48,6 +57,10 @@ public class MethodInfoComponent implements IComponent {
     }
 
     @Override
+    public void setPackageName(String name) {
+        this.packageName = name;
+    }
+
     public String getSourceAsString() {
         return rawSource;
     }
@@ -58,7 +71,22 @@ public class MethodInfoComponent implements IComponent {
     }
 
     @Override
+    public void setInstanceName(String name) {
+        this.methodName = name;
+    }
+
+    @Override
     public InstanceType getInstanceType() {
         return this.instanceType;
+    }
+
+    @Override
+    public void setInstanceType(InstanceType type) {
+        this.instanceType = type;
+    }
+
+    @Override
+    public void setParentComponent(IComponent component) {
+        this.parentComponent = component;
     }
 }
