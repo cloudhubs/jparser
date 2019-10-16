@@ -1,9 +1,6 @@
 package edu.baylor.ecs.ciljssa.component.impl;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
@@ -25,6 +22,7 @@ import java.util.List;
  * You must also use getAnnotations() or getMethods() to specify which subcomponent you desire.
  */
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class ClassComponent extends ClassOrInterfaceComponent implements IContainerComponent {
 

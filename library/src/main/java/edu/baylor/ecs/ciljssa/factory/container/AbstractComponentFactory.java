@@ -16,6 +16,9 @@ import edu.baylor.ecs.ciljssa.model.InstanceType;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * TODO: More of a container factory isn't it
+ */
 public abstract class AbstractComponentFactory implements IComponentFactory {
 
     private Long idEnumerator = 0L;

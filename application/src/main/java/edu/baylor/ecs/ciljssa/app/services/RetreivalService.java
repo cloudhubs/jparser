@@ -34,7 +34,12 @@ public class RetreivalService {
     }
 
     public List<AnalysisContext> retrieveContextFromFiles(List<File> files, RequestContext requestContext) {
+        //Change to modules
         List<AnalysisContext> contexts = new ArrayList<>();
+        //Put this functionality inside factory
+
+        // factory.createAnalysisContextFromDirectory();
+        // factory.createAnalysisContextFromFile();
         for (File file : files) {
             AnalysisContext context = factory.createAnalysisContextFromFile(file);
             contexts.add(context);

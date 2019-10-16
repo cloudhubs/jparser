@@ -30,7 +30,7 @@ public class MethodInfoComponent implements IComponent {
     @JsonProperty(value = "parameters")
     private List<MethodParam> methodParams;
     @JsonProperty(value = "static_method")
-    private boolean staticMethod;
+    private boolean staticMethod; // TODO: Abstract?
     @JsonProperty(value = "subroutines")
     private List<MethodInfoComponent> subMethods;
     private List<AnnotationComponent> annotations;
@@ -38,7 +38,7 @@ public class MethodInfoComponent implements IComponent {
     private String packageName;
 
     public MethodInfoComponent() {
-        this.instanceType = InstanceType.METHODCOMPONENT;
+        this .instanceType = InstanceType.METHODCOMPONENT;
     }
 
     @Override

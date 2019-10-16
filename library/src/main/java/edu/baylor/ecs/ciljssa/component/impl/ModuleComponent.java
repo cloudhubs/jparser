@@ -19,7 +19,7 @@ public class ModuleComponent implements IContainerComponent {
 
     private ContainerStereotype stereotype;
     private ModuleStereotype moduleStereotype;
-    private List<MethodInfoComponent> allMethods;
+    private List<MethodInfoComponent> allMethods; // TODO: INCLUDE CONSTRUCTORS
     private List<MethodDeclaration> allMethodDeclarations;
     private String instanceName;
     private InstanceType instanceType;
