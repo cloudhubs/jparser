@@ -23,7 +23,6 @@ public class AnalysisResultsContext extends JSSAContext {
     private int failedContexts = 0;
 
     private RequestContext request;
-    //TODO: Language in here not in context
 
     public AnalysisResultsContext() {
         this.contexts = new ArrayList<>();

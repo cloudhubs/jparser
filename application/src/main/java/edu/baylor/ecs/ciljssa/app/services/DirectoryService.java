@@ -14,23 +14,7 @@ import java.util.stream.Collectors;
 @Data
 @NoArgsConstructor
 @Service
-//TODO: Make this a library functionality too
 public class DirectoryService {
-
-    public List<File> getFilesFromDirectory(String path) throws NotDirectoryException {
-        ArrayList<File> files = new ArrayList<>();
-        File file = new File(path);
-        if(file.isDirectory()) {
-            Arrays.stream(file.listFiles()).forEach(f->{
-                if (f.getName().endsWith(".java")) {
-                    files.add(f);
-                }
-            });
-            return files;
-        } else {
-            throw new NotDirectoryException(path);
-        }
-    }
 
     public List<File> getFilesFromDirectorySmart(String path) throws NotDirectoryException {
         List<File> files;

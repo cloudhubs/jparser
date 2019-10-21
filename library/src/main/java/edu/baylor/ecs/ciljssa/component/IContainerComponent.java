@@ -12,6 +12,7 @@ import edu.baylor.ecs.ciljssa.model.ContainerStereotype;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Deprecated
 public interface IContainerComponent extends IComponent {
 
     ContainerStereotype getContainerStereotype();

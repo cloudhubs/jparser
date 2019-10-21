@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import edu.baylor.ecs.ciljssa.component.Component;
 import edu.baylor.ecs.ciljssa.component.IComponent;
 import edu.baylor.ecs.ciljssa.component.impl.ModuleComponent;
 import lombok.Data;
@@ -37,8 +38,8 @@ public abstract class JSSAContext {
     protected List<String> interfaceNames;
 
     @JsonProperty(value = "containers")
-    protected List<IComponent> classesAndInterfaces;
+    protected List<Component> classesAndInterfaces;
     protected List<ModuleComponent> modules;
-    protected List<IComponent> methods;
+    protected List<Component> methods;
 
 }

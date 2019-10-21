@@ -8,6 +8,7 @@ import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import edu.baylor.ecs.ciljssa.builder.MethodInfoBuilder;
+import edu.baylor.ecs.ciljssa.component.ContainerComponent;
 import edu.baylor.ecs.ciljssa.component.IContainerComponent;
 import edu.baylor.ecs.ciljssa.model.MethodParam;
 import edu.baylor.ecs.ciljssa.component.impl.AnnotationComponent;
@@ -20,7 +21,7 @@ import java.util.List;
 @NoArgsConstructor
 public class MethodInfoFactory {
 
-    public MethodInfoComponent createMethodInfoWrapper(MethodDeclaration dec, IContainerComponent parent) {
+    public MethodInfoComponent createMethodInfoWrapper(MethodDeclaration dec, ContainerComponent parent) {
         MethodInfoComponent output = new MethodInfoBuilder().withParentComponent(parent)
                 .withAccessor(dec.getAccessSpecifier().asString())
                 .withAnnotations(generateAnnotations(dec))
@@ -33,7 +34,7 @@ public class MethodInfoFactory {
         return output;
     }
 
-    public MethodInfoComponent createMethodInfoWrapperFromConstructor(ConstructorDeclaration x, IContainerComponent parent) {
+    public MethodInfoComponent createMethodInfoWrapperFromConstructor(ConstructorDeclaration x, ContainerComponent parent) {
         MethodInfoComponent output = new MethodInfoBuilder().withParentComponent(parent)
                 .withAccessor(x.getAccessSpecifier().asString())
                 .withAnnotations(generateAnnotations(x.asMethodDeclaration()))
@@ -64,16 +65,7 @@ public class MethodInfoFactory {
     }
 
     private List<AnnotationComponent> generateAnnotations(MethodDeclaration dec) {
-        List<AnnotationComponent> annotations = new ArrayList<>();
-        for (AnnotationExpr exp : dec.getAnnotations()) {
-            AnnotationComponent y = new AnnotationComponent();
-            y.setAnnotation(exp);
-            y.setAnnotationMetaModel(exp.getMetaModel().toString());
-            y.setAsString(exp.getName().asString());
-            y.setMetaModelFieldName(exp.getMetaModel().getMetaModelFieldName());
-            annotations.add(y);
-        }
-        return annotations;
+        return getAnnotationComponents(dec.getAnnotations(), cls);
     }
 
     private List<MethodInfoComponent> generateSubmethods(MethodDeclaration dec) {

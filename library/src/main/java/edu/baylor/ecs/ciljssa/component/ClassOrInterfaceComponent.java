@@ -16,11 +16,11 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public abstract class ClassOrInterfaceComponent {
+public abstract class ClassOrInterfaceComponent extends ContainerComponent {
     protected Long id;
 
     @JsonIgnore
-    protected IComponent parentComponent;
+    protected Component parentComponent;
     @JsonIgnore
     protected MetaSubComponent metaSubComponent;
 

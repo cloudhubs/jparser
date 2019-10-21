@@ -3,6 +3,7 @@ package edu.baylor.ecs.ciljssa.builder;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import edu.baylor.ecs.ciljssa.component.Component;
 import edu.baylor.ecs.ciljssa.component.impl.ModuleComponent;
 import edu.baylor.ecs.ciljssa.context.AnalysisContext;
 import edu.baylor.ecs.ciljssa.component.IComponent;
@@ -22,10 +23,10 @@ public class AnalysisContextBuilder {
     private List<String> classNames;
     private List<String> interfaceNames;
     private boolean succeeded = false;
-    private List<IComponent> classesAndInterfaces;
+    private List<Component> classesAndInterfaces;
     private List<ClassOrInterfaceDeclaration> classOrInterfaceDeclarations;
     private List<MethodDeclaration> methodDeclarations;
-    private List<IComponent> methods;
+    private List<Component> methods;
     private List<ModuleComponent> modules;
 
     public AnalysisContext build() {
@@ -64,7 +65,7 @@ public class AnalysisContextBuilder {
         return this;
     }
 
-    public AnalysisContextBuilder withClassesAndInterfaces(List<IComponent> cls) {
+    public AnalysisContextBuilder withClassesAndInterfaces(List<Component> cls) {
         this.classesAndInterfaces = cls;
         return this;
     }
@@ -84,7 +85,7 @@ public class AnalysisContextBuilder {
         return this;
     }
 
-    public AnalysisContextBuilder withMethods(List<IComponent> methods) {
+    public AnalysisContextBuilder withMethods(List<Component> methods) {
         this.methods = methods.stream().filter(x -> x.getInstanceType().equals(InstanceType.METHODCOMPONENT))
                 .collect(Collectors.toList()); // Only allow those which are definitively methods.
         return this;

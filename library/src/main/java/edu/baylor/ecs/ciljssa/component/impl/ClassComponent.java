@@ -24,85 +24,12 @@ import java.util.List;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class ClassComponent extends ClassOrInterfaceComponent implements IContainerComponent {
+public class ClassComponent extends ClassOrInterfaceComponent {
 
     private List<MethodInfoComponent> constructors;
 
     public ClassComponent() {
         this.instanceType = InstanceType.CLASSCOMPONENT;
-    }
-
-    public List<MethodInfoComponent> getConstructors() {
-        return this.constructors;
-    }
-
-    public void setConstructors(List<MethodInfoComponent> list) {
-        this.constructors = list;
-    }
-
-    public ClassOrInterfaceDeclaration getCls() {
-        return cls;
-    }
-
-    @Override
-    public ContainerStereotype getContainerStereotype() {
-        return this.stereotype;
-    }
-
-    @Override
-    public void setContainerStereotype(ContainerStereotype stereotype) {
-        this.stereotype = stereotype;
-    }
-
-    @Override
-    public List<IComponent> getSubComponents() {
-        List<IComponent> output = new ArrayList<>();
-        output.add(this.metaSubComponent);
-        return output;
-     }
-
-    @Override
-    @Deprecated
-    public void setSubComponents(List<IComponent> subComponents) {
-        this.metaSubComponent = (MetaSubComponent) subComponents.get(0);
-    }
-
-    public void setSubComponents(MetaSubComponent comp) {
-        this.metaSubComponent = comp;
-    }
-
-    @Override
-    public CompilationUnit getCompilationUnit() {
-        return this.analysisUnit;
-    }
-
-    @Override
-    public void setCompilationUnit(CompilationUnit unit) {
-        this.analysisUnit = unit;
-    }
-
-    @Override
-    public List<MethodDeclaration> getMethodDeclarations() {
-        return methodDeclarations;
-    }
-
-    @Override
-    public void setMethodDeclarations(List<MethodDeclaration> list) {
-        this.methodDeclarations = list;
-    }
-
-    public ClassOrInterface getClassOrInterface() {
-        return this.classOrInterface;
-    }
-
-    @Override
-    public String getPathToComponent() {
-        return this.path;
-    }
-
-    @Override
-    public void setPathToComponent(String path) {
-        this.path = path;
     }
 
     @Override
@@ -112,55 +39,6 @@ public class ClassComponent extends ClassOrInterfaceComponent implements IContai
         } else {
             return "NA";
         }
-    }
-
-    @Override
-    public void setPackageName(String name) {
-        this.packageName = name;
-    }
-
-    public String getSourceAsString() {
-        return this.rawSource;
-    }
-
-    @Override
-    public String getInstanceName() {
-        return instanceName;
-    }
-
-    @Override
-    public void setInstanceName(String name) {
-        this.instanceName = name;
-    }
-
-    @Override
-    public InstanceType getInstanceType() {
-        return this.instanceType;
-    }
-
-    @Override
-    public void setInstanceType(InstanceType type) {
-        this.instanceType = type;
-    }
-
-    @Override
-    public IComponent getParentComponent() {
-        return this.parentComponent;
-    }
-
-    @Override
-    public void setParentComponent(IComponent component) {
-        this.parentComponent = component;
-    }
-
-    @Override
-    public List<MethodInfoComponent> getMethods() {
-        return methods;
-    }
-
-    @Override
-    public void setMethods(List<MethodInfoComponent> list) {
-        this.methods = list;
     }
 
 }

@@ -5,12 +5,12 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import edu.baylor.ecs.ciljssa.builder.AnalysisContextBuilder;
+import edu.baylor.ecs.ciljssa.component.Component;
 import edu.baylor.ecs.ciljssa.component.impl.ModuleComponent;
 import edu.baylor.ecs.ciljssa.context.AnalysisContext;
 import edu.baylor.ecs.ciljssa.factory.container.AbstractComponentFactory;
-import edu.baylor.ecs.ciljssa.factory.container.impl.ComponentFactoryProducer;
+import edu.baylor.ecs.ciljssa.factory.container.ComponentFactoryProducer;
 import edu.baylor.ecs.ciljssa.model.ClassOrInterface;
-import edu.baylor.ecs.ciljssa.component.IComponent;
 import lombok.NoArgsConstructor;
 
 import java.io.File;
@@ -81,7 +81,7 @@ public class AnalysisContextFactory {
     }
 
     //TODO: Module
-    private List<IComponent> createClassesAndInterfaces(CompilationUnit unit) {
+    private List<Component> createClassesAndInterfaces(CompilationUnit unit) {
         List<ClassOrInterfaceDeclaration> classOrInterfaces = new ArrayList<>();
         unit.accept(new VoidVisitorAdapter<Object>() {
             @Override
@@ -90,11 +90,11 @@ public class AnalysisContextFactory {
                 classOrInterfaces.add(n);
             }
         }, null);
-        List<IComponent> clsList = new ArrayList<>();
+        List<Component> clsList = new ArrayList<>();
         for(ClassOrInterfaceDeclaration cls : classOrInterfaces) {
             ClassOrInterface type = cls.isInterface() ? ClassOrInterface.INTERFACE : ClassOrInterface.CLASS;
             AbstractComponentFactory factory = ComponentFactoryProducer.getFactory(type, null);
-            IComponent coi = factory.createComponent(cls, unit);
+            Component coi = factory.createComponent(cls, unit);
             clsList.add(coi);
         }
         return clsList;

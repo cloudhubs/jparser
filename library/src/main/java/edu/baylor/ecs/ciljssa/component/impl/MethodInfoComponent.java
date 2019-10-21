@@ -1,6 +1,7 @@
 package edu.baylor.ecs.ciljssa.component.impl;
 
 import com.fasterxml.jackson.annotation.*;
+import edu.baylor.ecs.ciljssa.component.Component;
 import edu.baylor.ecs.ciljssa.component.IComponent;
 import edu.baylor.ecs.ciljssa.model.InstanceType;
 import edu.baylor.ecs.ciljssa.model.MethodParam;
@@ -11,16 +12,12 @@ import java.util.List;
 @Data
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class MethodInfoComponent implements IComponent {
+public class MethodInfoComponent extends Component {
 
     private Long id;
 
-    private IComponent parentComponent;
     @JsonIgnore
     private String rawSource;
-    @JsonIgnore
-    private InstanceType instanceType;
-    private String path;
 
     private String accessor;
     @JsonProperty(value = "method_name")
@@ -34,59 +31,23 @@ public class MethodInfoComponent implements IComponent {
     @JsonProperty(value = "subroutines")
     private List<MethodInfoComponent> subMethods;
     private List<AnnotationComponent> annotations;
-    @JsonProperty(value = "package_name")
-    private String packageName;
 
     public MethodInfoComponent() {
-        this .instanceType = InstanceType.METHODCOMPONENT;
+        this.instanceType = InstanceType.METHODCOMPONENT;
     }
 
     @Override
-    public String getPathToComponent() {
-        return parentComponent.getPathToComponent();
-    }
-
-    @Override
-    public void setPathToComponent(String path) {
-        this.path = path + "::MethodDeclaration::" + this.methodName;
+    public String getPath() {
+        return parent.getPath() + "::MethodDeclaration::" + this.methodName; //TODO: Add line numbers?
     }
 
     @Override
     public String getPackageName() {
-        return parentComponent.getPackageName();
-    }
-
-    @Override
-    public void setPackageName(String name) {
-        this.packageName = name;
+        return parent.getPackageName();
     }
 
     public String getSourceAsString() {
         return rawSource;
     }
 
-    @Override
-    public String getInstanceName() {
-        return methodName;
-    }
-
-    @Override
-    public void setInstanceName(String name) {
-        this.methodName = name;
-    }
-
-    @Override
-    public InstanceType getInstanceType() {
-        return this.instanceType;
-    }
-
-    @Override
-    public void setInstanceType(InstanceType type) {
-        this.instanceType = type;
-    }
-
-    @Override
-    public void setParentComponent(IComponent component) {
-        this.parentComponent = component;
-    }
 }

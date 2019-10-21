@@ -7,6 +7,7 @@ import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.expr.MarkerAnnotationExpr;
 import com.github.javaparser.ast.expr.NormalAnnotationExpr;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
+import edu.baylor.ecs.ciljssa.component.Component;
 import edu.baylor.ecs.ciljssa.component.IComponent;
 import edu.baylor.ecs.ciljssa.model.InstanceType;
 import lombok.Data;
@@ -15,14 +16,14 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class AnnotationComponent implements IComponent {
+public class AnnotationComponent extends Component {
 
     @JsonIgnore
     private AnnotationExpr annotation;
     @JsonIgnore
     private InstanceType instanceType = InstanceType.ANNOTATIONCOMPONENT;
     @JsonIgnore
-    private IComponent parentComponent;
+    private Component parentComponent;
 
     @JsonProperty(value = "name")
     private String asString;
@@ -59,35 +60,6 @@ public class AnnotationComponent implements IComponent {
         }
     }
 
-    @Override
-    public String getPathToComponent() {
-        return parentComponent.getPathToComponent();
-    }
-
-    @Override
-    public void setPathToComponent(String path) {
-        this.pathToComponent = path;
-    }
-
-    @Override
-    public String getInstanceName() {
-        return annotation.getNameAsString();
-    }
-
-    @Override
-    public void setInstanceName(String name) {
-        this.instanceName = name;
-    }
-
-    @Override
-    public InstanceType getInstanceType() {
-        return instanceType;
-    }
-
-    @Override
-    public void setInstanceType(InstanceType type) {
-        this.instanceType = type;
-    }
 }
 
 

@@ -1,8 +1,11 @@
 package edu.baylor.ecs.ciljssa.factory.container;
 
+import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.AnnotationExpr;
+import edu.baylor.ecs.ciljssa.component.Component;
+import edu.baylor.ecs.ciljssa.component.ContainerComponent;
 import edu.baylor.ecs.ciljssa.component.IContainerComponent;
 import edu.baylor.ecs.ciljssa.component.impl.ClassComponent;
 import edu.baylor.ecs.ciljssa.component.impl.MetaSubComponent;
@@ -19,7 +22,7 @@ import java.util.List;
 /**
  * TODO: More of a container factory isn't it
  */
-public abstract class AbstractComponentFactory implements IComponentFactory {
+public abstract class AbstractComponentFactory {
 
     private Long idEnumerator = 0L;
 
@@ -28,31 +31,37 @@ public abstract class AbstractComponentFactory implements IComponentFactory {
         return idEnumerator;
     }
 
-    protected MetaSubComponent createMetaSubComponent(IComponent parent, List<MethodInfoComponent> methods,
-                                                            List<MethodInfoComponent> constructors,
-                                                            List<AnnotationComponent> annotations,
-                                                            List<ClassComponent> subClasses) {
+    private Component createMetaSubComponent(Component parent, List<MethodInfoComponent> methods,
+                                             List<MethodInfoComponent> constructors,
+                                             List<AnnotationComponent> annotations,
+                                             List<ClassComponent> subClasses) {
         MetaSubComponent component = new MetaSubComponent();
         component.setMethodInfoComponents(methods);
         component.setConstructorComponents(constructors);
         component.setAnnotationComponents(annotations);
         component.setSubClassComponents(subClasses);
         component.setInstanceType(InstanceType.META);
-        component.setParentComponent(parent);
+        component.setParent(parent);
         component.setInstanceName(parent.getInstanceName() + "::MetaSubComponent");
-        component.setPathToComponent(parent.getPathToComponent());
+        component.setPath(parent.getPath());
         component.setPackageName(parent.getPackageName());
         return component;
     }
 
+    protected List<Component> createMetaSubComponentAsList(Component parent, List<MethodInfoComponent> methods,
+                                                      List<MethodInfoComponent> constructors,
+                                                      List<AnnotationComponent> annotations,
+                                                      List<ClassComponent> subClasses) {
+        List<Component> output = new ArrayList<>();
+        output.add(createMetaSubComponent(parent, methods, constructors, annotations, subClasses));
+        return output;
+    }
+
     protected ContainerStereotype createStereotype(ClassOrInterfaceDeclaration cls) {
-        /**
-         * TODO: Make stereotypes
-         */
         return ContainerStereotype.FABRICATED;
     }
 
-    protected List<MethodInfoComponent> createMethods(ClassOrInterfaceDeclaration cls, IContainerComponent parent) {
+    protected List<MethodInfoComponent> createMethods(ClassOrInterfaceDeclaration cls, ContainerComponent parent) {
         List<MethodInfoComponent> mds = new ArrayList<>();
         MethodInfoFactory factory = new MethodInfoFactory();
         if (!cls.isInterface()) {
@@ -66,7 +75,7 @@ public abstract class AbstractComponentFactory implements IComponentFactory {
     }
 
     //TODO: See old commits
-    protected List<MethodInfoComponent> createConstructors(ClassOrInterfaceDeclaration cls, IComponent parent) {
+    protected List<MethodInfoComponent> createConstructors(ClassOrInterfaceDeclaration cls, Component parent) {
         List<MethodInfoComponent> mds = new ArrayList<>();
         MethodInfoFactory factory = new MethodInfoFactory();
         /*if (!cls.isInterface()) {
@@ -80,8 +89,12 @@ public abstract class AbstractComponentFactory implements IComponentFactory {
     }
 
     protected List<AnnotationComponent> initAnnotations(ClassOrInterfaceDeclaration cls) {
+        return getAnnotationComponents(cls.getAnnotations(), cls);
+    }
+
+    private static List<AnnotationComponent> getAnnotationComponents(NodeList<AnnotationExpr> annotations2, ClassOrInterfaceDeclaration cls) {
         List<AnnotationComponent> annotations = new ArrayList<>();
-        for (AnnotationExpr exp : cls.getAnnotations()) {
+        for (AnnotationExpr exp : annotations2) {
             AnnotationComponent y = new AnnotationComponent();
             y.setAnnotation(exp);
             y.setAnnotationMetaModel(exp.getMetaModel().toString());

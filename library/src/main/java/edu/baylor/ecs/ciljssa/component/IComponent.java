@@ -3,6 +3,7 @@ package edu.baylor.ecs.ciljssa.component;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import edu.baylor.ecs.ciljssa.model.InstanceType;
 
+@Deprecated
 @JsonIgnoreProperties(ignoreUnknown = true)
 public interface IComponent {
 
