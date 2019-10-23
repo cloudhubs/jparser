@@ -1,4 +1,4 @@
-package org.seer.ciljssa.examples;
+package org.seer.ciljssa.sample.examples;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
