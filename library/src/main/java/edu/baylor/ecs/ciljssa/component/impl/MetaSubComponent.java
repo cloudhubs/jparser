@@ -1,7 +1,6 @@
 package edu.baylor.ecs.ciljssa.component.impl;
 
 import edu.baylor.ecs.ciljssa.component.Component;
-import edu.baylor.ecs.ciljssa.component.IComponent;
 import edu.baylor.ecs.ciljssa.model.InstanceType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,9 +11,9 @@ import java.util.List;
 @NoArgsConstructor
 public class MetaSubComponent extends Component {
 
-    private List<MethodInfoComponent> methodInfoComponents;
+    private List<Component> methodInfoComponents;
     private List<AnnotationComponent> annotationComponents;
-    private List<MethodInfoComponent> constructorComponents;
+    private List<Component> constructorComponents;
     private List<ClassComponent> subClassComponents;
 
     @Override

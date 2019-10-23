@@ -8,8 +8,7 @@ import edu.baylor.ecs.ciljssa.model.ClassOrInterface;
 
 public class ComponentFactoryProducer {
 
-    public static AbstractComponentFactory getFactory(ClassOrInterface coi, ModuleComponent module) {
-        if (module == null && coi != ClassOrInterface.MODULE) return null;
+    public static AbstractContainerFactory getFactory(ClassOrInterface coi, ModuleComponent module) {
         switch(coi) {
             case CLASS: return new ClassComponentFactory(module);
             case INTERFACE: return new InterfaceComponentFactory(module);

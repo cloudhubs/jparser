@@ -2,7 +2,6 @@ package edu.baylor.ecs.ciljssa.component.impl;
 
 import com.fasterxml.jackson.annotation.*;
 import edu.baylor.ecs.ciljssa.component.Component;
-import edu.baylor.ecs.ciljssa.component.IComponent;
 import edu.baylor.ecs.ciljssa.model.InstanceType;
 import edu.baylor.ecs.ciljssa.model.MethodParam;
 import lombok.Data;
@@ -10,7 +9,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class MethodInfoComponent extends Component {
 
@@ -38,12 +37,26 @@ public class MethodInfoComponent extends Component {
 
     @Override
     public String getPath() {
-        return parent.getPath() + "::MethodDeclaration::" + this.methodName; //TODO: Add line numbers?
+        if (parent != null) {
+            if (parent.getPath() != null)
+                return parent.getPath() + "::MethodDeclaration::" + this.methodName; //TODO: Add line numbers?
+            else
+                return null;
+        } else {
+            return null;
+        }
     }
 
     @Override
     public String getPackageName() {
-        return parent.getPackageName();
+        if (parent != null) {
+            if (parent.getPackageName() != null)
+                return parent.getPackageName();
+            else
+                return null;
+        } else {
+            return null;
+        }
     }
 
     public String getSourceAsString() {

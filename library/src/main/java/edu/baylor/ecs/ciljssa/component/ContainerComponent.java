@@ -14,10 +14,8 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class ContainerComponent extends Component {
 
-    @JsonIgnore
-    protected CompilationUnit compilationUnit;
     protected ContainerStereotype stereotype;
     protected List<MethodDeclaration> methodDeclarations;
-    protected List<MethodInfoComponent> methods;
+    protected List<Component> methods;
 
 }

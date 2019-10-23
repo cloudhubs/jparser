@@ -41,7 +41,6 @@ public abstract class ClassOrInterfaceComponent extends ContainerComponent {
     protected ClassOrInterface classOrInterface;
     @JsonProperty(value = "name")
     protected String instanceName;
-    protected List<MethodInfoComponent> methods;
     protected List<AnnotationComponent> annotations;
     protected ContainerStereotype stereotype;
     protected String packageName;

@@ -1,6 +1,7 @@
 package edu.baylor.ecs.ciljssa.factory.methodinfo;
 
-import com.github.javaparser.ast.DataKey;
+import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
@@ -9,7 +10,7 @@ import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import edu.baylor.ecs.ciljssa.builder.MethodInfoBuilder;
 import edu.baylor.ecs.ciljssa.component.ContainerComponent;
-import edu.baylor.ecs.ciljssa.component.IContainerComponent;
+import edu.baylor.ecs.ciljssa.factory.annotation.AnnotationFactory;
 import edu.baylor.ecs.ciljssa.model.MethodParam;
 import edu.baylor.ecs.ciljssa.component.impl.AnnotationComponent;
 import edu.baylor.ecs.ciljssa.component.impl.MethodInfoComponent;
@@ -65,7 +66,7 @@ public class MethodInfoFactory {
     }
 
     private List<AnnotationComponent> generateAnnotations(MethodDeclaration dec) {
-        return getAnnotationComponents(dec.getAnnotations(), cls);
+        return AnnotationFactory.createAnnotationComponents(dec.getAnnotations());
     }
 
     private List<MethodInfoComponent> generateSubmethods(MethodDeclaration dec) {

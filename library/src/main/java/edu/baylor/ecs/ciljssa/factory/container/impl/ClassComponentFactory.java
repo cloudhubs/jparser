@@ -6,8 +6,7 @@ import edu.baylor.ecs.ciljssa.component.Component;
 import edu.baylor.ecs.ciljssa.component.impl.AnnotationComponent;
 import edu.baylor.ecs.ciljssa.component.impl.MethodInfoComponent;
 import edu.baylor.ecs.ciljssa.component.impl.ModuleComponent;
-import edu.baylor.ecs.ciljssa.factory.container.AbstractComponentFactory;
-import edu.baylor.ecs.ciljssa.factory.container.IContainerFactory;
+import edu.baylor.ecs.ciljssa.factory.container.AbstractContainerFactory;
 import edu.baylor.ecs.ciljssa.model.ClassOrInterface;
 import edu.baylor.ecs.ciljssa.component.impl.ClassComponent;
 import edu.baylor.ecs.ciljssa.model.InstanceType;
@@ -16,7 +15,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class ClassComponentFactory extends AbstractComponentFactory implements IContainerFactory  {
+public class ClassComponentFactory extends AbstractContainerFactory {
 
     public final ClassOrInterface TYPE = ClassOrInterface.CLASS;
 
@@ -29,8 +28,8 @@ public class ClassComponentFactory extends AbstractComponentFactory implements I
     @Override
     public Component createComponent(ClassOrInterfaceDeclaration cls, CompilationUnit unit) {
         ClassComponent output = new ClassComponent();
-        List<MethodInfoComponent> methods = createMethods(cls, output);
-        List<MethodInfoComponent> constructors = createConstructors(cls, output);
+        List<Component> methods = createMethods(cls, output);
+        List<Component> constructors = createConstructors(cls, output);
         List<AnnotationComponent> annotations = initAnnotations(cls);
         List<ClassComponent> subClasses = createSubClasses(cls);
         output.setAnalysisUnit(unit);

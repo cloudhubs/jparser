@@ -1,7 +1,6 @@
 package edu.baylor.ecs.ciljssa.builder;
 
 import edu.baylor.ecs.ciljssa.component.ContainerComponent;
-import edu.baylor.ecs.ciljssa.component.IContainerComponent;
 import edu.baylor.ecs.ciljssa.model.MethodParam;
 import edu.baylor.ecs.ciljssa.component.impl.AnnotationComponent;
 import edu.baylor.ecs.ciljssa.component.impl.MethodInfoComponent;

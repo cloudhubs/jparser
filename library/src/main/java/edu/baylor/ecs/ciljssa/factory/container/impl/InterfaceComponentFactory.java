@@ -4,7 +4,7 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import edu.baylor.ecs.ciljssa.component.Component;
 import edu.baylor.ecs.ciljssa.component.impl.*;
-import edu.baylor.ecs.ciljssa.factory.container.AbstractComponentFactory;
+import edu.baylor.ecs.ciljssa.factory.container.AbstractContainerFactory;
 import edu.baylor.ecs.ciljssa.factory.container.IContainerFactory;
 import edu.baylor.ecs.ciljssa.model.ClassOrInterface;
 import edu.baylor.ecs.ciljssa.model.InstanceType;
@@ -13,7 +13,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class InterfaceComponentFactory extends AbstractComponentFactory implements IContainerFactory {
+public class InterfaceComponentFactory extends AbstractContainerFactory {
 
     public final ClassOrInterface TYPE = ClassOrInterface.INTERFACE;
 
@@ -26,7 +26,7 @@ public class InterfaceComponentFactory extends AbstractComponentFactory implemen
     @Override
     public Component createComponent(ClassOrInterfaceDeclaration cls, CompilationUnit unit) {
         InterfaceComponent output = new InterfaceComponent();
-        List<MethodInfoComponent> methods = createMethods(cls, output);
+        List<Component> methods = createMethods(cls, output);
         List<AnnotationComponent> annotations = initAnnotations(cls);
         output.setAnalysisUnit(unit);
         output.setAnnotations(annotations);

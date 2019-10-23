@@ -6,12 +6,11 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.AnnotationExpr;
 import edu.baylor.ecs.ciljssa.component.Component;
 import edu.baylor.ecs.ciljssa.component.ContainerComponent;
-import edu.baylor.ecs.ciljssa.component.IContainerComponent;
 import edu.baylor.ecs.ciljssa.component.impl.ClassComponent;
 import edu.baylor.ecs.ciljssa.component.impl.MetaSubComponent;
+import edu.baylor.ecs.ciljssa.factory.annotation.AnnotationFactory;
 import edu.baylor.ecs.ciljssa.factory.methodinfo.MethodInfoFactory;
 import edu.baylor.ecs.ciljssa.component.impl.AnnotationComponent;
-import edu.baylor.ecs.ciljssa.component.IComponent;
 import edu.baylor.ecs.ciljssa.component.impl.MethodInfoComponent;
 import edu.baylor.ecs.ciljssa.model.ContainerStereotype;
 import edu.baylor.ecs.ciljssa.model.InstanceType;
@@ -22,7 +21,7 @@ import java.util.List;
 /**
  * TODO: More of a container factory isn't it
  */
-public abstract class AbstractComponentFactory {
+public abstract class AbstractContainerFactory implements IContainerFactory {
 
     private Long idEnumerator = 0L;
 
@@ -31,8 +30,8 @@ public abstract class AbstractComponentFactory {
         return idEnumerator;
     }
 
-    private Component createMetaSubComponent(Component parent, List<MethodInfoComponent> methods,
-                                             List<MethodInfoComponent> constructors,
+    private Component createMetaSubComponent(Component parent, List<Component> methods,
+                                             List<Component> constructors,
                                              List<AnnotationComponent> annotations,
                                              List<ClassComponent> subClasses) {
         MetaSubComponent component = new MetaSubComponent();
@@ -48,8 +47,8 @@ public abstract class AbstractComponentFactory {
         return component;
     }
 
-    protected List<Component> createMetaSubComponentAsList(Component parent, List<MethodInfoComponent> methods,
-                                                      List<MethodInfoComponent> constructors,
+    protected List<Component> createMetaSubComponentAsList(Component parent, List<Component> methods,
+                                                      List<Component> constructors,
                                                       List<AnnotationComponent> annotations,
                                                       List<ClassComponent> subClasses) {
         List<Component> output = new ArrayList<>();
@@ -61,8 +60,8 @@ public abstract class AbstractComponentFactory {
         return ContainerStereotype.FABRICATED;
     }
 
-    protected List<MethodInfoComponent> createMethods(ClassOrInterfaceDeclaration cls, ContainerComponent parent) {
-        List<MethodInfoComponent> mds = new ArrayList<>();
+    protected List<Component> createMethods(ClassOrInterfaceDeclaration cls, ContainerComponent parent) {
+        List<Component> mds = new ArrayList<>();
         MethodInfoFactory factory = new MethodInfoFactory();
         if (!cls.isInterface()) {
             List<MethodDeclaration> consts = cls.getMethods();
@@ -75,8 +74,8 @@ public abstract class AbstractComponentFactory {
     }
 
     //TODO: See old commits
-    protected List<MethodInfoComponent> createConstructors(ClassOrInterfaceDeclaration cls, Component parent) {
-        List<MethodInfoComponent> mds = new ArrayList<>();
+    protected List<Component> createConstructors(ClassOrInterfaceDeclaration cls, Component parent) {
+        List<Component> mds = new ArrayList<>();
         MethodInfoFactory factory = new MethodInfoFactory();
         /*if (!cls.isInterface()) {
             List<ConstructorDeclaration> consts = cls.getConstructors(); // TODO: Does not work with constructors
@@ -89,20 +88,7 @@ public abstract class AbstractComponentFactory {
     }
 
     protected List<AnnotationComponent> initAnnotations(ClassOrInterfaceDeclaration cls) {
-        return getAnnotationComponents(cls.getAnnotations(), cls);
-    }
-
-    private static List<AnnotationComponent> getAnnotationComponents(NodeList<AnnotationExpr> annotations2, ClassOrInterfaceDeclaration cls) {
-        List<AnnotationComponent> annotations = new ArrayList<>();
-        for (AnnotationExpr exp : annotations2) {
-            AnnotationComponent y = new AnnotationComponent();
-            y.setAnnotation(exp);
-            y.setAnnotationMetaModel(exp.getMetaModel().toString());
-            y.setAsString(exp.getName().asString());
-            y.setMetaModelFieldName(exp.getMetaModel().getMetaModelFieldName());
-            annotations.add(y);
-        }
-        return annotations;
+        return AnnotationFactory.createAnnotationComponents(cls.getAnnotations());
     }
 
 }

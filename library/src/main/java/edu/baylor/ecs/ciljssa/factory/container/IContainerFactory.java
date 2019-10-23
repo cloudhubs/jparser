@@ -4,7 +4,6 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import edu.baylor.ecs.ciljssa.component.Component;
 
-@Deprecated
 public interface IContainerFactory {
 
     //TODO: Not class or interface declaration

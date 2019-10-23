@@ -13,7 +13,7 @@ public class MethodParam {
     private String annotation; // TODO: Change to AnnotationWrapper
     @JsonProperty(value = "parameter_type")
     private String parameterType;
-    @JsonProperty(value = "parameter_type")
+    @JsonProperty(value = "parameter_name")
     private String parameterName;
 
 }
