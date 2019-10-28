@@ -14,6 +14,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class ContainerComponent extends Component {
 
+    protected String packageName;
     protected ContainerStereotype stereotype;
     protected List<MethodDeclaration> methodDeclarations;
     protected List<Component> methods;

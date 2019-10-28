@@ -56,6 +56,14 @@ public class SourceSecController {
          return modules;
     }
 
+    @PostMapping(value = "/analysis")
+    public @ResponseBody AnalysisContext analysis(@RequestBody RequestContext requestContext) {
+        AnalysisContext ctx = retreivalService.retreiveAnalysisContextFromGraph(
+                (DirectoryComponent) retreivalService
+                        .retreiveDirectoryGraphFromPath(requestContext.getFilepath()));
+        return ctx;
+    }
+
 //    @PostMapping(value = "/analyze")
 //    public @ResponseBody BaseResponse basicAnalysis(@RequestBody RequestContext requestContext) {
 //        AnalysisContext context = retreivalService.retrieveContextFromPath(requestContext);

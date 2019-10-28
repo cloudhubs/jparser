@@ -43,6 +43,5 @@ public abstract class ClassOrInterfaceComponent extends ContainerComponent {
     protected String instanceName;
     protected List<AnnotationComponent> annotations;
     protected ContainerStereotype stereotype;
-    protected String packageName;
 
 }

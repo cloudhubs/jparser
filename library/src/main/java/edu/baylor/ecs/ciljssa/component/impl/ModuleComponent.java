@@ -2,17 +2,14 @@ package edu.baylor.ecs.ciljssa.component.impl;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import edu.baylor.ecs.ciljssa.component.Component;
 import edu.baylor.ecs.ciljssa.component.ContainerComponent;
 import edu.baylor.ecs.ciljssa.model.ContainerStereotype;
-import edu.baylor.ecs.ciljssa.model.InstanceType;
 import edu.baylor.ecs.ciljssa.model.ModuleStereotype;
 import lombok.Data;
 
-import java.io.File;
 import java.util.List;
 
 @Data
@@ -30,6 +27,8 @@ public class ModuleComponent extends ContainerComponent {
     private List<String> classNames;
     @JsonProperty(value = "interface_names")
     private List<String> interfaceNames;
+    @JsonProperty(value = "method_names")
+    private List<String> methodNames;
 
     @JsonProperty(value = "containers")
     private List<Component> classesAndInterfaces;

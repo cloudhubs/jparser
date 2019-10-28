@@ -29,13 +29,18 @@ public class RetreivalService {
 //        return retrieveContextFromFile(file);
 //    }
 
+    public AnalysisContext retreiveAnalysisContextFromGraph(DirectoryComponent doc) {
+        AnalysisContext context = factory.createAnalysisContextFromDirectoryGraph(doc);
+        return context;
+    }
+
     public Component retreiveDirectoryGraphFromPath(String path) {
         DirectoryFactory factory = new DirectoryFactory();
         return factory.createDirectoryGraph(path);
     }
 
     public List<ModuleComponent> retreiveModuleGraph(DirectoryComponent doc) {
-        return factory.createModulesFromDirectory(doc, null);
+        return factory.createModulesFromDirectory(doc);
     }
 
 //    public List<AnalysisContext> retrieveContextFromFiles(List<File> files, RequestContext requestContext) {

@@ -4,6 +4,9 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import edu.baylor.ecs.ciljssa.component.Component;
+import edu.baylor.ecs.ciljssa.component.impl.ClassComponent;
+import edu.baylor.ecs.ciljssa.component.impl.DirectoryComponent;
+import edu.baylor.ecs.ciljssa.component.impl.InterfaceComponent;
 import edu.baylor.ecs.ciljssa.component.impl.ModuleComponent;
 import edu.baylor.ecs.ciljssa.context.AnalysisContext;
 import edu.baylor.ecs.ciljssa.model.InstanceType;
@@ -11,22 +14,25 @@ import lombok.NoArgsConstructor;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor
 public class AnalysisContextBuilder {
 
-    private CompilationUnit unit;
-    private File sourceFile;
     private String filePath;
     private List<String> classNames;
     private List<String> interfaceNames;
     private boolean succeeded = false;
+    private Map<ModuleComponent, String> packageMap;
     private List<Component> classesAndInterfaces;
     private List<ClassOrInterfaceDeclaration> classOrInterfaceDeclarations;
+    private List<ClassComponent> classes;
+    private List<InterfaceComponent> interfaces;
     private List<MethodDeclaration> methodDeclarations;
     private List<Component> methods;
     private List<ModuleComponent> modules;
+    private DirectoryComponent directoryComponent;
 
     public AnalysisContext build() {
         AnalysisContext context = new AnalysisContext();
@@ -34,14 +40,36 @@ public class AnalysisContextBuilder {
         context.setClassesAndInterfaces(this.classesAndInterfaces); // Must be run first
         context.setSucceeded(this.succeeded);
         context.setInterfaceNames(this.interfaceNames);
-        context.setFilePath(this.filePath);
+        context.setRootPath(this.filePath);
         context.setClassNames(this.classNames);
-        context.setSourceFile(this.sourceFile);
-        context.setAnalysisUnit(this.unit);
+        context.setPackageMap(this.packageMap);
         context.setMethodDeclarations(this.methodDeclarations);
         context.setMethods(this.methods);
         context.setModules(this.modules);
+        context.setDirectoryGraph(this.directoryComponent);
+        context.setClasses(this.classes);
+        context.setInterfaces(this.interfaces);
         return context;
+    }
+
+    public AnalysisContextBuilder withClasses(List<ClassComponent> cls) {
+        this.classes = cls;
+        return this;
+    }
+
+    public AnalysisContextBuilder withInterfaces(List<InterfaceComponent> infs) {
+        this.interfaces = infs;
+        return this;
+    }
+
+    public AnalysisContextBuilder withRootPath(String path) {
+        this.filePath = path;
+        return this;
+    }
+
+    public AnalysisContextBuilder withPackageMap(Map<ModuleComponent, String> map) {
+        this.packageMap = map;
+        return this;
     }
 
     public AnalysisContextBuilder withClassNames(List<String> classNames) {
@@ -51,11 +79,6 @@ public class AnalysisContextBuilder {
 
     public AnalysisContextBuilder withInterfaceNames(List<String> interfaceNames) {
         this.interfaceNames = interfaceNames;
-        return this;
-    }
-
-    public AnalysisContextBuilder withCompilationUnit(CompilationUnit unit) {
-        this.unit = unit;
         return this;
     }
 
@@ -71,11 +94,6 @@ public class AnalysisContextBuilder {
 
     public AnalysisContextBuilder withClassOrInterfaceDeclarations(List<ClassOrInterfaceDeclaration> cls) {
         this.classOrInterfaceDeclarations = cls;
-        return this;
-    }
-
-    public AnalysisContextBuilder withSourceFile(File source) {
-        this.sourceFile = source;
         return this;
     }
 
@@ -95,4 +113,8 @@ public class AnalysisContextBuilder {
         return this;
     }
 
+    public AnalysisContextBuilder withDirectoryGraph(DirectoryComponent root) {
+        this.directoryComponent = root;
+        return this;
+    }
 }
