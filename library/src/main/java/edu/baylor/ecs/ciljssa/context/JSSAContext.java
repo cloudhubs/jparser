@@ -2,6 +2,7 @@ package edu.baylor.ecs.ciljssa.context;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
@@ -29,6 +30,7 @@ public abstract class JSSAContext {
     protected DirectoryComponent directoryGraph;
 
     @JsonProperty(value = "module_package_map")
+    @JsonSerialize(using = ModulePackageMapSerializer.class)
     protected Map<ModuleComponent, String> packageMap;
 
     @JsonProperty(value = "succeeded")

@@ -11,6 +11,7 @@ import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import edu.baylor.ecs.ciljssa.builder.MethodInfoBuilder;
 import edu.baylor.ecs.ciljssa.component.ContainerComponent;
 import edu.baylor.ecs.ciljssa.factory.annotation.AnnotationFactory;
+import edu.baylor.ecs.ciljssa.model.AccessorType;
 import edu.baylor.ecs.ciljssa.model.MethodParam;
 import edu.baylor.ecs.ciljssa.component.impl.AnnotationComponent;
 import edu.baylor.ecs.ciljssa.component.impl.MethodInfoComponent;
@@ -24,7 +25,7 @@ public class MethodInfoFactory {
 
     public MethodInfoComponent createMethodInfoWrapper(MethodDeclaration dec, ContainerComponent parent) {
         MethodInfoComponent output = new MethodInfoBuilder().withParentComponent(parent)
-                .withAccessor(dec.getAccessSpecifier().asString())
+                .withAccessor(AccessorType.fromString(dec.getAccessSpecifier().asString()))
                 .withAnnotations(generateAnnotations(dec))
                 .withMethodParams(generateMethodParams(dec))
                 .withSubMethods(generateSubmethods(dec))
@@ -37,7 +38,7 @@ public class MethodInfoFactory {
 
     public MethodInfoComponent createMethodInfoWrapperFromConstructor(ConstructorDeclaration x, ContainerComponent parent) {
         MethodInfoComponent output = new MethodInfoBuilder().withParentComponent(parent)
-                .withAccessor(x.getAccessSpecifier().asString())
+                .withAccessor(AccessorType.fromString(x.getAccessSpecifier().asString()))
                 .withAnnotations(generateAnnotations(x.asMethodDeclaration()))
                 .withMethodParams(generateMethodParams(x.asMethodDeclaration()))
                 .withSubMethods(generateSubmethods(x.asMethodDeclaration()))

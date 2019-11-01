@@ -2,6 +2,7 @@ package edu.baylor.ecs.ciljssa.component.impl;
 
 import com.fasterxml.jackson.annotation.*;
 import edu.baylor.ecs.ciljssa.component.Component;
+import edu.baylor.ecs.ciljssa.model.AccessorType;
 import edu.baylor.ecs.ciljssa.model.InstanceType;
 import edu.baylor.ecs.ciljssa.model.MethodParam;
 import lombok.Data;
@@ -18,7 +19,7 @@ public class MethodInfoComponent extends Component {
     @JsonIgnore
     private String rawSource;
 
-    private String accessor;
+    private AccessorType accessor;
     @JsonProperty(value = "method_name")
     private String methodName;
     @JsonProperty(value = "return_type")

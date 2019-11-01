@@ -1,6 +1,7 @@
 package edu.baylor.ecs.ciljssa.builder;
 
 import edu.baylor.ecs.ciljssa.component.ContainerComponent;
+import edu.baylor.ecs.ciljssa.model.AccessorType;
 import edu.baylor.ecs.ciljssa.model.MethodParam;
 import edu.baylor.ecs.ciljssa.component.impl.AnnotationComponent;
 import edu.baylor.ecs.ciljssa.component.impl.MethodInfoComponent;
@@ -14,9 +15,9 @@ public class MethodInfoBuilder {
     private ContainerComponent parentComponent;
     private String methodName;
     private String returnType;
-    private String accessor;
     private String rawSource;
     private boolean staticMethod;
+    private AccessorType accessor;
     private List<MethodParam> methodParams;
     private List<AnnotationComponent> annotations; // Method annotations
     private List<MethodInfoComponent> subMethods;
@@ -46,7 +47,7 @@ public class MethodInfoBuilder {
         return this;
     }
 
-    public MethodInfoBuilder withAccessor(String acc) {
+    public MethodInfoBuilder withAccessor(AccessorType acc) {
         this.accessor = acc;
         return this;
     }

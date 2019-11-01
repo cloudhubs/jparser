@@ -10,15 +10,10 @@ import edu.baylor.ecs.ciljssa.component.impl.ModuleComponent;
 import edu.baylor.ecs.ciljssa.context.AnalysisContext;
 import edu.baylor.ecs.ciljssa.app.context.RequestContext;
 import edu.baylor.ecs.ciljssa.app.context.AnalysisResultsContext;
-import edu.baylor.ecs.ciljssa.app.services.AnalysisService;
 import edu.baylor.ecs.ciljssa.app.services.DirectoryService;
 import edu.baylor.ecs.ciljssa.app.services.RetreivalService;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.nio.file.NotDirectoryException;
-import java.util.ArrayList;
 import java.util.List;
 
 // TODO: Catch IllegalStateException for propper error handling. Unnecessary on correct code, but good practice
@@ -28,12 +23,10 @@ import java.util.List;
 @RestController
 public class SourceSecController {
 
-    private AnalysisService analysisService;
     private RetreivalService retreivalService;
     private DirectoryService directoryService;
 
     public SourceSecController(){
-        analysisService = new AnalysisService(); // never used
         retreivalService = new RetreivalService();
         directoryService = new DirectoryService();
     }
