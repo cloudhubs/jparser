@@ -4,13 +4,14 @@ import com.fasterxml.jackson.annotation.*;
 import edu.baylor.ecs.ciljssa.component.Component;
 import edu.baylor.ecs.ciljssa.model.AccessorType;
 import edu.baylor.ecs.ciljssa.model.InstanceType;
-import edu.baylor.ecs.ciljssa.model.MethodParam;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@EqualsAndHashCode(callSuper = false)
+//@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class MethodInfoComponent extends Component {
 
@@ -27,7 +28,9 @@ public class MethodInfoComponent extends Component {
     @JsonProperty(value = "parameters")
     private List<MethodParam> methodParams;
     @JsonProperty(value = "static_method")
-    private boolean staticMethod; // TODO: Abstract?
+    private boolean staticMethod;
+    @JsonProperty(value = "abstract_method")
+    private boolean abstractMethod;
     @JsonProperty(value = "subroutines")
     private List<MethodInfoComponent> subMethods;
     private List<AnnotationComponent> annotations;

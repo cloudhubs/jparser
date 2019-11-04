@@ -11,10 +11,12 @@ import edu.baylor.ecs.ciljssa.model.ClassOrInterface;
 import edu.baylor.ecs.ciljssa.component.impl.ClassComponent;
 import edu.baylor.ecs.ciljssa.model.InstanceType;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class ClassComponentFactory extends AbstractContainerFactory {
 
     public final ClassOrInterface TYPE = ClassOrInterface.CLASS;
@@ -30,7 +32,7 @@ public class ClassComponentFactory extends AbstractContainerFactory {
         ClassComponent output = new ClassComponent();
         List<Component> methods = createMethods(cls, output);
         List<Component> constructors = createConstructors(cls, output);
-        List<AnnotationComponent> annotations = initAnnotations(cls);
+        List<AnnotationComponent> annotations = initAnnotations(output, cls);
         List<ClassComponent> subClasses = createSubClasses(cls);
         output.setAnalysisUnit(unit);
         output.setAnnotations(annotations);

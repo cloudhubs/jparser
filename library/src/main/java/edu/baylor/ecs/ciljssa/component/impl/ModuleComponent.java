@@ -9,19 +9,24 @@ import edu.baylor.ecs.ciljssa.component.ContainerComponent;
 import edu.baylor.ecs.ciljssa.model.ContainerStereotype;
 import edu.baylor.ecs.ciljssa.model.ModuleStereotype;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class ModuleComponent extends ContainerComponent {
 
     @JsonIgnore
     private List<ClassOrInterfaceDeclaration> classOrInterfaceDeclarations;
     @JsonIgnore
     private List<MethodDeclaration> methodDeclarations;
+    @JsonIgnore
+    private List<ModuleComponent> subModules;
 
     private ModuleStereotype moduleStereotype;
-    private List<ModuleComponent> subModules;
 
     @JsonProperty(value = "class_names")
     private List<String> classNames;
@@ -35,9 +40,6 @@ public class ModuleComponent extends ContainerComponent {
     private List<ClassComponent> classes;
     private List<InterfaceComponent> interfaces;
 
-
-    // TODO: INCLUDE CONSTRUCTORS IN "methods"
-
     public ModuleComponent() {
         this.stereotype = ContainerStereotype.MODULE;
     }
@@ -47,7 +49,25 @@ public class ModuleComponent extends ContainerComponent {
      * @param list
      */
     public void setSubModules(List<ModuleComponent> list) {
+        this.subModules = list;
+        this.subComponents = list.stream().map(x -> (Component) x).collect(Collectors.toList());
+    }
 
+    @Override
+    public void addSubComponent(Component sub) {
+        if (this.subComponents == null)
+            this.subComponents = new ArrayList<>();
+        if (this.subModules == null)
+            this.subModules = new ArrayList<>();
+        this.subComponents.add(sub);
+        this.subModules.add((ModuleComponent) sub);
+    }
+
+    @Override
+    public void setSubComponents(List<Component> list) {
+        this.subComponents = list;
+        this.subModules = list.stream().map(x -> (ModuleComponent) x).collect(Collectors.toList());
     }
 
 }
+

@@ -9,10 +9,12 @@ import edu.baylor.ecs.ciljssa.factory.container.IContainerFactory;
 import edu.baylor.ecs.ciljssa.model.ClassOrInterface;
 import edu.baylor.ecs.ciljssa.model.InstanceType;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
 @Data
+@EqualsAndHashCode
 public class InterfaceComponentFactory extends AbstractContainerFactory {
 
     public final ClassOrInterface TYPE = ClassOrInterface.INTERFACE;
@@ -27,7 +29,7 @@ public class InterfaceComponentFactory extends AbstractContainerFactory {
     public Component createComponent(ClassOrInterfaceDeclaration cls, CompilationUnit unit) {
         InterfaceComponent output = new InterfaceComponent();
         List<Component> methods = createMethods(cls, output);
-        List<AnnotationComponent> annotations = initAnnotations(cls);
+        List<AnnotationComponent> annotations = initAnnotations(output, cls);
         output.setAnalysisUnit(unit);
         output.setAnnotations(annotations);
         output.setClassOrInterface(ClassOrInterface.CLASS);

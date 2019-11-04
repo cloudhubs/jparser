@@ -10,19 +10,19 @@ import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import edu.baylor.ecs.ciljssa.component.Component;
 import edu.baylor.ecs.ciljssa.model.InstanceType;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
+@EqualsAndHashCode
 @NoArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+//@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class AnnotationComponent extends Component {
 
     @JsonIgnore
     private AnnotationExpr annotation;
     @JsonIgnore
     private InstanceType instanceType = InstanceType.ANNOTATIONCOMPONENT;
-    @JsonIgnore
-    private Component parentComponent;
 
     @JsonProperty(value = "name")
     private String asString;
@@ -31,7 +31,6 @@ public class AnnotationComponent extends Component {
     private String metaModelFieldName;
     private String packageName;
     private String allowedRoles; // Only valid if is @AllowedRoles or similar annotation.
-    private String pathToComponent;
     private String instanceName;
 
     public void setAsString(String inp) {

@@ -1,9 +1,8 @@
 package edu.baylor.ecs.ciljssa.factory.container;
 
-import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
-import com.github.javaparser.ast.expr.AnnotationExpr;
 import edu.baylor.ecs.ciljssa.component.Component;
 import edu.baylor.ecs.ciljssa.component.ContainerComponent;
 import edu.baylor.ecs.ciljssa.component.impl.ClassComponent;
@@ -18,9 +17,6 @@ import edu.baylor.ecs.ciljssa.model.InstanceType;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * TODO: More of a container factory isn't it
- */
 public abstract class AbstractContainerFactory implements IContainerFactory {
 
     private Long idEnumerator = 0L;
@@ -62,33 +58,30 @@ public abstract class AbstractContainerFactory implements IContainerFactory {
 
     protected List<Component> createMethods(ClassOrInterfaceDeclaration cls, ContainerComponent parent) {
         List<Component> mds = new ArrayList<>();
-        MethodInfoFactory factory = new MethodInfoFactory();
         if (!cls.isInterface()) {
             List<MethodDeclaration> consts = cls.getMethods();
             consts.forEach(x -> {
-                MethodInfoComponent wrap = factory.createMethodInfoWrapper(x, parent);
+                MethodInfoComponent wrap = MethodInfoFactory.createMethodInfoWrapper(x, parent);
                 mds.add(wrap);
             });
         }
         return mds;
     }
 
-    //TODO: See old commits
     protected List<Component> createConstructors(ClassOrInterfaceDeclaration cls, Component parent) {
         List<Component> mds = new ArrayList<>();
-        MethodInfoFactory factory = new MethodInfoFactory();
-        /*if (!cls.isInterface()) {
-            List<ConstructorDeclaration> consts = cls.getConstructors(); // TODO: Does not work with constructors
+        if (!cls.isInterface()) {
+            List<ConstructorDeclaration> consts = cls.getConstructors();
             consts.forEach(x -> {
-                MethodInfoWrapper wrap = factory.createMethodInfoWrapperFromConstructor(x, parent);
+                MethodInfoComponent wrap = MethodInfoFactory.createMethodInfoWrapperFromConstructor(x, parent);
                 mds.add(wrap);
             });
-        }*/
+        }
         return mds;
     }
 
-    protected List<AnnotationComponent> initAnnotations(ClassOrInterfaceDeclaration cls) {
-        return AnnotationFactory.createAnnotationComponents(cls.getAnnotations());
+    protected List<AnnotationComponent> initAnnotations(Component parent, ClassOrInterfaceDeclaration cls) {
+        return AnnotationFactory.createAnnotationComponents(parent, cls.getAnnotations());
     }
 
 }

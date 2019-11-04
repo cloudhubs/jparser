@@ -57,44 +57,6 @@ public class SourceSecController {
         return ctx;
     }
 
-//    @PostMapping(value = "/analyze")
-//    public @ResponseBody BaseResponse basicAnalysis(@RequestBody RequestContext requestContext) {
-//        AnalysisContext context = retreivalService.retrieveContextFromPath(requestContext);
-//        AnalysisResultsContext result = new AnalysisResultsContext(); // TODO: BUILDER
-//        result.addAnalysisContext(context);
-//        result.setRequest(requestContext);
-//        result.setPath(requestContext.getFilepath()); // Redundant code if override setRequest to automate this
-//        return handleResult(result, ResponseCode.OK);
-//    }
-//
-//    @PostMapping("/analyze/class")
-//    public @ResponseBody BaseResponse analyzeClassFromFile(@RequestParam String name,
-//                                                               @RequestBody RequestContext requestContext) {
-//        AnalysisContext context = retreivalService.retrieveContextFromPath(requestContext);
-//        AnalysisResultsContext result = new AnalysisResultsContext();
-//        context.filterByClass(name);
-//        result.addAnalysisContext(context);
-//        result.setRequest(requestContext);
-//        result.setPath(requestContext.getFilepath());
-//        return handleResult(result, ResponseCode.OK);
-//    }
-//
-//    @PostMapping(value = "/analyze/directory")
-//    public @ResponseBody BaseResponse getAllInDirectorySmart(@RequestBody RequestContext requestContext) {
-//        List<AnalysisContext> contexts = new ArrayList<>();
-//        AnalysisResultsContext result = new AnalysisResultsContext();
-//        try {
-//            List<File> files = directoryService.getFilesFromDirectorySmart(requestContext.getFilepath());
-//            contexts = retreivalService.retrieveContextFromFiles(files, requestContext);
-//        } catch (NotDirectoryException e) {
-//            System.out.println("NotDirectoryException handled in SourceSecController.");
-//        }
-//        result.setContexts(contexts);
-//        result.setPath(requestContext.getFilepath());
-//        result.setRequest(requestContext);
-//        return handleResult(result, ResponseCode.OK);
-//    }
-
     /**
      * Handles the result and determines if the result has succeeded or not.
      * @param context The results context to wrap into a result

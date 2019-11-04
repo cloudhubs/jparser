@@ -1,8 +1,9 @@
 package edu.baylor.ecs.ciljssa.builder;
 
+import edu.baylor.ecs.ciljssa.component.Component;
 import edu.baylor.ecs.ciljssa.component.ContainerComponent;
 import edu.baylor.ecs.ciljssa.model.AccessorType;
-import edu.baylor.ecs.ciljssa.model.MethodParam;
+import edu.baylor.ecs.ciljssa.component.impl.MethodParam;
 import edu.baylor.ecs.ciljssa.component.impl.AnnotationComponent;
 import edu.baylor.ecs.ciljssa.component.impl.MethodInfoComponent;
 import lombok.NoArgsConstructor;
@@ -12,11 +13,12 @@ import java.util.List;
 @NoArgsConstructor
 public class MethodInfoBuilder {
 
-    private ContainerComponent parentComponent;
+    private Component parentComponent;
     private String methodName;
     private String returnType;
     private String rawSource;
     private boolean staticMethod;
+    private boolean abstractMethod;
     private AccessorType accessor;
     private List<MethodParam> methodParams;
     private List<AnnotationComponent> annotations; // Method annotations
@@ -33,7 +35,8 @@ public class MethodInfoBuilder {
         output.setSubMethods(this.subMethods);
         output.setReturnType(this.returnType);
         output.setRawSource(this.rawSource);
-        output.setStaticMethod(staticMethod);
+        output.setStaticMethod(this.staticMethod);
+        output.setAbstractMethod(this.abstractMethod);
         return output;
     }
 
@@ -57,6 +60,11 @@ public class MethodInfoBuilder {
         return this;
     }
 
+    public MethodInfoBuilder asAbstractMethod(boolean b) {
+        this.abstractMethod = b;
+        return this;
+    }
+
     public MethodInfoBuilder withMethodParams(List<MethodParam> methodParams) {
         this.methodParams = methodParams;
         return this;
@@ -72,7 +80,7 @@ public class MethodInfoBuilder {
         return this;
     }
 
-    public MethodInfoBuilder withParentComponent(ContainerComponent wrap) {
+    public MethodInfoBuilder withParentComponent(Component wrap) {
         this.parentComponent = wrap;
         return this;
     }

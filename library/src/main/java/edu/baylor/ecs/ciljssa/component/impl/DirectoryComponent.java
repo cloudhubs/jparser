@@ -3,11 +3,14 @@ package edu.baylor.ecs.ciljssa.component.impl;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.baylor.ecs.ciljssa.component.Component;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class DirectoryComponent extends Component {
 
@@ -19,7 +22,16 @@ public class DirectoryComponent extends Component {
 
     public boolean hasSubDirectories;
 
+    public DirectoryComponent() {
+        this.files = new ArrayList<>();
+        this.subDirectories = new ArrayList<>();
+        this.parentDirectory = null;
+        this.numFiles = 0;
+        this.path = "";
+    }
+
     public DirectoryComponent(String path) {
+        this();
         this.path = path;
     }
 
@@ -38,14 +50,18 @@ public class DirectoryComponent extends Component {
     @Override
     @JsonIgnore
     public List<Component> getSubComponents() {
-        List<Component> output = subDirectories.stream().map(e -> (Component) e).collect(Collectors.toList()); //TODO: Hacky?
-        return output;
+        return subDirectories.stream().map(e -> (Component) e).collect(Collectors.toList());
     }
 
     @Override
     public void setSubComponents(List<Component> subComponents) {
-        List<DirectoryComponent> output = subComponents.stream().map(e -> (DirectoryComponent) e).collect(Collectors.toList()); //TODO: Hacky?
-        this.subDirectories = output;
+        this.subDirectories = subComponents.stream().map(e -> (DirectoryComponent) e).collect(Collectors.toList());
     }
 
+    public void addSubDirectory(DirectoryComponent subComponent) {
+        if (this.subDirectories == null)
+            this.subDirectories = new ArrayList<>();
+        this.subDirectories.add(subComponent);
+        this.addSubComponent(subComponent);
+    }
 }

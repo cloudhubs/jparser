@@ -1,29 +1,20 @@
 package edu.baylor.ecs.ciljssa.factory.context;
 
-import com.github.javaparser.JavaParser;
-import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
-import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import edu.baylor.ecs.ciljssa.builder.AnalysisContextBuilder;
 import edu.baylor.ecs.ciljssa.component.Component;
 import edu.baylor.ecs.ciljssa.component.impl.ClassComponent;
 import edu.baylor.ecs.ciljssa.component.impl.DirectoryComponent;
 import edu.baylor.ecs.ciljssa.component.impl.InterfaceComponent;
-import edu.baylor.ecs.ciljssa.component.impl.MethodInfoComponent;
 import edu.baylor.ecs.ciljssa.component.impl.ModuleComponent;
 import edu.baylor.ecs.ciljssa.context.AnalysisContext;
-import edu.baylor.ecs.ciljssa.factory.container.AbstractContainerFactory;
-import edu.baylor.ecs.ciljssa.factory.container.ComponentFactoryProducer;
-import edu.baylor.ecs.ciljssa.factory.container.impl.ModuleComponentFactory;
-import edu.baylor.ecs.ciljssa.model.ClassOrInterface;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import edu.baylor.ecs.ciljssa.factory.container.impl.ModuleComponentFactory;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class AnalysisContextFactory {
@@ -55,7 +46,7 @@ public class AnalysisContextFactory {
         List<Component> methods = modules.stream().map(ModuleComponent::getMethods)
                 .flatMap(List::stream).collect(Collectors.toList());
 
-        AnalysisContext context = new AnalysisContextBuilder()
+        return new AnalysisContextBuilder()
                 .withModules(modules)
                 .withClassNames(classNames)
                 .withClassesAndInterfaces(cls)
@@ -69,8 +60,6 @@ public class AnalysisContextFactory {
                 .withClasses(classes)
                 .withInterfaces(interfaces)
                 .build();
-
-        return context;
     }
 
     public List<ModuleComponent> createModulesFromDirectory(DirectoryComponent doc) {

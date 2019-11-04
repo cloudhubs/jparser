@@ -3,9 +3,11 @@ package edu.baylor.ecs.ciljssa.component;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import edu.baylor.ecs.ciljssa.component.impl.DirectoryComponent;
 import edu.baylor.ecs.ciljssa.model.InstanceType;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -36,4 +38,9 @@ public abstract class Component {
         } else return null;
     }
 
+    public void addSubComponent(Component subComponent) {
+        if (this.subComponents == null)
+            this.subComponents = new ArrayList<>();
+        this.subComponents.add(subComponent);
+    }
 }

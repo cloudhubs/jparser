@@ -2,18 +2,27 @@ package edu.baylor.ecs.ciljssa.factory.directory;
 
 import edu.baylor.ecs.ciljssa.component.Component;
 import edu.baylor.ecs.ciljssa.component.impl.DirectoryComponent;
-import edu.baylor.ecs.ciljssa.context.AnalysisContext;
 import edu.baylor.ecs.ciljssa.model.InstanceType;
 
 import java.io.File;
-import java.nio.file.NotDirectoryException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class DirectoryFactory {
+
+    public static final String DEFAULT_LANGUAGE = "Java";
+
+    private String lang;
+
+    public DirectoryFactory(String language) {
+        this.lang = language;
+    }
+
+    public DirectoryFactory() {
+        this(DEFAULT_LANGUAGE);
+    }
 
     /**
      * Create directory graph from a path
@@ -24,11 +33,23 @@ public class DirectoryFactory {
         return createDirectoryGraph(null, path);
     }
 
+    /**
+     * Entry point to recursive stepping algorithm for creating directory graph
+     * @param parent
+     * @param path
+     * @return
+     */
     private DirectoryComponent createDirectoryGraph(Component parent, String path) {
         DirectoryComponent output = createDirectoryComponent(parent, path);
         return getComponent(path, output);
     }
 
+    /**
+     * Recursive algorithm, sets parent components, forms tree of directories and their files.
+     * @param path Path to component
+     * @param output Parent directory component
+     * @return
+     */
     private DirectoryComponent getComponent(String path, DirectoryComponent output) {
         List<File> files = new ArrayList<>();
         List<DirectoryComponent> subDirectories = new ArrayList<>();
@@ -43,7 +64,7 @@ public class DirectoryFactory {
                         System.out.println("NullPointerException in DirectoryFactory");
                     }
                 }
-                if (f.getName().endsWith(".java")) { // TODO: Java specific
+                if (fileTypeMatchesLanguage(f)) {
                     files.add(f);
                 }
             });
@@ -54,6 +75,18 @@ public class DirectoryFactory {
         } else {
             return null;
         }
+    }
+
+    /**
+     * Does the given file match the factory's requested language type? Currently only supports Java.
+     * @param f
+     * @return
+     */
+    private boolean fileTypeMatchesLanguage(File f) {
+        if (lang.equalsIgnoreCase("java")) {
+            return f.getName().endsWith(".java");
+        }
+        return false;
     }
 
     /**
