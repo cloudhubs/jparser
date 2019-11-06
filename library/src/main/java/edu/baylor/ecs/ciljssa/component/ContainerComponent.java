@@ -16,7 +16,6 @@ public abstract class ContainerComponent extends Component {
 
     protected Long id;
     protected AccessorType accessor;
-    protected String packageName;
     protected ContainerStereotype stereotype;
     protected List<Component> methods;
 

@@ -8,6 +8,11 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/**
+ * This class should become deprecated in future versions. We should just map sub components to a single list.
+ *
+ * As it stands now, ClassComponents contain only 1 sub component, which is a meta sub component.
+ */
 @Data
 @NoArgsConstructor
 public class MetaSubComponent extends Component {
@@ -35,11 +40,6 @@ public class MetaSubComponent extends Component {
     @Override
     public void setPackageName(String name) {
         this.parent.setPackageName(name);
-    }
-
-    @Override
-    public String getInstanceName() {
-        return this.parent.getInstanceName() + "::MetaSubComponent";
     }
 
     @Override

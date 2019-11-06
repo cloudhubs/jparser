@@ -3,6 +3,7 @@ package edu.baylor.ecs.ciljssa.component;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.baylor.ecs.ciljssa.component.impl.DirectoryComponent;
 import edu.baylor.ecs.ciljssa.model.InstanceType;
 import lombok.Data;
@@ -15,11 +16,13 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class Component {
 
-    protected String path;
-    protected String packageName;
-    protected String instanceName;
     @JsonIgnore
     protected Component parent;
+
+    protected String path;
+    @JsonProperty(value = "package_name")
+    protected String packageName;
+    protected String instanceName;
     protected InstanceType instanceType;
     protected List<Component> subComponents;
 

@@ -32,7 +32,7 @@ public class ClassComponent extends ClassOrInterfaceComponent {
         if (analysisUnit.getPackageDeclaration().isPresent()) {
             return analysisUnit.getPackageDeclaration().get().getNameAsString();
         } else {
-            return "NA";
+            return "N/A";
         }
     }
 

@@ -204,7 +204,7 @@ public class MethodInfoFactory {
             List<MethodParam> arguments = new ArrayList<>();
             call.getArguments().forEach(x -> {
                 MethodParam param = new MethodParam(); //TODO: Doesn't work for expr
-                param.setType(x.calculateResolvedType().getClass()); //TODO: Always parameter object
+                //param.setType(x.calculateResolvedType().getClass()); //TODO: Always parameter object
                 param.setParameterType(x.toString());
                 arguments.add(param);
             });

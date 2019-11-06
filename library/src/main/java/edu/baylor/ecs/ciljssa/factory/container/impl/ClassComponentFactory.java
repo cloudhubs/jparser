@@ -46,8 +46,6 @@ public class ClassComponentFactory extends AbstractContainerFactory {
     @Override
     public Component createComponent(ModuleComponent parent, ClassOrInterfaceDeclaration cls, CompilationUnit unit) {
         ClassComponent output = new ClassComponent();
-        List<Component> methods = createMethods(cls, output);
-        List<Component> constructors = createConstructors(cls, output);
         List<AnnotationComponent> annotations = initAnnotations(output, cls);
         List<ClassComponent> subClasses = createSubClasses(cls);
         output.setAnalysisUnit(unit);
@@ -55,18 +53,21 @@ public class ClassComponentFactory extends AbstractContainerFactory {
         output.setClassOrInterface(ClassOrInterface.CLASS);
         output.setCls(cls);
         output.setCompilationUnit(unit);
-        output.setConstructors(constructors);
         output.setId(getId());
         output.setInstanceName(cls.getName().asString());
         output.setInstanceType(InstanceType.CLASSCOMPONENT);
-        output.setMethods(methods);
         output.setMethodDeclarations(cls.getMethods());
         output.setPackageName("N/A"); // TODO: Set package name
         output.setParentComponent(parent);
-        output.setSubComponents(createMetaSubComponentAsList(output, methods, constructors, annotations, subClasses));
         output.setStereotype(createStereotype(cls));
         output.setId(getId());
         output.setClassFields(generateClassFields(cls));
+
+        List<Component> methods = createMethods(cls, output);
+        List<Component> constructors = createConstructors(cls, output);
+        output.setMethods(methods);
+        output.setConstructors(constructors);
+        output.setSubComponents(createMetaSubComponentAsList(output, methods, constructors, annotations, subClasses));
         return output;
     }
 

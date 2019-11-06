@@ -34,7 +34,6 @@ public class InterfaceComponentFactory extends AbstractContainerFactory {
     @Override
     public Component createComponent(ModuleComponent parent, ClassOrInterfaceDeclaration cls, CompilationUnit unit) {
         InterfaceComponent output = new InterfaceComponent();
-        List<Component> methods = createMethods(cls, output);
         List<AnnotationComponent> annotations = initAnnotations(output, cls);
         output.setAnalysisUnit(unit);
         output.setAnnotations(annotations);
@@ -44,13 +43,15 @@ public class InterfaceComponentFactory extends AbstractContainerFactory {
         output.setId(getId());
         output.setInstanceName(cls.getName().asString());
         output.setInstanceType(InstanceType.CLASSCOMPONENT);
-        output.setMethods(methods);
         output.setMethodDeclarations(cls.getMethods());
         output.setPackageName("N/A"); // TODO: Set package name
         output.setParentComponent(parent);
-        output.setSubComponents(createMetaSubComponentAsList(output, methods, null, annotations, null));
         output.setStereotype(createStereotype(cls));
         output.setId(getId());
+
+        List<Component> methods = createMethods(cls, output);
+        output.setMethods(methods);
+        output.setSubComponents(createMetaSubComponentAsList(output, methods, null, annotations, null));
         return output;
     }
 
