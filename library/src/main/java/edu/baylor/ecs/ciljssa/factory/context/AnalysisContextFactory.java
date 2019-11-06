@@ -10,7 +10,6 @@ import edu.baylor.ecs.ciljssa.component.impl.InterfaceComponent;
 import edu.baylor.ecs.ciljssa.component.impl.ModuleComponent;
 import edu.baylor.ecs.ciljssa.context.AnalysisContext;
 
-import edu.baylor.ecs.ciljssa.factory.container.AbstractContainerFactory;
 import edu.baylor.ecs.ciljssa.factory.container.impl.ModuleComponentFactory;
 
 import java.util.ArrayList;

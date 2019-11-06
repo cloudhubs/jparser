@@ -154,6 +154,7 @@ public class ModuleComponentFactory extends AbstractContainerFactory {
         for(ClassOrInterfaceDeclaration cls : classOrInterfaces) {
             ClassOrInterface type = cls.isInterface() ? ClassOrInterface.INTERFACE : ClassOrInterface.CLASS;
             AbstractContainerFactory factory = ComponentFactoryProducer.getFactory(type); //TODO: Could make as singletons and return reference
+            assert factory != null;
             Component coi = factory.createComponent(module, cls, unit);
             clsList.add(coi);
         }

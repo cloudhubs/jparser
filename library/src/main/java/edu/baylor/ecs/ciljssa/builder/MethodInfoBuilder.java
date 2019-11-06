@@ -5,6 +5,7 @@ import edu.baylor.ecs.ciljssa.model.AccessorType;
 import edu.baylor.ecs.ciljssa.component.impl.MethodParam;
 import edu.baylor.ecs.ciljssa.component.impl.AnnotationComponent;
 import edu.baylor.ecs.ciljssa.component.impl.MethodInfoComponent;
+import edu.baylor.ecs.ciljssa.model.InstanceType;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
@@ -13,36 +14,75 @@ import java.util.List;
 public class MethodInfoBuilder {
 
     private long id;
-    private Component parentComponent;
+    private String path;
+    private String rawSource;
     private String methodName;
     private String returnType;
-    private String rawSource;
+    private String packageName;
+    private String instanceName;
     private boolean staticMethod;
-    private boolean abstractMethod;
     private AccessorType accessor;
+    private boolean abstractMethod;
+    private List<String> statements;
+    private Component parentComponent;
+    private List<Component> subComponents;
     private List<MethodParam> methodParams;
-    private List<AnnotationComponent> annotations; // Method annotations
     private List<MethodInfoComponent> subMethods;
+    private List<AnnotationComponent> annotations; // Method annotations
 
+    /**
+     * Creates a MethodInfoComponent based on the parameters passed to the builder.
+     * InstanceType is automatically handled in the constructor of MethodInfoComponent so it is not listed here.
+     * @return A MethodInfoComponent
+     */
     public MethodInfoComponent build() {
         MethodInfoComponent output = new MethodInfoComponent();
-        output.setParent(this.parentComponent);
+        output.setId(this.id);
+        output.setPath(this.path);
         output.setAccessor(this.accessor);
-        output.setParent(this.parentComponent);
-        output.setAnnotations(this.annotations);
+        output.setRawSource(this.rawSource);
         output.setMethodName(this.methodName);
-        output.setMethodParams(this.methodParams);
         output.setSubMethods(this.subMethods);
         output.setReturnType(this.returnType);
-        output.setRawSource(this.rawSource);
+        output.setStatements(this.statements);
+        output.setParent(this.parentComponent);
+        output.setAnnotations(this.annotations);
+        output.setPackageName(this.packageName);
+        output.setMethodParams(this.methodParams);
         output.setStaticMethod(this.staticMethod);
+        output.setInstanceName(this.instanceName);
+        output.setSubComponents(this.subComponents);
         output.setAbstractMethod(this.abstractMethod);
-        output.setId(this.id);
         return output;
+    }
+
+    public MethodInfoBuilder withInstanceName(String name) {
+        this.instanceName = name;
+        return this;
+    }
+
+    public MethodInfoBuilder withPackageName(String packageName) {
+        this.packageName = packageName;
+        return this;
+    }
+
+    public MethodInfoBuilder withPath(String path) {
+        this.path = path;
+        return this;
+    }
+
+    public MethodInfoBuilder withSubComponents(List<Component> subComponents) {
+        this.subComponents = subComponents;
+        return this;
     }
 
     public MethodInfoBuilder withId(long id) {
         this.id = id;
+        return this;
+    }
+
+    public MethodInfoBuilder withStatements(List<String> statements) {
+        this.statements = statements;
         return this;
     }
 

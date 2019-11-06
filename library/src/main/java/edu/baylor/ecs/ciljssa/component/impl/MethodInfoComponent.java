@@ -19,20 +19,21 @@ public class MethodInfoComponent extends Component {
     @JsonIgnore
     private String rawSource;
 
-    private AccessorType accessor;
+    private AccessorType accessor; //
     @JsonProperty(value = "method_name")
-    private String methodName;
+    private String methodName; //
     @JsonProperty(value = "return_type")
-    private String returnType;
+    private String returnType; //
     @JsonProperty(value = "parameters")
-    private List<MethodParam> methodParams;
+    private List<MethodParam> methodParams; //
     @JsonProperty(value = "static_method")
-    private boolean staticMethod;
+    private boolean staticMethod; //
     @JsonProperty(value = "abstract_method")
-    private boolean abstractMethod;
+    private boolean abstractMethod; //
     @JsonProperty(value = "subroutines")
-    private List<MethodInfoComponent> subMethods;
-    private List<AnnotationComponent> annotations;
+    private List<MethodInfoComponent> subMethods; //
+    private List<AnnotationComponent> annotations; //
+    private List<String> statements; //
 
     public MethodInfoComponent() {
         this.instanceType = InstanceType.METHODCOMPONENT;
@@ -60,10 +61,6 @@ public class MethodInfoComponent extends Component {
         } else {
             return null;
         }
-    }
-
-    public String getSourceAsString() {
-        return rawSource;
     }
 
 }

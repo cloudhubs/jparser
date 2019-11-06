@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MethodParam extends Component {
 
-    @JsonIgnore
+   // @JsonIgnore
     private Class<?> type;
 
     private AnnotationComponent annotation;

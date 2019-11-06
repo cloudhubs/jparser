@@ -44,7 +44,7 @@ public class AnnotationComponent extends Component {
      * Determine the parameter type (single, multi, none) for a given annotation.
      * @return "none" for MarkerAnnotationExpr, "single" for SingleMemberAnnotationExpr, "multi" for NormalAnnotationExpr
      */
-    @JsonProperty(value = "annotation_parameter_type")
+    @JsonProperty(value = "annotation_param_type")
     public String annotationParamType() {
         if (annotation instanceof MarkerAnnotationExpr) {
             return "none";
