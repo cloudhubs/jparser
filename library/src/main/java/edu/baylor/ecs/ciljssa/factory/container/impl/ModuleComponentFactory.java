@@ -56,8 +56,10 @@ public class ModuleComponentFactory extends AbstractContainerFactory {
     }
 
     public ModuleComponent createComponent(ModuleComponent parent, DirectoryComponent dir) {
-        ModuleComponent module = new ModuleComponent();
         long id = getId();
+        ModuleComponent module = new ModuleComponent();
+        module.setLanguage(dir.getLanguage());
+        module.setPath(dir.getPath());
         List<ClassOrInterfaceDeclaration> allClassOrInterfaces = new ArrayList<>();
         List<Component> allCOIComponents = new ArrayList<>();
         for (File f : dir.getFiles()) {
@@ -74,7 +76,6 @@ public class ModuleComponentFactory extends AbstractContainerFactory {
                 .map(x -> (InterfaceComponent)x).collect(Collectors.toList());
         module.setParent(parent);
         module.setInstanceType(InstanceType.MODULECOMPONENT);
-        module.setPath(dir.getPath());
         module.setPackageName(dir.getPath()+"::"+id);
         module.setInstanceName(dir.getPath()+"::ModuleComponent::"+id); //TODO: Perhaps not this
         module.setClassOrInterfaceDeclarations(allClassOrInterfaces);

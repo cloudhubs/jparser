@@ -68,6 +68,7 @@ public class DirectoryFactory {
                     files.add(f);
                 }
             });
+            output.setLanguage(this.lang);
             output.setFiles(files);
             output.setSubDirectories(subDirectories);
             if (subDirectories.size() == 0) output.setHasSubDirectories(false); else output.setHasSubDirectories(true);

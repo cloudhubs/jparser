@@ -16,6 +16,7 @@ import edu.baylor.ecs.ciljssa.model.AccessorType;
 import edu.baylor.ecs.ciljssa.model.ClassOrInterface;
 import edu.baylor.ecs.ciljssa.component.impl.ClassComponent;
 import edu.baylor.ecs.ciljssa.model.InstanceType;
+import edu.baylor.ecs.ciljssa.model.LanguageFileType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -58,11 +59,13 @@ public class ClassComponentFactory extends AbstractContainerFactory {
         output.setInstanceType(InstanceType.CLASSCOMPONENT);
         output.setMethodDeclarations(cls.getMethods());
         output.setPackageName("N/A"); // TODO: Set package name
-        output.setParentComponent(parent);
+        output.setParent(parent);
         output.setStereotype(createStereotype(cls));
         output.setId(getId());
         output.setClassFields(generateClassFields(cls));
-
+        output.setRawSource(cls.toString());
+        output.setPath(parent.getPath() + "/" + cls.getNameAsString() + "."
+                + LanguageFileType.fromString(parent.getLanguage()).asString().toLowerCase()); //TODO: Use appropriate directory separater for OS
         List<Component> methods = createMethods(cls, output);
         List<Component> constructors = createConstructors(cls, output);
         output.setMethods(methods);

@@ -16,9 +16,8 @@ public class MethodInfoComponent extends Component {
 
     private Long id;
 
-    @JsonIgnore
+    @JsonProperty(value = "method_body")
     private String rawSource;
-
     private AccessorType accessor; //
     @JsonProperty(value = "method_name")
     private String methodName; //

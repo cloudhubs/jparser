@@ -19,6 +19,8 @@ import java.util.stream.Collectors;
 public class ModuleComponent extends ContainerComponent {
 
     @JsonIgnore
+    private String language;
+    @JsonIgnore
     private List<ClassOrInterfaceDeclaration> classOrInterfaceDeclarations;
     @JsonIgnore
     private List<ModuleComponent> subModules;

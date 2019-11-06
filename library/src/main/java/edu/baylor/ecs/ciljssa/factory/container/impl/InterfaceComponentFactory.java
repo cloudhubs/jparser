@@ -8,6 +8,7 @@ import edu.baylor.ecs.ciljssa.factory.container.AbstractContainerFactory;
 import edu.baylor.ecs.ciljssa.factory.container.IContainerFactory;
 import edu.baylor.ecs.ciljssa.model.ClassOrInterface;
 import edu.baylor.ecs.ciljssa.model.InstanceType;
+import edu.baylor.ecs.ciljssa.model.LanguageFileType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -45,11 +46,14 @@ public class InterfaceComponentFactory extends AbstractContainerFactory {
         output.setInstanceType(InstanceType.CLASSCOMPONENT);
         output.setMethodDeclarations(cls.getMethods());
         output.setPackageName("N/A"); // TODO: Set package name
-        output.setParentComponent(parent);
+        output.setParent(parent);
         output.setStereotype(createStereotype(cls));
         output.setId(getId());
-
+        output.setRawSource(cls.toString());
+        output.setPath(parent.getPath() + "/" + cls.getNameAsString() + "."
+                + LanguageFileType.fromString(parent.getLanguage().toLowerCase()).asString()); //TODO: Use appropriate directory separater for OS
         List<Component> methods = createMethods(cls, output);
+        List<Component> constructors = createConstructors(cls, output);
         output.setMethods(methods);
         output.setSubComponents(createMetaSubComponentAsList(output, methods, null, annotations, null));
         return output;

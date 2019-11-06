@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 @Data
 public class DirectoryComponent extends Component {
 
+    private String language;
     private List<File> files;
     private List<DirectoryComponent> subDirectories;
     @JsonIgnore
