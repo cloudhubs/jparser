@@ -1,10 +1,14 @@
 package edu.baylor.ecs.ciljssa.factory.container.impl;
 
 import com.github.javaparser.JavaParser;
+import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
+import com.github.javaparser.symbolsolver.JavaSymbolSolver;
+import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSolver;
+import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver;
 import edu.baylor.ecs.ciljssa.builder.ModuleBuilder;
 import edu.baylor.ecs.ciljssa.component.Component;
 import edu.baylor.ecs.ciljssa.component.ContainerComponent;
@@ -27,6 +31,11 @@ import java.util.stream.Collectors;
 
 public class ModuleComponentFactory extends AbstractContainerFactory {
 
+    private static AbstractContainerFactory INSTANCE;
+
+    private ModuleComponentFactory() {
+    }
+
     /**
      * Returns null because Modules have no class or interface declaration
      * @param cls
@@ -35,19 +44,27 @@ public class ModuleComponentFactory extends AbstractContainerFactory {
      */
     @Override
     @Deprecated
-    public Component createComponent(ClassOrInterfaceDeclaration cls, CompilationUnit unit) {
+    public Component createComponent(ModuleComponent parent, ClassOrInterfaceDeclaration cls, CompilationUnit unit) {
         return null;
     }
 
-    public ModuleComponent createComponent(DirectoryComponent dir, ModuleComponent parent) {
+    public static AbstractContainerFactory getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new ModuleComponentFactory();
+        }
+        return INSTANCE;
+    }
+
+    public ModuleComponent createComponent(ModuleComponent parent, DirectoryComponent dir) {
         ModuleComponent module = new ModuleComponent();
+        long id = getId();
         List<ClassOrInterfaceDeclaration> allClassOrInterfaces = new ArrayList<>();
         List<Component> allCOIComponents = new ArrayList<>();
         for (File f : dir.getFiles()) {
             CompilationUnit unit = createCompilationUnit(f);
             List<ClassOrInterfaceDeclaration> cls = createClassOrInterfaceDeclarations(unit);
             allClassOrInterfaces.addAll(cls);
-            allCOIComponents.addAll(createClassesAndInterfaces(unit, cls));
+            allCOIComponents.addAll(createClassesAndInterfaces(module, unit, cls));
         }
         List<ClassComponent> ccd = allCOIComponents.stream()
                 .filter(x -> x instanceof ClassComponent)
@@ -58,8 +75,8 @@ public class ModuleComponentFactory extends AbstractContainerFactory {
         module.setParent(parent);
         module.setInstanceType(InstanceType.MODULECOMPONENT);
         module.setPath(dir.getPath());
-        module.setPackageName(dir.getPackageName());
-        module.setInstanceName(dir.getPackageName()+"::ModuleComponent"); //TODO: Perhaps not this
+        module.setPackageName(dir.getPath()+"::"+id);
+        module.setInstanceName(dir.getPath()+"::ModuleComponent::"+id); //TODO: Perhaps not this
         module.setClassOrInterfaceDeclarations(allClassOrInterfaces);
         module.setClassesAndInterfaces(allCOIComponents);
         module.setClasses(ccd);
@@ -69,6 +86,7 @@ public class ModuleComponentFactory extends AbstractContainerFactory {
         module.setModuleStereotype(ModuleStereotype.FABRICATED);
         module.setMethods(extractMethodComponents(allCOIComponents));
         module.setMethodDeclarations(extractMethods(allCOIComponents));
+        module.setId(id);
         return module;
     }
 
@@ -95,10 +113,15 @@ public class ModuleComponentFactory extends AbstractContainerFactory {
     }
 
     private CompilationUnit createCompilationUnit(File file) {
-        JavaParser parser = new JavaParser();
+        CombinedTypeSolver combinedTypeSolver = new CombinedTypeSolver();
+        combinedTypeSolver.add(new ReflectionTypeSolver());
+
+        // Configure JavaParser to use type resolution
+        JavaSymbolSolver symbolSolver = new JavaSymbolSolver(combinedTypeSolver);
+        StaticJavaParser.getConfiguration().setSymbolResolver(symbolSolver);
         CompilationUnit unit = null;
         try {
-            unit = parser.parse(file).getResult().get();
+            unit = StaticJavaParser.parse(file);
         } catch (FileNotFoundException e) {
             e.printStackTrace(); // TODO: Logger
         }
@@ -126,12 +149,12 @@ public class ModuleComponentFactory extends AbstractContainerFactory {
     }
 
     //TODO: Module
-    private List<Component> createClassesAndInterfaces(CompilationUnit unit, List<ClassOrInterfaceDeclaration> classOrInterfaces) {
+    private List<Component> createClassesAndInterfaces(ModuleComponent module, CompilationUnit unit, List<ClassOrInterfaceDeclaration> classOrInterfaces) {
         List<Component> clsList = new ArrayList<>();
         for(ClassOrInterfaceDeclaration cls : classOrInterfaces) {
             ClassOrInterface type = cls.isInterface() ? ClassOrInterface.INTERFACE : ClassOrInterface.CLASS;
-            AbstractContainerFactory factory = ComponentFactoryProducer.getFactory(type, null); //TODO: Could make as singletons and return reference
-            Component coi = factory.createComponent(cls, unit);
+            AbstractContainerFactory factory = ComponentFactoryProducer.getFactory(type); //TODO: Could make as singletons and return reference
+            Component coi = factory.createComponent(module, cls, unit);
             clsList.add(coi);
         }
         return clsList;

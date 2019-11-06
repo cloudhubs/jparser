@@ -17,7 +17,6 @@ import java.util.List;
 
 @Data
 public abstract class ClassOrInterfaceComponent extends ContainerComponent {
-    protected Long id;
 
     @JsonIgnore
     protected Component parentComponent;

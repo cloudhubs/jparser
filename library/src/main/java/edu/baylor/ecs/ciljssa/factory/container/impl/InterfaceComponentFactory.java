@@ -17,16 +17,22 @@ import java.util.List;
 @EqualsAndHashCode
 public class InterfaceComponentFactory extends AbstractContainerFactory {
 
+    private static AbstractContainerFactory INSTANCE;
+
     public final ClassOrInterface TYPE = ClassOrInterface.INTERFACE;
 
-    private ModuleComponent parent;
+    private InterfaceComponentFactory() {
+    }
 
-    public InterfaceComponentFactory(ModuleComponent module) {
-        this.parent = module;
+    public static AbstractContainerFactory getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new InterfaceComponentFactory();
+        }
+        return INSTANCE;
     }
 
     @Override
-    public Component createComponent(ClassOrInterfaceDeclaration cls, CompilationUnit unit) {
+    public Component createComponent(ModuleComponent parent, ClassOrInterfaceDeclaration cls, CompilationUnit unit) {
         InterfaceComponent output = new InterfaceComponent();
         List<Component> methods = createMethods(cls, output);
         List<AnnotationComponent> annotations = initAnnotations(output, cls);
@@ -44,6 +50,7 @@ public class InterfaceComponentFactory extends AbstractContainerFactory {
         output.setParentComponent(parent);
         output.setSubComponents(createMetaSubComponentAsList(output, methods, null, annotations, null));
         output.setStereotype(createStereotype(cls));
+        output.setId(getId());
         return output;
     }
 

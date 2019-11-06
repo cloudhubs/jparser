@@ -10,6 +10,7 @@ import edu.baylor.ecs.ciljssa.component.impl.InterfaceComponent;
 import edu.baylor.ecs.ciljssa.component.impl.ModuleComponent;
 import edu.baylor.ecs.ciljssa.context.AnalysisContext;
 
+import edu.baylor.ecs.ciljssa.factory.container.AbstractContainerFactory;
 import edu.baylor.ecs.ciljssa.factory.container.impl.ModuleComponentFactory;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class AnalysisContextFactory {
     private ModuleComponentFactory moduleFactory;
 
     public AnalysisContextFactory() {
-        this.moduleFactory = new ModuleComponentFactory();
+        this.moduleFactory = (ModuleComponentFactory) ModuleComponentFactory.getInstance();
     }
 
     public AnalysisContext createAnalysisContextFromDirectoryGraph(DirectoryComponent root) {
@@ -36,7 +37,7 @@ public class AnalysisContextFactory {
         List<InterfaceComponent> interfaces = modules.stream().map(ModuleComponent::getInterfaces)
                 .flatMap(List::stream).collect(Collectors.toList());
         Map<ModuleComponent, String> packageMap = modules.stream()
-                .collect(Collectors.toMap(p -> p, ModuleComponent::getPackageName));
+                .collect(Collectors.toMap(p -> p, ModuleComponent::getPackageName, (p1, p2)->p1)); // Merge
         List<Component> cls = modules.stream().map(ModuleComponent::getClassesAndInterfaces)
                 .flatMap(List::stream).collect(Collectors.toList());
         List<ClassOrInterfaceDeclaration> clsd = modules.stream().map(ModuleComponent::getClassOrInterfaceDeclarations)
@@ -71,7 +72,7 @@ public class AnalysisContextFactory {
         ModuleComponent module = new ModuleComponent();
         if (doc.getNumFiles() > 0) {
             // create parent directory
-            module = moduleFactory.createComponent(doc, parent);
+            module = moduleFactory.createComponent(parent, doc);
             module.setParent(parent);
             list.add(module);
         }

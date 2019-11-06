@@ -1,7 +1,6 @@
 package edu.baylor.ecs.ciljssa.builder;
 
 import edu.baylor.ecs.ciljssa.component.Component;
-import edu.baylor.ecs.ciljssa.component.ContainerComponent;
 import edu.baylor.ecs.ciljssa.model.AccessorType;
 import edu.baylor.ecs.ciljssa.component.impl.MethodParam;
 import edu.baylor.ecs.ciljssa.component.impl.AnnotationComponent;
@@ -13,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 public class MethodInfoBuilder {
 
+    private long id;
     private Component parentComponent;
     private String methodName;
     private String returnType;
@@ -37,7 +37,13 @@ public class MethodInfoBuilder {
         output.setRawSource(this.rawSource);
         output.setStaticMethod(this.staticMethod);
         output.setAbstractMethod(this.abstractMethod);
+        output.setId(this.id);
         return output;
+    }
+
+    public MethodInfoBuilder withId(long id) {
+        this.id = id;
+        return this;
     }
 
     public MethodInfoBuilder withMethodName(String name) {

@@ -51,15 +51,15 @@ public abstract class ImplementationTests {
     public void init() {
         directoryFactory = new DirectoryFactory("Java");
         annotationFactory = new AnnotationFactory();
-        moduleComponentFactory = new ModuleComponentFactory();
+        moduleComponentFactory = (ModuleComponentFactory) ModuleComponentFactory.getInstance();
         analysisContextFactory = new AnalysisContextFactory();
-        methodInfoFactory = new MethodInfoFactory();
+        methodInfoFactory = MethodInfoFactory.getInstance();
 
         setUpDirectoryComponent();
         setUpDefaultModule();
 
-        classComponentFactory = new ClassComponentFactory(defaultModule);
-        interfaceComponentFactory = new InterfaceComponentFactory(defaultModule);
+        classComponentFactory = (ClassComponentFactory) ClassComponentFactory.getInstance();
+        interfaceComponentFactory = (InterfaceComponentFactory) InterfaceComponentFactory.getInstance();
     }
 
     protected void setUpDirectoryComponent() {
@@ -80,9 +80,9 @@ public abstract class ImplementationTests {
     protected void setUpDefaultModule() {
         ModuleComponent parent = new ModuleComponent();
         parent.setInstanceName("PARENT");
-        this.defaultModule = moduleComponentFactory.createComponent(defaultDirectory, parent);
+        this.defaultModule = moduleComponentFactory.createComponent(parent, defaultDirectory);
         ModuleComponent defaultSub = moduleComponentFactory
-                .createComponent(defaultDirectory.getSubDirectories().get(0), defaultModule);
+                .createComponent(defaultModule, defaultDirectory.getSubDirectories().get(0));
         this.defaultModule.addSubComponent(defaultSub);
     }
 

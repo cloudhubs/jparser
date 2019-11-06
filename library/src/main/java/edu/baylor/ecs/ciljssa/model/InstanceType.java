@@ -9,5 +9,6 @@ public enum InstanceType {
     DIRECTORYCOMPONENT,
     FIELDCOMPONENT,
     IMPORTCOMPONENT,
+    CLASSFIELD,
     META;
 }

@@ -21,6 +21,7 @@ public class ClassComponent extends ClassOrInterfaceComponent {
     @JsonIgnore
     protected CompilationUnit compilationUnit;
     private List<Component> constructors;
+    private List<ClassField> classFields;
 
     public ClassComponent() {
         this.instanceType = InstanceType.CLASSCOMPONENT;

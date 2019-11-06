@@ -99,6 +99,7 @@ public class DirectoryFactory {
         DirectoryComponent output = new DirectoryComponent(path);
         output.setInstanceName(path + "::DirectoryComponent");
         output.setPackageName(path + "::PackageName");
+        output.setPath(path);
         output.setInstanceType(InstanceType.DIRECTORYCOMPONENT);
         output.setParent(parent);
         return output;

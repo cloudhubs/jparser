@@ -16,13 +16,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
 public class ModuleComponent extends ContainerComponent {
 
     @JsonIgnore
     private List<ClassOrInterfaceDeclaration> classOrInterfaceDeclarations;
-    @JsonIgnore
-    private List<MethodDeclaration> methodDeclarations;
     @JsonIgnore
     private List<ModuleComponent> subModules;
 

@@ -14,7 +14,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
-@EqualsAndHashCode
 @NoArgsConstructor
 //@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class AnnotationComponent extends Component {
@@ -45,7 +44,7 @@ public class AnnotationComponent extends Component {
      * Determine the parameter type (single, multi, none) for a given annotation.
      * @return "none" for MarkerAnnotationExpr, "single" for SingleMemberAnnotationExpr, "multi" for NormalAnnotationExpr
      */
-    @JsonProperty(value = "param_type")
+    @JsonProperty(value = "annotation_parameter_type")
     public String annotationParamType() {
         if (annotation instanceof MarkerAnnotationExpr) {
             return "none";

@@ -1,4 +1,4 @@
-package edu.baylor.ecs.ciljssa.context;
+package edu.baylor.ecs.ciljssa.serializer;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;

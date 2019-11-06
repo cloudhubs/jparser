@@ -3,7 +3,6 @@ package edu.baylor.ecs.ciljssa.context;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import edu.baylor.ecs.ciljssa.component.Component;
@@ -11,10 +10,10 @@ import edu.baylor.ecs.ciljssa.component.impl.ClassComponent;
 import edu.baylor.ecs.ciljssa.component.impl.DirectoryComponent;
 import edu.baylor.ecs.ciljssa.component.impl.InterfaceComponent;
 import edu.baylor.ecs.ciljssa.component.impl.ModuleComponent;
+import edu.baylor.ecs.ciljssa.serializer.ModulePackageMapSerializer;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.File;
 import java.util.List;
 import java.util.Map;
 

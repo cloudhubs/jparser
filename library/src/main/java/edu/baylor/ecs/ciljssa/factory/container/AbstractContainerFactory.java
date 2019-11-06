@@ -19,7 +19,7 @@ import java.util.List;
 
 public abstract class AbstractContainerFactory implements IContainerFactory {
 
-    private Long idEnumerator = 0L;
+    private static Long idEnumerator = 0L;
 
     protected Long getId() {
         idEnumerator++;
@@ -61,7 +61,7 @@ public abstract class AbstractContainerFactory implements IContainerFactory {
         if (!cls.isInterface()) {
             List<MethodDeclaration> consts = cls.getMethods();
             consts.forEach(x -> {
-                MethodInfoComponent wrap = MethodInfoFactory.createMethodInfoWrapper(x, parent);
+                MethodInfoComponent wrap = MethodInfoFactory.getInstance().createMethodInfoWrapper(x, parent);
                 mds.add(wrap);
             });
         }
@@ -73,7 +73,8 @@ public abstract class AbstractContainerFactory implements IContainerFactory {
         if (!cls.isInterface()) {
             List<ConstructorDeclaration> consts = cls.getConstructors();
             consts.forEach(x -> {
-                MethodInfoComponent wrap = MethodInfoFactory.createMethodInfoWrapperFromConstructor(x, parent);
+                MethodInfoComponent wrap = MethodInfoFactory.getInstance()
+                        .createMethodInfoWrapperFromConstructor(x, parent);
                 mds.add(wrap);
             });
         }
