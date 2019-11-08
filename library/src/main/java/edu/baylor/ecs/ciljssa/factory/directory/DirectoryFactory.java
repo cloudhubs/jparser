@@ -61,7 +61,7 @@ public class DirectoryFactory {
                         DirectoryComponent sub = createDirectoryGraph(output, f.getPath());
                         subDirectories.add(sub);
                     } catch (NullPointerException e) {
-                        System.out.println("NullPointerException in DirectoryFactory");
+                        System.out.println("NullPointerException in DirectoryFactory"); //TODO Log
                     }
                 }
                 if (fileTypeMatchesLanguage(f)) {

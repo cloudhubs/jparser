@@ -27,6 +27,15 @@ public class ClassComponent extends ClassOrInterfaceComponent {
         this.instanceType = InstanceType.CLASSCOMPONENT;
     }
 
+    /**
+     * Does the same thing as getInstanceName() however this is more intuitive for users.
+     * @return
+     */
+    @JsonIgnore
+    public String getClassName() {
+        return this.instanceName;
+    }
+
     @Override
     public String getPackageName() {
         if (analysisUnit.getPackageDeclaration().isPresent()) {

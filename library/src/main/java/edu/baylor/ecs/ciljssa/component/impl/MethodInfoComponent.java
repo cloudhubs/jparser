@@ -14,10 +14,10 @@ import java.util.List;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class MethodInfoComponent extends Component {
 
-    private Long id;
-
-    @JsonProperty(value = "method_body")
+    @JsonIgnore
     private String rawSource;
+
+    private Long id;
     private AccessorType accessor; //
     @JsonProperty(value = "method_name")
     private String methodName; //

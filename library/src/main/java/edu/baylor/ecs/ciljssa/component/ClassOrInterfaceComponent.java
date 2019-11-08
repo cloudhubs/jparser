@@ -9,7 +9,6 @@ import edu.baylor.ecs.ciljssa.component.impl.AnnotationComponent;
 import edu.baylor.ecs.ciljssa.component.impl.MetaSubComponent;
 import edu.baylor.ecs.ciljssa.model.ClassOrInterface;
 import edu.baylor.ecs.ciljssa.model.ContainerStereotype;
-import edu.baylor.ecs.ciljssa.model.InstanceType;
 import lombok.Data;
 
 import java.util.List;
@@ -28,8 +27,6 @@ public abstract class ClassOrInterfaceComponent extends ContainerComponent {
     protected List<MethodDeclaration> methodDeclarations;
     @JsonIgnore
     protected String rawSource;
-    @JsonIgnore
-    protected InstanceType instanceType;
 
     @JsonProperty
     protected String path;

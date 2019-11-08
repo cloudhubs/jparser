@@ -24,6 +24,10 @@ public class ExampleClass {
         boolean interfaceExampleMethod();
     }
 
+    public static void main(String[] args) {
+        System.out.println("Hello World!");
+    }
+
     @Data
     public static class SubClass {
 

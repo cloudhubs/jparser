@@ -1,5 +1,6 @@
 package edu.baylor.ecs.ciljssa.app;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.baylor.ecs.ciljssa.app.response.BadResponse;
 import edu.baylor.ecs.ciljssa.app.response.BaseResponse;
 import edu.baylor.ecs.ciljssa.app.response.OkResponse;
@@ -14,6 +15,9 @@ import edu.baylor.ecs.ciljssa.app.services.DirectoryService;
 import edu.baylor.ecs.ciljssa.app.services.RetreivalService;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 
 // TODO: Catch IllegalStateException for propper error handling. Unnecessary on correct code, but good practice
@@ -55,6 +59,26 @@ public class SourceSecController {
                 (DirectoryComponent) retreivalService
                         .retreiveDirectoryGraphFromPath(requestContext.getFilepath()));
         return ctx;
+    }
+
+    @PostMapping(value = "/analysistofile")
+    public void analysisToFile(@RequestBody RequestContext requestContext) throws IOException {
+        AnalysisContext ctx = retreivalService.retreiveAnalysisContextFromGraph(
+                (DirectoryComponent) retreivalService
+                        .retreiveDirectoryGraphFromPath(requestContext.getFilepath()));
+//        File file = new File("activemq-results.json");
+//        FileWriter writer = new FileWriter(file);
+//        long start = System.currentTimeMillis();
+//        for (String record: records) {
+//            writer.write(record);
+//        }
+//        writer.flush();
+//        writer.close();
+//        long end = System.currentTimeMillis();
+//        System.out.println((end - start) / 1000f + " seconds");
+//        write(ctx)
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.writeValue(new File("/Users/simmonsjo/Documents/ciljssa-testing/activemq-results.json"), ctx);
     }
 
     /**
