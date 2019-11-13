@@ -4,6 +4,11 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
+import com.github.javaparser.ast.body.VariableDeclarator;
+import com.github.javaparser.ast.expr.MemberValuePair;
+import com.github.javaparser.ast.nodeTypes.NodeWithName;
+import com.github.javaparser.ast.visitor.VoidVisitor;
+import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import edu.baylor.ecs.ciljssa.component.Component;
 import edu.baylor.ecs.ciljssa.component.impl.AnnotationComponent;
 import edu.baylor.ecs.ciljssa.component.impl.ClassField;
@@ -11,6 +16,7 @@ import edu.baylor.ecs.ciljssa.component.impl.ModuleComponent;
 import edu.baylor.ecs.ciljssa.factory.annotation.AnnotationFactory;
 import edu.baylor.ecs.ciljssa.factory.container.AbstractContainerFactory;
 import edu.baylor.ecs.ciljssa.model.AccessorType;
+import edu.baylor.ecs.ciljssa.model.AnnotationValuePair;
 import edu.baylor.ecs.ciljssa.model.ContainerType;
 import edu.baylor.ecs.ciljssa.component.impl.ClassComponent;
 import edu.baylor.ecs.ciljssa.model.InstanceType;
@@ -21,6 +27,7 @@ import lombok.EqualsAndHashCode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -53,10 +60,11 @@ public class ClassComponentFactory extends AbstractContainerFactory {
         output.setCls(cls);
         output.setCompilationUnit(unit);
         output.setId(getId());
-        output.setInstanceName(cls.getName().asString());
+        output.setInstanceName(cls.getName().asString() + "::ClassComponent");
+        output.setContainerName(cls.getName().asString());
         output.setInstanceType(InstanceType.CLASSCOMPONENT);
         output.setMethodDeclarations(cls.getMethods());
-        output.setPackageName("N/A"); // TODO: Set package name
+        output.setPackageName(unit.getPackageDeclaration().map(NodeWithName::getNameAsString).orElse("N/A"));
         output.setParent(parent);
         output.setStereotype(createStereotype(cls));
         output.setId(getId());
@@ -78,6 +86,14 @@ public class ClassComponentFactory extends AbstractContainerFactory {
             ClassField field = new ClassField();
             field.setType(f.getCommonType().getMetaModel().getType());
             field.setAccessor(AccessorType.fromString(f.getAccessSpecifier().asString()));
+            f.getVariables().accept(new VoidVisitorAdapter<Object>() {
+                @Override
+                public void visit(VariableDeclarator v, Object arg) {
+                    super.visit(v, arg);
+                    field.setFieldName(v.getName().asString());
+//                    pairs.add(new AnnotationValuePair(m.getName().toString(), m.getValue().toString()));
+                }
+            }, null);
             for (Modifier m : f.getModifiers()) {
                 switch(m.getKeyword()) {
                     case PUBLIC: field.setAccessor(AccessorType.PUBLIC); break;
@@ -92,7 +108,9 @@ public class ClassComponentFactory extends AbstractContainerFactory {
 //            for (VariableDeclarator v : f.getVariables()) {
 //                v.get
 //            }
-            AnnotationFactory.createAnnotationComponents(field, f.getAnnotations());
+            List<AnnotationComponent> annotations = AnnotationFactory.createAnnotationComponents(field, f.getAnnotations());
+            field.setAnnotations(annotations);
+            output.add(field);
         }
         return output;
     }

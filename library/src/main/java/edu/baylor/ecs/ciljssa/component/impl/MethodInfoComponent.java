@@ -17,6 +17,8 @@ public class MethodInfoComponent extends Component {
 
     @JsonIgnore
     private String rawSource;
+    @JsonIgnore
+    private List<String> statements; //
 
     private Long id;
     private AccessorType accessor; //
@@ -33,7 +35,6 @@ public class MethodInfoComponent extends Component {
     @JsonProperty(value = "subroutines")
     private List<MethodInfoComponent> subMethods; //
     private List<AnnotationComponent> annotations; //
-    private List<String> statements; //
 
     public MethodInfoComponent() {
         this.instanceType = InstanceType.METHODCOMPONENT;

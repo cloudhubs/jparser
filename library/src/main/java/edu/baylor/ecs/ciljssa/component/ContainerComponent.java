@@ -18,6 +18,7 @@ public abstract class ContainerComponent extends Component {
     protected AccessorType accessor;
     protected ContainerStereotype stereotype;
     protected List<Component> methods;
+    protected String containerName;
 
     @JsonIgnore
     protected List<MethodDeclaration> methodDeclarations;

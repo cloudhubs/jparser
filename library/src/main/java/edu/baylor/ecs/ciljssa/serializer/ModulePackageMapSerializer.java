@@ -30,7 +30,7 @@ public class ModulePackageMapSerializer extends StdSerializer<Map<ModuleComponen
             jsonGenerator.writeStartObject();
             jsonGenerator.writeStringField("module_name", key.getInstanceName());
             jsonGenerator.writeStringField("path", moduleComponentStringMap.get(key));
-            // jsonGenerator.writeNumberField("id", key.get); TODO: Need module IDs!
+             jsonGenerator.writeNumberField("id", key.getId());
             jsonGenerator.writeEndObject();
         }
         jsonGenerator.writeEndArray();

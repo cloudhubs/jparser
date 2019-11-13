@@ -38,15 +38,6 @@ public class ClassComponent extends ClassOrInterfaceComponent {
     }
 
     @Override
-    public String getPackageName() {
-        if (analysisUnit.getPackageDeclaration().isPresent()) {
-            return analysisUnit.getPackageDeclaration().get().getNameAsString();
-        } else {
-            return "N/A";
-        }
-    }
-
-    @Override
     public void accept(IComponentVisitor visitor) {
 
     }

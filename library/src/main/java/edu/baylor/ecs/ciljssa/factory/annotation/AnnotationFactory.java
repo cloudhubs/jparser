@@ -1,14 +1,23 @@
 package edu.baylor.ecs.ciljssa.factory.annotation;
 
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.expr.AnnotationExpr;
+import com.github.javaparser.ast.expr.MemberValuePair;
+import com.github.javaparser.ast.expr.MethodCallExpr;
+import com.github.javaparser.ast.expr.NormalAnnotationExpr;
+import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
+import com.github.javaparser.ast.visitor.VoidVisitor;
+import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import edu.baylor.ecs.ciljssa.component.Component;
 import edu.baylor.ecs.ciljssa.component.impl.AnnotationComponent;
+import edu.baylor.ecs.ciljssa.model.AnnotationValuePair;
 import edu.baylor.ecs.ciljssa.model.InstanceType;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @NoArgsConstructor
 public class AnnotationFactory {
@@ -30,14 +39,31 @@ public class AnnotationFactory {
         List<AnnotationComponent> annotations = new ArrayList<>();
         for (AnnotationExpr exp : annotations2) {
             AnnotationComponent y = new AnnotationComponent();
+            if (exp instanceof NormalAnnotationExpr) {
+                List<AnnotationValuePair> pairs = new ArrayList<>();
+                NormalAnnotationExpr normalized = (NormalAnnotationExpr) exp;
+                normalized.getPairs().accept(new VoidVisitorAdapter<Object>() {
+                    @Override
+                    public void visit(MemberValuePair m, Object arg) {
+                        super.visit(m, arg);
+                        pairs.add(new AnnotationValuePair(m.getName().toString(), m.getValue().toString()));
+                    }
+                }, null);
+                y.setAnnotationValuePairList(pairs);
+            } else if (exp instanceof SingleMemberAnnotationExpr) {
+                SingleMemberAnnotationExpr normalized = (SingleMemberAnnotationExpr) exp;
+                y.setAnnotationValue(normalized.getMemberValue().toString());
+            }
             y.setAnnotation(exp);
             y.setParent(parent);
-            y.setInstanceType(InstanceType.ANNOTATIONCOMPONENT);
+            y.setInstanceType(InstanceType.ANNOTATIONCOMPONENT); // TODO: Redundant
             y.setInstanceName(exp.getMetaModel().getMetaModelFieldName()+"::AnnotationComponent");
             y.setAnnotationMetaModel(exp.getMetaModel().toString());
             y.setAsString(exp.getName().asString());
             y.setMetaModelFieldName(exp.getMetaModel().getMetaModelFieldName());
             y.setPath(parent.getPath());
+            y.setPackageName(exp.findCompilationUnit().flatMap(CompilationUnit::getPackageDeclaration) // TODO: Use elsewhere, Exponential slowdown?
+                    .flatMap(pkg -> Optional.of(pkg.getNameAsString())).orElse("N/A"));
             annotations.add(y);
         }
         return annotations;

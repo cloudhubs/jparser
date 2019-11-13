@@ -23,21 +23,34 @@ public class MetaSubComponent extends Component {
     private List<Component> constructorComponents;
     private List<ClassComponent> subClassComponents;
 
+    /**
+     * A MetaSubComponent is an arbitrary construct and must always exist in the same package as its parent.
+     */
     @Override
     public String getPath() {
         return parent.getPath();
     }
 
+    /**
+     * A MetaSubComponent is an arbitrary construct and must always exist in the same package as its parent.
+     */
     @Override
     public void setPath(String path) {
         this.parent.setPath(path);
     }
 
+    /**
+     * A MetaSubComponent is an arbitrary construct and must always exist in the same package as its parent.
+     */
     @Override
     public String getPackageName() {
         return this.parent.getPackageName();
     }
 
+    /**
+     * A MetaSubComponent is an arbitrary construct and must always exist in the same package as its parent.
+     * @param name
+     */
     @Override
     public void setPackageName(String name) {
         this.parent.setPackageName(name);
@@ -45,7 +58,7 @@ public class MetaSubComponent extends Component {
 
     @Override
     public void setInstanceName(String name) {
-        this.parent.setInstanceName(name);
+        this.instanceName = name;
     }
 
     @Override

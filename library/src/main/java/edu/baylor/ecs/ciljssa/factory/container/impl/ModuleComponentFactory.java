@@ -74,6 +74,7 @@ public class ModuleComponentFactory extends AbstractContainerFactory {
         module.setParent(parent);
         module.setInstanceType(InstanceType.MODULECOMPONENT);
         module.setPackageName(dir.getPath()+"::"+id);
+        module.setContainerName(dir.getPath());
         module.setInstanceName(dir.getPath()+"::ModuleComponent::"+id); //TODO: Perhaps not this
         module.setClassOrInterfaceDeclarations(allClassOrInterfaces);
         module.setClassesAndInterfaces(allCOIComponents);
@@ -152,7 +153,7 @@ public class ModuleComponentFactory extends AbstractContainerFactory {
         List<Component> clsList = new ArrayList<>();
         for(ClassOrInterfaceDeclaration cls : classOrInterfaces) {
             ContainerType type = cls.isInterface() ? ContainerType.INTERFACE : ContainerType.CLASS;
-            AbstractContainerFactory factory = ComponentFactoryProducer.getFactory(type); //TODO: Could make as singletons and return reference
+            AbstractContainerFactory factory = ComponentFactoryProducer.getFactory(type);
             assert factory != null;
             Component coi = factory.createComponent(module, cls, unit);
             clsList.add(coi);

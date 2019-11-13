@@ -8,15 +8,18 @@ import com.github.javaparser.ast.expr.MarkerAnnotationExpr;
 import com.github.javaparser.ast.expr.NormalAnnotationExpr;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import edu.baylor.ecs.ciljssa.component.Component;
+import edu.baylor.ecs.ciljssa.model.AnnotationValuePair;
 import edu.baylor.ecs.ciljssa.model.InstanceType;
 import edu.baylor.ecs.ciljssa.visitor.IComponentVisitor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
-@NoArgsConstructor
-//@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class AnnotationComponent extends Component {
 
     @JsonIgnore
@@ -29,12 +32,17 @@ public class AnnotationComponent extends Component {
 
     private String annotationMetaModel;
     private String metaModelFieldName;
-    private String packageName;
-    private String allowedRoles; // Only valid if is @AllowedRoles or similar annotation.
-    private String instanceName;
+    @JsonProperty(value = "key_value_pairs")
+    private List<AnnotationValuePair> annotationValuePairList;
+    @JsonProperty(value = "value")
+    private String annotationValue;
+
+    public AnnotationComponent() {
+        this.annotationValuePairList = new ArrayList<>();
+    }
 
     public void setAsString(String inp) {
-        this.asString = (inp.startsWith("@") ? "" : "@") + inp;
+        this.asString = (inp.startsWith("@") ? inp : "@" + inp);
     }
 
     public String getAsString() {

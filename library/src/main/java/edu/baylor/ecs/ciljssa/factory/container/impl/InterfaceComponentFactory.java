@@ -41,9 +41,10 @@ public class InterfaceComponentFactory extends AbstractContainerFactory {
         output.setCls(cls);
         output.setCompilationUnit(unit);
         output.setId(getId());
-        output.setInstanceName(cls.getName().asString());
+        output.setInstanceName(cls.getNameAsString() + "::InterfaceComponent");
         output.setInstanceType(InstanceType.CLASSCOMPONENT);
         output.setMethodDeclarations(cls.getMethods());
+        output.setContainerName(cls.getNameAsString());
         output.setPackageName("N/A"); // TODO: Set package name
         output.setParent(parent);
         output.setStereotype(createStereotype(cls));
