@@ -1,8 +1,8 @@
 package edu.baylor.ecs.ciljssa.builder;
 
 import edu.baylor.ecs.ciljssa.component.Component;
+import edu.baylor.ecs.ciljssa.component.impl.MethodParamComponent;
 import edu.baylor.ecs.ciljssa.model.AccessorType;
-import edu.baylor.ecs.ciljssa.component.impl.MethodParam;
 import edu.baylor.ecs.ciljssa.component.impl.AnnotationComponent;
 import edu.baylor.ecs.ciljssa.component.impl.MethodInfoComponent;
 import edu.baylor.ecs.ciljssa.model.InstanceType;
@@ -26,7 +26,7 @@ public class MethodInfoBuilder {
     private List<String> statements;
     private Component parentComponent;
     private List<Component> subComponents;
-    private List<MethodParam> methodParams;
+    private List<MethodParamComponent> methodParams;
     private List<MethodInfoComponent> subMethods;
     private List<AnnotationComponent> annotations; // Method annotations
 
@@ -111,7 +111,7 @@ public class MethodInfoBuilder {
         return this;
     }
 
-    public MethodInfoBuilder withMethodParams(List<MethodParam> methodParams) {
+    public MethodInfoBuilder withMethodParams(List<MethodParamComponent> methodParams) {
         this.methodParams = methodParams;
         return this;
     }

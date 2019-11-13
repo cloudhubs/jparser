@@ -43,22 +43,24 @@ public class RetreivalService {
         return factory.createModulesFromDirectory(doc);
     }
 
-//    public List<AnalysisContext> retrieveContextFromFiles(List<File> files, RequestContext requestContext) {
-//        //Change to modules
-//        List<AnalysisContext> contexts = new ArrayList<>();
-//        //Put this functionality inside factory
+    public List<AnalysisContext> retrieveContextFromFiles(List<File> files, RequestContext requestContext) {
+        //Change to modules
+        List<AnalysisContext> contexts = new ArrayList<>();
+        //Put this functionality inside factory
+
+        // factory.createAnalysisContextFromDirectory();
+        // factory.createAnalysisContextFromFile();
+        for (File file : files) {
+            DirectoryFactory directoryFactory = new DirectoryFactory();
+            DirectoryComponent root = (DirectoryComponent) directoryFactory.createDirectoryGraphOfFile(file);
+            AnalysisContext context = factory.createAnalysisContextFromDirectoryGraph(root);
+            contexts.add(context);
+        }
+        return contexts;
+    }
 //
-//        // factory.createAnalysisContextFromDirectory();
-//        // factory.createAnalysisContextFromFile();
-//        for (File file : files) {
-//            AnalysisContext context = factory.createAnalysisContextFromFile(file);
-//            contexts.add(context);
-//        }
-//        return contexts;
-//    }
-//
-//    private AnalysisContext retrieveContextFromFile(File file) {
-//        return factory.createAnalysisContextFromFile(file);
-//    }
+    public AnalysisContext retrieveContextFromFile(File file) {
+        return factory.createAnalysisContextFromFile(file);
+    }
 
 }

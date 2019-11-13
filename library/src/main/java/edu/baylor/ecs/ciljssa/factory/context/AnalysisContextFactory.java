@@ -13,7 +13,9 @@ import edu.baylor.ecs.ciljssa.context.AnalysisContext;
 import edu.baylor.ecs.ciljssa.factory.container.impl.ClassComponentFactory;
 import edu.baylor.ecs.ciljssa.factory.container.impl.InterfaceComponentFactory;
 import edu.baylor.ecs.ciljssa.factory.container.impl.ModuleComponentFactory;
+import edu.baylor.ecs.ciljssa.factory.directory.DirectoryFactory;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +34,11 @@ public class AnalysisContextFactory {
         ClassComponentFactory.getInstance().resetIdEnumerator();
         InterfaceComponentFactory.getInstance().resetIdEnumerator();
 
+    }
+
+    public AnalysisContext createAnalysisContextFromFile(File file) {
+        Component fileDirectory = new DirectoryFactory().createDirectoryGraphOfFile(file);
+        return createAnalysisContextFromDirectoryGraph((DirectoryComponent) fileDirectory);
     }
 
     public AnalysisContext createAnalysisContextFromDirectoryGraph(DirectoryComponent root) {

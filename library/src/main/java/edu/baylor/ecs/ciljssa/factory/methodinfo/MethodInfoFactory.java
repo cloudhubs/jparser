@@ -13,9 +13,9 @@ import com.github.javaparser.resolution.types.ResolvedType;
 import edu.baylor.ecs.ciljssa.builder.MethodInfoBuilder;
 import edu.baylor.ecs.ciljssa.component.Component;
 import edu.baylor.ecs.ciljssa.component.ContainerComponent;
+import edu.baylor.ecs.ciljssa.component.impl.MethodParamComponent;
 import edu.baylor.ecs.ciljssa.factory.annotation.AnnotationFactory;
 import edu.baylor.ecs.ciljssa.model.AccessorType;
-import edu.baylor.ecs.ciljssa.component.impl.MethodParam;
 import edu.baylor.ecs.ciljssa.component.impl.AnnotationComponent;
 import edu.baylor.ecs.ciljssa.component.impl.MethodInfoComponent;
 import lombok.NoArgsConstructor;
@@ -74,7 +74,7 @@ public class MethodInfoFactory {
         } else {
             long id = iterateId();
             List<AnnotationComponent> annotations = generateAnnotations(output, dec);
-            List<MethodParam> parameters = generateMethodParams(dec.getParameters());
+            List<MethodParamComponent> parameters = generateMethodParamComponents(dec.getParameters());
             List<MethodInfoComponent> subMethods = generateSubmethods(dec);
             List<Component> subComponents = flattenSubComponentList(annotations, parameters, subMethods);
             output = new MethodInfoBuilder().withParentComponent(parent)
@@ -101,7 +101,7 @@ public class MethodInfoFactory {
     }
 
     private List<Component> flattenSubComponentList(List<AnnotationComponent> annotations,
-                                                          List<MethodParam> parameters,
+                                                          List<MethodParamComponent> parameters,
                                                           List<MethodInfoComponent> subMethods) {
         List<List<Component>> unflattenedMap = new ArrayList<>();
         unflattenedMap.add(annotations.stream().map(x -> (Component) x).collect(Collectors.toList()));
@@ -117,7 +117,7 @@ public class MethodInfoFactory {
         } else {
             long id = iterateId();
             List<AnnotationComponent> annotations = generateAnnotationsConstructor(output, dec);
-            List<MethodParam> parameters = generateMethodParams(dec.getParameters());
+            List<MethodParamComponent> parameters = generateMethodParamComponents(dec.getParameters());
             List<MethodInfoComponent> subMethods = generateSubmethodsConstructor(dec);
             List<Component> subComponents = flattenSubComponentList(annotations, parameters, subMethods);
             output = new MethodInfoBuilder().withParentComponent(parent)
@@ -143,10 +143,10 @@ public class MethodInfoFactory {
         return output;
     }
 
-    private List<MethodParam> generateMethodParams(List<Parameter> parameters) {
-        List<MethodParam> output = new ArrayList<>();
+    private List<MethodParamComponent> generateMethodParamComponents(List<Parameter> parameters) {
+        List<MethodParamComponent> output = new ArrayList<>();
         for (Parameter p : parameters) {
-            MethodParam curr = new MethodParam();
+            MethodParamComponent curr = new MethodParamComponent();
             //curr.setParameterType(p.getTypeAsString());
             curr.setParameterName(p.getName().getIdentifier());
             curr.setType(p.getClass());
@@ -203,9 +203,9 @@ public class MethodInfoFactory {
         if (methodInfoExpressions.containsKey(call.getNameAsString())) {
             out = methodInfoExpressions.get(call.getNameAsString());
         } else {
-            List<MethodParam> arguments = new ArrayList<>();
+            List<MethodParamComponent> arguments = new ArrayList<>();
             call.getArguments().forEach(x -> {
-                MethodParam param = new MethodParam(); //TODO: Doesn't work for expr
+                MethodParamComponent param = new MethodParamComponent(); //TODO: Doesn't work for expr
                 //param.setType(x.calculateResolvedType().getClass()); //TODO: Always parameter object
                 param.setParameterType(x.toString());
                 arguments.add(param);

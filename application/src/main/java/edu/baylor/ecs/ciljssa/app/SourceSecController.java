@@ -40,6 +40,11 @@ public class SourceSecController {
         return "Greetings from Source Code Security Controller";
     }
 
+    @RequestMapping("/analysis/file")
+    public @ResponseBody AnalysisContext analysisOfFile(@RequestBody RequestContext requestContext) {
+        return retreivalService.retrieveContextFromFile(new File(requestContext.getFilepath()));
+    }
+
     @RequestMapping("/directorygraph")
     public @ResponseBody Component directoryGraph(@RequestBody RequestContext requestContext) {
         Component root = retreivalService.retreiveDirectoryGraphFromPath(requestContext.getFilepath());

@@ -12,6 +12,10 @@ import java.util.Objects;
 
 public class DirectoryFactory {
 
+    public static final DirectoryComponent DEFAULT_PARENT = initializeDefaultParent();
+    public static final String DEFAULT_PARENT_PATH = "DEFAULT_PARENT_PATH";
+    public static final String DEFAULT_PARENT_INSTANCE_NAME = "DEFAULT_PARENT_INSTANCE_NAME";
+
     public static final String DEFAULT_LANGUAGE = "Java";
 
     private String lang;
@@ -25,12 +29,35 @@ public class DirectoryFactory {
     }
 
     /**
+     * Sets up the default parent component so that no DirectoryComponent created in this factory have a null parent,
+     * except for this one.
+     * @return
+     */
+    private static DirectoryComponent initializeDefaultParent() {
+        DirectoryComponent defaultComponent = new DirectoryComponent();
+        defaultComponent.setParent(null);
+        defaultComponent.setInstanceType(InstanceType.DIRECTORYCOMPONENT);
+        defaultComponent.setLanguage(DEFAULT_LANGUAGE);
+        defaultComponent.setPath(DEFAULT_PARENT_PATH);
+        defaultComponent.setInstanceName(DEFAULT_PARENT_INSTANCE_NAME);
+        defaultComponent.setNumFiles(0);
+        return defaultComponent;
+    }
+
+    /**
      * Create directory graph from a path
      * @param path
      * @return The parent component in the directory graph, null if could not be created or was not directory
      */
     public Component createDirectoryGraph(String path) {
-        return createDirectoryGraph(null, path);
+        return createDirectoryGraph(DEFAULT_PARENT, path);
+    }
+
+    public Component createDirectoryGraphOfFile(File file) {
+        DirectoryComponent output = createDirectoryComponent(DEFAULT_PARENT, file.getParentFile().getPath());
+        output.setLanguage(DEFAULT_LANGUAGE);
+        output.addFile(file);
+        return output;
     }
 
     /**
@@ -105,5 +132,4 @@ public class DirectoryFactory {
         output.setParent(parent);
         return output;
     }
-
 }

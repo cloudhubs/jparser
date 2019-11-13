@@ -48,6 +48,12 @@ public class DirectoryComponent extends Component {
         this.numFiles = files.size();
     }
 
+    public void addFile(File file) {
+        this.files.add(file);
+        this.numFiles = files.size();
+    }
+
+
     @Override
     @JsonIgnore
     public List<Component> getSubComponents() {
