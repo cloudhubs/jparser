@@ -2,6 +2,7 @@ package edu.baylor.ecs.ciljssa.component.impl;
 
 import edu.baylor.ecs.ciljssa.component.Component;
 import edu.baylor.ecs.ciljssa.model.InstanceType;
+import edu.baylor.ecs.ciljssa.visitor.IComponentVisitor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -50,5 +51,10 @@ public class MetaSubComponent extends Component {
     @Override
     public InstanceType getInstanceType() {
         return InstanceType.META;
+    }
+
+    @Override
+    public void accept(IComponentVisitor visitor) {
+
     }
 }

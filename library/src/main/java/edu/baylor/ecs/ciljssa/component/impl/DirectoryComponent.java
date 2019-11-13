@@ -2,6 +2,7 @@ package edu.baylor.ecs.ciljssa.component.impl;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.baylor.ecs.ciljssa.component.Component;
+import edu.baylor.ecs.ciljssa.visitor.IComponentVisitor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -63,5 +64,10 @@ public class DirectoryComponent extends Component {
             this.subDirectories = new ArrayList<>();
         this.subDirectories.add(subComponent);
         this.addSubComponent(subComponent);
+    }
+
+    @Override
+    public void accept(IComponentVisitor visitor) {
+
     }
 }

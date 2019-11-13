@@ -26,6 +26,13 @@ public abstract class AbstractContainerFactory implements IContainerFactory {
         return idEnumerator;
     }
 
+    /**
+     * Should only be called if needing to reset enumerator when running
+     */
+    public void resetIdEnumerator() {
+        idEnumerator = 0L;
+    }
+
     private Component createMetaSubComponent(Component parent, List<Component> methods,
                                              List<Component> constructors,
                                              List<AnnotationComponent> annotations,

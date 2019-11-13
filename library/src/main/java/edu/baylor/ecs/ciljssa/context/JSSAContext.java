@@ -17,6 +17,10 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * TODO: Reset the counters in each factory after creating each request
+ */
+
 @Data
 @NoArgsConstructor
 public abstract class JSSAContext {

@@ -8,6 +8,7 @@ import edu.baylor.ecs.ciljssa.component.Component;
 import edu.baylor.ecs.ciljssa.component.ContainerComponent;
 import edu.baylor.ecs.ciljssa.model.ContainerStereotype;
 import edu.baylor.ecs.ciljssa.model.ModuleStereotype;
+import edu.baylor.ecs.ciljssa.visitor.IComponentVisitor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -15,6 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Subcomponents should contain sub-modules
+ */
 @Data
 public class ModuleComponent extends ContainerComponent {
 
@@ -68,5 +72,12 @@ public class ModuleComponent extends ContainerComponent {
         this.subModules = list.stream().map(x -> (ModuleComponent) x).collect(Collectors.toList());
     }
 
+    @Override
+    public void accept(IComponentVisitor visitor) {
+        visitor.visit(this);
+        for (Component e : this.subComponents) {
+            e.accept(visitor);
+        }
+    }
 }
 

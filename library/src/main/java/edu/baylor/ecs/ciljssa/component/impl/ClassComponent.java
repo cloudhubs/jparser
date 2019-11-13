@@ -5,6 +5,7 @@ import com.github.javaparser.ast.CompilationUnit;
 import edu.baylor.ecs.ciljssa.component.ClassOrInterfaceComponent;
 import edu.baylor.ecs.ciljssa.component.Component;
 import edu.baylor.ecs.ciljssa.model.InstanceType;
+import edu.baylor.ecs.ciljssa.visitor.IComponentVisitor;
 import lombok.Data;
 
 import java.util.List;
@@ -45,4 +46,8 @@ public class ClassComponent extends ClassOrInterfaceComponent {
         }
     }
 
+    @Override
+    public void accept(IComponentVisitor visitor) {
+
+    }
 }

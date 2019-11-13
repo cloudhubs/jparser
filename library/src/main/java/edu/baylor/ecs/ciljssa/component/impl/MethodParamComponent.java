@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.baylor.ecs.ciljssa.component.Component;
 import edu.baylor.ecs.ciljssa.component.impl.AnnotationComponent;
+import edu.baylor.ecs.ciljssa.visitor.IComponentVisitor;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MethodParam extends Component {
+public class MethodParamComponent extends Component {
 
    // @JsonIgnore
     private Class<?> type;
@@ -23,8 +24,12 @@ public class MethodParam extends Component {
     @JsonProperty(value = "parameter_name")
     private String parameterName;
 
-    public MethodParam(Object x) {
+    public MethodParamComponent(Object x) {
         this.type = x.getClass();
     }
 
+    @Override
+    public void accept(IComponentVisitor visitor) {
+
+    }
 }

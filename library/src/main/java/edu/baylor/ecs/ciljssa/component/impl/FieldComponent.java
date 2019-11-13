@@ -3,6 +3,7 @@ package edu.baylor.ecs.ciljssa.component.impl;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.baylor.ecs.ciljssa.component.Component;
 import edu.baylor.ecs.ciljssa.model.AccessorType;
+import edu.baylor.ecs.ciljssa.visitor.IComponentVisitor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -22,4 +23,8 @@ public class FieldComponent extends Component {
         return fieldName;
     }
 
+    @Override
+    public void accept(IComponentVisitor visitor) {
+
+    }
 }

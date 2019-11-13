@@ -10,6 +10,8 @@ import edu.baylor.ecs.ciljssa.component.impl.InterfaceComponent;
 import edu.baylor.ecs.ciljssa.component.impl.ModuleComponent;
 import edu.baylor.ecs.ciljssa.context.AnalysisContext;
 
+import edu.baylor.ecs.ciljssa.factory.container.impl.ClassComponentFactory;
+import edu.baylor.ecs.ciljssa.factory.container.impl.InterfaceComponentFactory;
 import edu.baylor.ecs.ciljssa.factory.container.impl.ModuleComponentFactory;
 
 import java.util.ArrayList;
@@ -21,8 +23,15 @@ public class AnalysisContextFactory {
 
     private ModuleComponentFactory moduleFactory;
 
+    /**
+     * After creating the new context factory, reset all the factory ID incrementors
+     */
     public AnalysisContextFactory() {
         this.moduleFactory = (ModuleComponentFactory) ModuleComponentFactory.getInstance();
+        this.moduleFactory.resetIdEnumerator();
+        ClassComponentFactory.getInstance().resetIdEnumerator();
+        InterfaceComponentFactory.getInstance().resetIdEnumerator();
+
     }
 
     public AnalysisContext createAnalysisContextFromDirectoryGraph(DirectoryComponent root) {

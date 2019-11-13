@@ -37,13 +37,13 @@ public class MethodInfoFactory {
     private static MethodInfoFactory INSTANCE;
 
     // The ID to increment
-    private long idToCreate;
+    private static long idEnumerator = 0L;
     // The mapping from Expression strings to MethodInfoComponents
-    private Map<String, MethodInfoComponent> methodInfoExpressions;
+    private static Map<String, MethodInfoComponent> methodInfoExpressions;
     // The mapping from method declarations to method info components
-    private Map<MethodDeclaration, MethodInfoComponent> methodInfoDeclarations;
+    private static Map<MethodDeclaration, MethodInfoComponent> methodInfoDeclarations;
     // The mapping from constructor declarations to method info components
-    private Map<ConstructorDeclaration, MethodInfoComponent> constructorInfoDeclarations;
+    private static Map<ConstructorDeclaration, MethodInfoComponent> constructorInfoDeclarations;
 
     public static MethodInfoFactory getInstance() {
         if (INSTANCE == null) {
@@ -53,16 +53,18 @@ public class MethodInfoFactory {
     }
 
     private MethodInfoFactory() {
-        this.methodInfoDeclarations = new HashMap<>();
-        this.methodInfoExpressions = new HashMap<>();
-        this.constructorInfoDeclarations = new HashMap<>();
-        this.idToCreate = 1;
+        methodInfoDeclarations = new HashMap<>();
+        methodInfoExpressions = new HashMap<>();
+        constructorInfoDeclarations = new HashMap<>();
     }
 
     private long iterateId() {
-        long temp = idToCreate;
-        idToCreate = idToCreate + 1;
-        return temp;
+        idEnumerator++;
+        return idEnumerator;
+    }
+
+    public void resetIdEnumerator() {
+        idEnumerator = 0L;
     }
 
     public MethodInfoComponent createMethodInfoWrapper(MethodDeclaration dec, ContainerComponent parent) {

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.*;
 import edu.baylor.ecs.ciljssa.component.Component;
 import edu.baylor.ecs.ciljssa.model.AccessorType;
 import edu.baylor.ecs.ciljssa.model.InstanceType;
+import edu.baylor.ecs.ciljssa.visitor.IComponentVisitor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -24,7 +25,7 @@ public class MethodInfoComponent extends Component {
     @JsonProperty(value = "return_type")
     private String returnType; //
     @JsonProperty(value = "parameters")
-    private List<MethodParam> methodParams; //
+    private List<MethodParamComponent> methodParams; //
     @JsonProperty(value = "static_method")
     private boolean staticMethod; //
     @JsonProperty(value = "abstract_method")
@@ -62,4 +63,11 @@ public class MethodInfoComponent extends Component {
         }
     }
 
+    @Override
+    public void accept(IComponentVisitor visitor) {
+        visitor.visit(this);
+        for (Component e : this.subComponents) {
+            e.accept(visitor);
+        }
+    }
 }

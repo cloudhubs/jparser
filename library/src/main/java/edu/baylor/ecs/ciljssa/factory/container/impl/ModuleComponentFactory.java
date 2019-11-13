@@ -23,6 +23,7 @@ import edu.baylor.ecs.ciljssa.model.ClassOrInterface;
 import edu.baylor.ecs.ciljssa.model.InstanceType;
 import edu.baylor.ecs.ciljssa.model.ModuleStereotype;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -108,6 +109,7 @@ public class ModuleComponentFactory extends AbstractContainerFactory {
             if (e.getInstanceType() == InstanceType.CLASSCOMPONENT
                     || e.getInstanceType() == InstanceType.INTERFACECOMPONENT){
                 allmethods.addAll(((ContainerComponent) e).getMethods());
+                //allmethods.addAll() TODO: Include sub methods / method calls
             }
         }
         return allmethods;

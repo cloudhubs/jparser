@@ -9,6 +9,7 @@ import com.github.javaparser.ast.expr.NormalAnnotationExpr;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import edu.baylor.ecs.ciljssa.component.Component;
 import edu.baylor.ecs.ciljssa.model.InstanceType;
+import edu.baylor.ecs.ciljssa.visitor.IComponentVisitor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -57,6 +58,10 @@ public class AnnotationComponent extends Component {
         }
     }
 
+    @Override
+    public void accept(IComponentVisitor visitor) {
+
+    }
 }
 
 

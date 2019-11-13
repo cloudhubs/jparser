@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public abstract class Component {
+public abstract class Component implements IComponent {
 
     @JsonIgnore
     protected Component parent;
