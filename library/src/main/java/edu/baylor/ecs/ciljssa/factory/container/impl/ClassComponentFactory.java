@@ -14,6 +14,7 @@ import edu.baylor.ecs.ciljssa.component.impl.AnnotationComponent;
 import edu.baylor.ecs.ciljssa.component.impl.ClassField;
 import edu.baylor.ecs.ciljssa.component.impl.ModuleComponent;
 import edu.baylor.ecs.ciljssa.factory.annotation.AnnotationFactory;
+import edu.baylor.ecs.ciljssa.factory.classfield.ClassFieldComponentFactory;
 import edu.baylor.ecs.ciljssa.factory.container.AbstractContainerFactory;
 import edu.baylor.ecs.ciljssa.model.AccessorType;
 import edu.baylor.ecs.ciljssa.model.AnnotationValuePair;
@@ -68,7 +69,7 @@ public class ClassComponentFactory extends AbstractContainerFactory {
         output.setParent(parent);
         output.setStereotype(createStereotype(cls));
         output.setId(getId());
-        output.setClassFields(generateClassFields(cls));
+        output.setClassFields(ClassFieldComponentFactory.createClassField(cls.getFields()));
         output.setRawSource(cls.toString());
         output.setPath(parent.getPath() + "/" + cls.getNameAsString() + "."
                 + LanguageFileType.fromString(parent.getLanguage()).asString().toLowerCase()); //TODO: Use appropriate directory separater for OS
@@ -77,41 +78,6 @@ public class ClassComponentFactory extends AbstractContainerFactory {
         output.setMethods(methods);
         output.setConstructors(constructors);
         output.setSubComponents(createMetaSubComponentAsList(output, methods, constructors, annotations, subClasses));
-        return output;
-    }
-
-    private List<ClassField> generateClassFields(ClassOrInterfaceDeclaration cls) {
-        List<ClassField> output = new ArrayList<>();
-        for(FieldDeclaration f : cls.getFields()) {
-            ClassField field = new ClassField();
-            field.setType(f.getCommonType().getMetaModel().getType());
-            field.setAccessor(AccessorType.fromString(f.getAccessSpecifier().asString()));
-            f.getVariables().accept(new VoidVisitorAdapter<Object>() {
-                @Override
-                public void visit(VariableDeclarator v, Object arg) {
-                    super.visit(v, arg);
-                    field.setFieldName(v.getName().asString());
-//                    pairs.add(new AnnotationValuePair(m.getName().toString(), m.getValue().toString()));
-                }
-            }, null);
-            for (Modifier m : f.getModifiers()) {
-                switch(m.getKeyword()) {
-                    case PUBLIC: field.setAccessor(AccessorType.PUBLIC); break;
-                    case FINAL: field.setFinalField(true); break;
-                    case STATIC: field.setStaticField(true); break;
-                    case PROTECTED: field.setAccessor(AccessorType.PROTECTED); break;
-                    case PRIVATE: field.setAccessor(AccessorType.PRIVATE); break;
-                    case DEFAULT: field.setAccessor(AccessorType.DEFAULT); break;
-                }
-            }
-//            f.getElementType().get
-//            for (VariableDeclarator v : f.getVariables()) {
-//                v.get
-//            }
-            List<AnnotationComponent> annotations = AnnotationFactory.createAnnotationComponents(field, f.getAnnotations());
-            field.setAnnotations(annotations);
-            output.add(field);
-        }
         return output;
     }
 
