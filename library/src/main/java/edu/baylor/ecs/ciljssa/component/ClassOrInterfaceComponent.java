@@ -7,7 +7,7 @@ import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import edu.baylor.ecs.ciljssa.component.impl.AnnotationComponent;
 import edu.baylor.ecs.ciljssa.component.impl.MetaSubComponent;
-import edu.baylor.ecs.ciljssa.model.ClassOrInterface;
+import edu.baylor.ecs.ciljssa.model.ContainerType;
 import edu.baylor.ecs.ciljssa.model.ContainerStereotype;
 import lombok.Data;
 
@@ -31,7 +31,7 @@ public abstract class ClassOrInterfaceComponent extends ContainerComponent {
     @JsonProperty
     protected String path;
     @JsonProperty(value = "declaration_type")
-    protected ClassOrInterface classOrInterface;
+    protected ContainerType containerType;
     protected List<AnnotationComponent> annotations;
     protected ContainerStereotype stereotype;
 

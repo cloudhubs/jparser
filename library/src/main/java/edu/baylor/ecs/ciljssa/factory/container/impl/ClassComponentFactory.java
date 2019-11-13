@@ -4,16 +4,14 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
-import com.github.javaparser.ast.body.VariableDeclarator;
 import edu.baylor.ecs.ciljssa.component.Component;
 import edu.baylor.ecs.ciljssa.component.impl.AnnotationComponent;
 import edu.baylor.ecs.ciljssa.component.impl.ClassField;
-import edu.baylor.ecs.ciljssa.component.impl.MethodInfoComponent;
 import edu.baylor.ecs.ciljssa.component.impl.ModuleComponent;
 import edu.baylor.ecs.ciljssa.factory.annotation.AnnotationFactory;
 import edu.baylor.ecs.ciljssa.factory.container.AbstractContainerFactory;
 import edu.baylor.ecs.ciljssa.model.AccessorType;
-import edu.baylor.ecs.ciljssa.model.ClassOrInterface;
+import edu.baylor.ecs.ciljssa.model.ContainerType;
 import edu.baylor.ecs.ciljssa.component.impl.ClassComponent;
 import edu.baylor.ecs.ciljssa.model.InstanceType;
 import edu.baylor.ecs.ciljssa.model.LanguageFileType;
@@ -30,7 +28,7 @@ public class ClassComponentFactory extends AbstractContainerFactory {
 
     private static AbstractContainerFactory INSTANCE;
 
-    public final ClassOrInterface TYPE = ClassOrInterface.CLASS;
+    public final ContainerType TYPE = ContainerType.CLASS;
 
     private Map<ClassOrInterfaceDeclaration, Component> classOrInterfaceDeclarationComponentMap;
 
@@ -51,7 +49,7 @@ public class ClassComponentFactory extends AbstractContainerFactory {
         List<ClassComponent> subClasses = createSubClasses(cls);
         output.setAnalysisUnit(unit);
         output.setAnnotations(annotations);
-        output.setClassOrInterface(ClassOrInterface.CLASS);
+        output.setContainerType(ContainerType.CLASS);
         output.setCls(cls);
         output.setCompilationUnit(unit);
         output.setId(getId());

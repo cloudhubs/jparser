@@ -1,6 +1,5 @@
 package edu.baylor.ecs.ciljssa.factory.container.impl;
 
-import com.github.javaparser.JavaParser;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
@@ -9,7 +8,6 @@ import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import com.github.javaparser.symbolsolver.JavaSymbolSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver;
-import edu.baylor.ecs.ciljssa.builder.ModuleBuilder;
 import edu.baylor.ecs.ciljssa.component.Component;
 import edu.baylor.ecs.ciljssa.component.ContainerComponent;
 import edu.baylor.ecs.ciljssa.component.impl.ClassComponent;
@@ -18,12 +16,10 @@ import edu.baylor.ecs.ciljssa.component.impl.InterfaceComponent;
 import edu.baylor.ecs.ciljssa.component.impl.ModuleComponent;
 import edu.baylor.ecs.ciljssa.factory.container.AbstractContainerFactory;
 import edu.baylor.ecs.ciljssa.factory.container.ComponentFactoryProducer;
-import edu.baylor.ecs.ciljssa.factory.container.IContainerFactory;
-import edu.baylor.ecs.ciljssa.model.ClassOrInterface;
+import edu.baylor.ecs.ciljssa.model.ContainerType;
 import edu.baylor.ecs.ciljssa.model.InstanceType;
 import edu.baylor.ecs.ciljssa.model.ModuleStereotype;
 
-import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -35,6 +31,13 @@ public class ModuleComponentFactory extends AbstractContainerFactory {
     private static AbstractContainerFactory INSTANCE;
 
     private ModuleComponentFactory() {
+    }
+
+    public static AbstractContainerFactory getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new ModuleComponentFactory();
+        }
+        return INSTANCE;
     }
 
     /**
@@ -49,14 +52,7 @@ public class ModuleComponentFactory extends AbstractContainerFactory {
         return null;
     }
 
-    public static AbstractContainerFactory getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new ModuleComponentFactory();
-        }
-        return INSTANCE;
-    }
-
-    public ModuleComponent createComponent(ModuleComponent parent, DirectoryComponent dir) {
+    public ModuleComponent createComponent(Component parent, DirectoryComponent dir) {
         long id = getId();
         ModuleComponent module = new ModuleComponent();
         module.setLanguage(dir.getLanguage());
@@ -155,7 +151,7 @@ public class ModuleComponentFactory extends AbstractContainerFactory {
     private List<Component> createClassesAndInterfaces(ModuleComponent module, CompilationUnit unit, List<ClassOrInterfaceDeclaration> classOrInterfaces) {
         List<Component> clsList = new ArrayList<>();
         for(ClassOrInterfaceDeclaration cls : classOrInterfaces) {
-            ClassOrInterface type = cls.isInterface() ? ClassOrInterface.INTERFACE : ClassOrInterface.CLASS;
+            ContainerType type = cls.isInterface() ? ContainerType.INTERFACE : ContainerType.CLASS;
             AbstractContainerFactory factory = ComponentFactoryProducer.getFactory(type); //TODO: Could make as singletons and return reference
             assert factory != null;
             Component coi = factory.createComponent(module, cls, unit);

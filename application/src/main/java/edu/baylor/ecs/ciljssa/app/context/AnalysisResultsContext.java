@@ -2,8 +2,9 @@ package edu.baylor.ecs.ciljssa.app.context;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import edu.baylor.ecs.ciljssa.context.AnalysisContext;
-import edu.baylor.ecs.ciljssa.context.JSSAContext;
+import edu.baylor.ecs.ciljssa.component.context.AnalysisContext;
+import edu.baylor.ecs.ciljssa.component.context.JSSAContext;
+import edu.baylor.ecs.ciljssa.visitor.IComponentVisitor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -51,4 +52,8 @@ public class AnalysisResultsContext extends JSSAContext {
         return true;
     }
 
+    @Override
+    public void accept(IComponentVisitor visitor) {
+
+    }
 }

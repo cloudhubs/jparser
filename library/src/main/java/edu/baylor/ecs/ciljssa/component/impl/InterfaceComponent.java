@@ -4,10 +4,9 @@ import com.fasterxml.jackson.annotation.*;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import edu.baylor.ecs.ciljssa.component.ClassOrInterfaceComponent;
-import edu.baylor.ecs.ciljssa.model.ClassOrInterface;
+import edu.baylor.ecs.ciljssa.model.ContainerType;
 import edu.baylor.ecs.ciljssa.visitor.IComponentVisitor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 @Data
 //@JsonIgnoreProperties(ignoreUnknown = true)
@@ -18,7 +17,7 @@ public class InterfaceComponent extends ClassOrInterfaceComponent {
     protected CompilationUnit compilationUnit;
 
     public InterfaceComponent() {
-        this.classOrInterface = ClassOrInterface.INTERFACE;
+        this.containerType = ContainerType.INTERFACE;
     }
 
     public ClassOrInterfaceDeclaration getCls() {

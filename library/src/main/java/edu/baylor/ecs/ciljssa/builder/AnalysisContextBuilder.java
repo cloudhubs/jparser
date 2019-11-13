@@ -1,6 +1,5 @@
 package edu.baylor.ecs.ciljssa.builder;
 
-import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import edu.baylor.ecs.ciljssa.component.Component;
@@ -8,11 +7,10 @@ import edu.baylor.ecs.ciljssa.component.impl.ClassComponent;
 import edu.baylor.ecs.ciljssa.component.impl.DirectoryComponent;
 import edu.baylor.ecs.ciljssa.component.impl.InterfaceComponent;
 import edu.baylor.ecs.ciljssa.component.impl.ModuleComponent;
-import edu.baylor.ecs.ciljssa.context.AnalysisContext;
+import edu.baylor.ecs.ciljssa.component.context.AnalysisContext;
 import edu.baylor.ecs.ciljssa.model.InstanceType;
 import lombok.NoArgsConstructor;
 
-import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;

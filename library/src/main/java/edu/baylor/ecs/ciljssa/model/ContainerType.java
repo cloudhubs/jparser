@@ -1,6 +1,6 @@
 package edu.baylor.ecs.ciljssa.model;
 
-public enum ClassOrInterface {
+public enum ContainerType {
     CLASS,
     MODULE,
     INTERFACE;

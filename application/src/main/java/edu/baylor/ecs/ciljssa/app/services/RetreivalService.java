@@ -2,8 +2,7 @@ package edu.baylor.ecs.ciljssa.app.services;
 
 import edu.baylor.ecs.ciljssa.component.Component;
 import edu.baylor.ecs.ciljssa.component.impl.DirectoryComponent;
-import edu.baylor.ecs.ciljssa.component.impl.ModuleComponent;
-import edu.baylor.ecs.ciljssa.context.AnalysisContext;
+import edu.baylor.ecs.ciljssa.component.context.AnalysisContext;
 import edu.baylor.ecs.ciljssa.app.context.RequestContext;
 import edu.baylor.ecs.ciljssa.factory.context.AnalysisContextFactory;
 import edu.baylor.ecs.ciljssa.factory.directory.DirectoryFactory;
@@ -29,8 +28,8 @@ public class RetreivalService {
 //        return retrieveContextFromFile(file);
 //    }
 
-    public AnalysisContext retreiveAnalysisContextFromGraph(DirectoryComponent doc) {
-        AnalysisContext context = factory.createAnalysisContextFromDirectoryGraph(doc);
+    public Component retreiveAnalysisContextFromGraph(DirectoryComponent doc) {
+        Component context = factory.createAnalysisContextFromDirectoryGraph(doc);
         return context;
     }
 
@@ -39,13 +38,9 @@ public class RetreivalService {
         return factory.createDirectoryGraph(path);
     }
 
-    public List<ModuleComponent> retreiveModuleGraph(DirectoryComponent doc) {
-        return factory.createModulesFromDirectory(doc);
-    }
-
-    public List<AnalysisContext> retrieveContextFromFiles(List<File> files, RequestContext requestContext) {
+    public List<Component> retrieveContextFromFiles(List<File> files, RequestContext requestContext) {
         //Change to modules
-        List<AnalysisContext> contexts = new ArrayList<>();
+        List<Component> contexts = new ArrayList<>();
         //Put this functionality inside factory
 
         // factory.createAnalysisContextFromDirectory();
@@ -53,13 +48,13 @@ public class RetreivalService {
         for (File file : files) {
             DirectoryFactory directoryFactory = new DirectoryFactory();
             DirectoryComponent root = (DirectoryComponent) directoryFactory.createDirectoryGraphOfFile(file);
-            AnalysisContext context = factory.createAnalysisContextFromDirectoryGraph(root);
+            Component context = factory.createAnalysisContextFromDirectoryGraph(root);
             contexts.add(context);
         }
         return contexts;
     }
 //
-    public AnalysisContext retrieveContextFromFile(File file) {
+    public Component retrieveContextFromFile(File file) {
         return factory.createAnalysisContextFromFile(file);
     }
 

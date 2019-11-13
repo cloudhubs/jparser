@@ -6,19 +6,24 @@ import edu.baylor.ecs.ciljssa.app.response.BaseResponse;
 import edu.baylor.ecs.ciljssa.app.response.OkResponse;
 import edu.baylor.ecs.ciljssa.app.response.ResponseCode;
 import edu.baylor.ecs.ciljssa.component.Component;
+import edu.baylor.ecs.ciljssa.component.impl.AnnotationComponent;
+import edu.baylor.ecs.ciljssa.component.impl.ClassComponent;
 import edu.baylor.ecs.ciljssa.component.impl.DirectoryComponent;
 import edu.baylor.ecs.ciljssa.component.impl.ModuleComponent;
-import edu.baylor.ecs.ciljssa.context.AnalysisContext;
+import edu.baylor.ecs.ciljssa.component.context.AnalysisContext;
 import edu.baylor.ecs.ciljssa.app.context.RequestContext;
 import edu.baylor.ecs.ciljssa.app.context.AnalysisResultsContext;
 import edu.baylor.ecs.ciljssa.app.services.DirectoryService;
 import edu.baylor.ecs.ciljssa.app.services.RetreivalService;
+import edu.baylor.ecs.ciljssa.factory.directory.DirectoryFactory;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 // TODO: Catch IllegalStateException for propper error handling. Unnecessary on correct code, but good practice
 //       - consumes and produces tags for all mappings
@@ -42,7 +47,7 @@ public class SourceSecController {
 
     @RequestMapping("/analysis/file")
     public @ResponseBody AnalysisContext analysisOfFile(@RequestBody RequestContext requestContext) {
-        return retreivalService.retrieveContextFromFile(new File(requestContext.getFilepath()));
+        return (AnalysisContext) retreivalService.retrieveContextFromFile(new File(requestContext.getFilepath()));
     }
 
     @RequestMapping("/directorygraph")
@@ -51,24 +56,33 @@ public class SourceSecController {
         return root;
     }
 
-    @PostMapping(value = "/modulegraph")
-    public @ResponseBody List<ModuleComponent> moduleGraph(@RequestBody RequestContext requestContext) {
-         List<ModuleComponent> modules = retreivalService.retreiveModuleGraph((DirectoryComponent)
-                 retreivalService.retreiveDirectoryGraphFromPath(requestContext.getFilepath()));
-         return modules;
-    }
-
     @PostMapping(value = "/analysis")
     public @ResponseBody AnalysisContext analysis(@RequestBody RequestContext requestContext) {
-        AnalysisContext ctx = retreivalService.retreiveAnalysisContextFromGraph(
+        AnalysisContext ctx = (AnalysisContext) retreivalService.retreiveAnalysisContextFromGraph(
                 (DirectoryComponent) retreivalService
                         .retreiveDirectoryGraphFromPath(requestContext.getFilepath()));
         return ctx;
     }
 
+    @PostMapping(value = "/analysis/rest")
+    public @ResponseBody List<Component> analysisRest(@RequestBody RequestContext requestContext) {
+        Component directoryGraph = retreivalService.retreiveDirectoryGraphFromPath(requestContext.getFilepath());
+        AnalysisContext context =
+                (AnalysisContext) retreivalService.retreiveAnalysisContextFromGraph((DirectoryComponent) directoryGraph);
+        List<Component> restClasses = new ArrayList<>();
+        for (ClassComponent e : context.getClasses()) {
+            for (AnnotationComponent a : e.getAnnotations()) {
+                if (a.getAsString().contains("RestController")) {
+                    restClasses.add(e);
+                }
+            }
+        }
+        return restClasses;
+    }
+
     @PostMapping(value = "/analysistofile")
     public void analysisToFile(@RequestBody RequestContext requestContext) throws IOException {
-        AnalysisContext ctx = retreivalService.retreiveAnalysisContextFromGraph(
+        AnalysisContext ctx = (AnalysisContext) retreivalService.retreiveAnalysisContextFromGraph(
                 (DirectoryComponent) retreivalService
                         .retreiveDirectoryGraphFromPath(requestContext.getFilepath()));
 //        File file = new File("activemq-results.json");

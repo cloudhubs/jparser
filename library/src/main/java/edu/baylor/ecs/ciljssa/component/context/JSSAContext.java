@@ -1,4 +1,4 @@
-package edu.baylor.ecs.ciljssa.context;
+package edu.baylor.ecs.ciljssa.component.context;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -23,7 +23,7 @@ import java.util.Map;
 
 @Data
 @NoArgsConstructor
-public abstract class JSSAContext {
+public abstract class JSSAContext extends Component {
 
     @JsonIgnore
     protected List<ClassOrInterfaceDeclaration> classOrInterfaceDeclarations;

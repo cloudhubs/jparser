@@ -5,8 +5,7 @@ import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import edu.baylor.ecs.ciljssa.component.Component;
 import edu.baylor.ecs.ciljssa.component.impl.*;
 import edu.baylor.ecs.ciljssa.factory.container.AbstractContainerFactory;
-import edu.baylor.ecs.ciljssa.factory.container.IContainerFactory;
-import edu.baylor.ecs.ciljssa.model.ClassOrInterface;
+import edu.baylor.ecs.ciljssa.model.ContainerType;
 import edu.baylor.ecs.ciljssa.model.InstanceType;
 import edu.baylor.ecs.ciljssa.model.LanguageFileType;
 import lombok.Data;
@@ -20,7 +19,7 @@ public class InterfaceComponentFactory extends AbstractContainerFactory {
 
     private static AbstractContainerFactory INSTANCE;
 
-    public final ClassOrInterface TYPE = ClassOrInterface.INTERFACE;
+    public final ContainerType TYPE = ContainerType.INTERFACE;
 
     private InterfaceComponentFactory() {
     }
@@ -38,7 +37,7 @@ public class InterfaceComponentFactory extends AbstractContainerFactory {
         List<AnnotationComponent> annotations = initAnnotations(output, cls);
         output.setAnalysisUnit(unit);
         output.setAnnotations(annotations);
-        output.setClassOrInterface(ClassOrInterface.CLASS);
+        output.setContainerType(ContainerType.CLASS);
         output.setCls(cls);
         output.setCompilationUnit(unit);
         output.setId(getId());

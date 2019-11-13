@@ -8,7 +8,7 @@ import edu.baylor.ecs.ciljssa.component.impl.ClassComponent;
 import edu.baylor.ecs.ciljssa.component.impl.DirectoryComponent;
 import edu.baylor.ecs.ciljssa.component.impl.InterfaceComponent;
 import edu.baylor.ecs.ciljssa.component.impl.ModuleComponent;
-import edu.baylor.ecs.ciljssa.context.AnalysisContext;
+import edu.baylor.ecs.ciljssa.component.context.AnalysisContext;
 
 import edu.baylor.ecs.ciljssa.factory.container.impl.ClassComponentFactory;
 import edu.baylor.ecs.ciljssa.factory.container.impl.InterfaceComponentFactory;
@@ -25,24 +25,36 @@ public class AnalysisContextFactory {
 
     private ModuleComponentFactory moduleFactory;
 
+    private static final boolean DEFAULT_FLAG = true;
+
     /**
-     * After creating the new context factory, reset all the factory ID incrementors
+     * If no flag is set when constructing, the default is true
      */
     public AnalysisContextFactory() {
-        this.moduleFactory = (ModuleComponentFactory) ModuleComponentFactory.getInstance();
-        this.moduleFactory.resetIdEnumerator();
-        ClassComponentFactory.getInstance().resetIdEnumerator();
-        InterfaceComponentFactory.getInstance().resetIdEnumerator();
-
+        this(DEFAULT_FLAG); // defaults to true
     }
 
-    public AnalysisContext createAnalysisContextFromFile(File file) {
+    /**
+     * Creates an AnalysisContextFactory flagging whether the idEnumerators should be reset in dependent factories.
+     * @param flag true for reset, false for keep the same
+     */
+    public AnalysisContextFactory(boolean flag) {
+        this.moduleFactory = (ModuleComponentFactory) ModuleComponentFactory.getInstance();
+        if (flag) {
+            this.moduleFactory.resetIdEnumerator();
+            ClassComponentFactory.getInstance().resetIdEnumerator();
+            InterfaceComponentFactory.getInstance().resetIdEnumerator();
+        }
+    }
+
+    public Component createAnalysisContextFromFile(File file) {
         Component fileDirectory = new DirectoryFactory().createDirectoryGraphOfFile(file);
         return createAnalysisContextFromDirectoryGraph((DirectoryComponent) fileDirectory);
     }
 
-    public AnalysisContext createAnalysisContextFromDirectoryGraph(DirectoryComponent root) {
-        List<ModuleComponent> modules = createModulesFromDirectory(root, null);
+    public Component createAnalysisContextFromDirectoryGraph(DirectoryComponent root) {
+        Component context = new AnalysisContext();
+        List<ModuleComponent> modules = createModulesFromDirectory(root, context);
         List<String> classNames = modules.stream().map(ModuleComponent::getClassNames)
                 .flatMap(List::stream).collect(Collectors.toList());
         List<String> interfaceNames = modules.stream().map(ModuleComponent::getInterfaceNames)
@@ -61,8 +73,7 @@ public class AnalysisContextFactory {
                 .flatMap(List::stream).collect(Collectors.toList());
         List<Component> methods = modules.stream().map(ModuleComponent::getMethods)
                 .flatMap(List::stream).collect(Collectors.toList());
-
-        return new AnalysisContextBuilder()
+        context = new AnalysisContextBuilder()
                 .withModules(modules)
                 .withClassNames(classNames)
                 .withClassesAndInterfaces(cls)
@@ -76,13 +87,10 @@ public class AnalysisContextFactory {
                 .withClasses(classes)
                 .withInterfaces(interfaces)
                 .build();
+        return context;
     }
 
-    public List<ModuleComponent> createModulesFromDirectory(DirectoryComponent doc) {
-        return createModulesFromDirectory(doc, null);
-    }
-
-    private List<ModuleComponent> createModulesFromDirectory(DirectoryComponent doc, ModuleComponent parent) {
+    private List<ModuleComponent> createModulesFromDirectory(DirectoryComponent doc, Component parent) {
         List<ModuleComponent> list = new ArrayList<>();
         ModuleComponent module = new ModuleComponent();
         if (doc.getNumFiles() > 0) {

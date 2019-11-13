@@ -1,11 +1,15 @@
-package edu.baylor.ecs.ciljssa.context;
+package edu.baylor.ecs.ciljssa.component.context;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.EqualsAndHashCode;
+import edu.baylor.ecs.ciljssa.visitor.IComponentVisitor;
 import lombok.NoArgsConstructor;
 import lombok.Data;
 
 import java.util.stream.Collectors;
+
+/**
+ * TODO: Change to AnalysisComponent
+ */
 
 @Data
 @NoArgsConstructor
@@ -19,5 +23,9 @@ public class AnalysisContext extends JSSAContext {
         return this;
     }
 
+    @Override
+    public void accept(IComponentVisitor visitor) {
+
+    }
 }
 
