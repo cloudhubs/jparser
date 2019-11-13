@@ -8,6 +8,7 @@ import edu.baylor.ecs.ciljssa.visitor.IComponentVisitor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -38,6 +39,31 @@ public class MethodInfoComponent extends Component {
 
     public MethodInfoComponent() {
         this.instanceType = InstanceType.METHODCOMPONENT;
+    }
+
+    public List<AnnotationComponent> getAnnotationByNameContains(String name) {
+        if (annotations == null)
+            return null;
+        List<AnnotationComponent> list = new ArrayList<>();
+        for (AnnotationComponent a : annotations) {
+            // If the name is equal or the name skipping the @ is equal
+            if (a.getAsString().contains(name)) {
+                list.add(a);
+            }
+        }
+        return list;
+    }
+
+    public AnnotationComponent getAnnotationByName(String name) {
+        if (annotations == null)
+            return null;
+        for (AnnotationComponent a : annotations) {
+            // If the name is equal or the name skipping the @ is equal
+            if (a.getAsString().equals(name) || a.getAsString().substring(1).equals(name)) {
+                return a;
+            }
+        }
+        return null;
     }
 
     @Override
