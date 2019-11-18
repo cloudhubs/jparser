@@ -27,6 +27,7 @@ public class MethodInfoBuilder {
     private AccessorType accessor;
     private boolean abstractMethod;
     private List<String> statements;
+    private List<String> rawSourceStripped;
     private Component parentComponent;
     private List<Component> subComponents;
     private List<MethodParamComponent> methodParams;
@@ -59,7 +60,13 @@ public class MethodInfoBuilder {
         output.setLineBegin(this.lineBegin);
         output.setLineEnd(this.lineEnd);
         output.setLineCount(this.lineCount);
+        output.setRawSourceStripped(this.rawSourceStripped);
         return output;
+    }
+
+    public MethodInfoBuilder withRawSourceStripped(List<String> rss) {
+        this.rawSourceStripped = rss;
+        return this;
     }
 
     public MethodInfoBuilder withLineCount(int count) {

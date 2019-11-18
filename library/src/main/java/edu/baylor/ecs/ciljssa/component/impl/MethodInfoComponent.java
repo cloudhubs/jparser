@@ -19,6 +19,8 @@ public class MethodInfoComponent extends Component {
     @JsonIgnore
     private String rawSource;
     @JsonIgnore
+    private List<String> rawSourceStripped;
+    @JsonIgnore
     private List<String> statements; //
 
     private Long id;

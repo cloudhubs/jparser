@@ -7,9 +7,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.baylor.ecs.ciljssa.component.impl.AnnotationComponent;
 import edu.baylor.ecs.ciljssa.component.impl.ClassComponent;
 import edu.baylor.ecs.ciljssa.component.impl.DirectoryComponent;
+import edu.baylor.ecs.ciljssa.component.impl.FieldComponent;
 import edu.baylor.ecs.ciljssa.component.impl.InterfaceComponent;
 import edu.baylor.ecs.ciljssa.component.impl.MethodInfoComponent;
 import edu.baylor.ecs.ciljssa.model.InstanceType;
+import edu.baylor.ecs.ciljssa.visitor.IComponentVisitor;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -49,6 +51,14 @@ public abstract class Component implements IComponent {
         if (this.subComponents == null)
             this.subComponents = new ArrayList<>();
         this.subComponents.add(subComponent);
+    }
+
+    public FieldComponent asFieldComponent() {
+        if (this instanceof FieldComponent) {
+            return (FieldComponent) this;
+        } else {
+            return null;
+        }
     }
 
     public AnnotationComponent asAnnotationComponent() {

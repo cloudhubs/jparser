@@ -21,6 +21,7 @@ import edu.baylor.ecs.ciljssa.component.impl.MethodInfoComponent;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -81,6 +82,9 @@ public class MethodInfoFactory {
             begin = dec.getName().getBegin().map(x -> x.line).orElse(-1); // Get beginning line of constructor
             end = dec.getEnd().map(x -> x.line).orElse(-1); // Get final line of constructor
             count = (begin > -1 && end > -1 && end > begin) ? end - begin : -1;
+            String rawSource = dec.getBody().isPresent() ? dec.getBody().get().toString() : "N/A";
+            List<String> rawSourceStripped = new ArrayList<>();
+            rawSourceStripped = Arrays.stream(rawSource.split("\n")).collect(Collectors.toList());
             output = new MethodInfoBuilder().withParentComponent(parent)
                     .withAccessor(AccessorType.fromString(dec.getAccessSpecifier().asString()))
                     .withAnnotations(annotations)
@@ -101,6 +105,7 @@ public class MethodInfoFactory {
                     .withLineCount(count)
                     .withLineBegin(begin)
                     .withLineEnd(end)
+                    .withRawSourceStripped(rawSourceStripped)
                     .build();
             methodInfoDeclarations.put(dec, output);
         }

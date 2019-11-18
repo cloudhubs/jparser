@@ -37,6 +37,33 @@ public class ClassComponent extends ClassOrInterfaceComponent {
         return null;
     }
 
+    public Component getConstructorByLineNumber(int line) {
+        for (Component m : constructors) {
+            if (m.asMethodInfoComponent().getLineBegin() == line) {
+                return m;
+            }
+        }
+        return null;
+    }
+
+    public Component getClassFieldByName(String name) {
+        for (Component f : classFields) {
+            if (f.asFieldComponent().getFieldName().equalsIgnoreCase(name)) {
+                return f;
+            }
+        }
+        return null;
+    }
+
+    public Component getMethodByName(String name) {
+        for (Component m : methods) {
+            if (m.asMethodInfoComponent().getMethodName().equalsIgnoreCase(name)) {
+                return m;
+            }
+        }
+        return null;
+    }
+
     /**
      * Does the same thing as getInstanceName() however this is more intuitive for users.
      * @return
