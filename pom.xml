@@ -5,8 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>edu.baylor.ecs.cloudhubs</groupId>
-    <artifactId>jparser-module</artifactId>
-    <version>0.0.3</version>
+    <artifactId>jparser</artifactId>
+    <version>${revision}</version>
+
+    <properties>
+        <revision>0.0.4</revision>
+    </properties>
 
     <developers>
         <developer>
