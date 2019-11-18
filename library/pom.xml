@@ -10,9 +10,9 @@
         <version>2.1.5.RELEASE</version>
     </parent>
 
-    <groupId>edu.baylor.ecs.cil</groupId>
-    <artifactId>cil-jssa</artifactId>
-    <version>0.0.2</version>
+    <groupId>edu.baylor.ecs.cloudhubs</groupId>
+    <artifactId>jparser</artifactId>
+    <version>0.0.3</version>
     <packaging>jar</packaging>
 
     <properties>

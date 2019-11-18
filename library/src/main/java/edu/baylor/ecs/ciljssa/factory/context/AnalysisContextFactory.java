@@ -52,8 +52,14 @@ public class AnalysisContextFactory {
         return createAnalysisContextFromDirectoryGraph((DirectoryComponent) fileDirectory);
     }
 
-    public Component createAnalysisContextFromDirectoryGraph(DirectoryComponent root) {
-        Component context = new AnalysisContext();
+    public AnalysisContext createAnalysisContextFromDirectoryGraph(Component inp) {
+        DirectoryComponent root;
+        if (inp instanceof DirectoryComponent) {
+            root = (DirectoryComponent) inp;
+        } else {
+            return null;
+        }
+        AnalysisContext context = new AnalysisContext();
         List<ModuleComponent> modules = createModulesFromDirectory(root, context);
         List<String> classNames = modules.stream().map(ModuleComponent::getClassNames)
                 .flatMap(List::stream).collect(Collectors.toList());

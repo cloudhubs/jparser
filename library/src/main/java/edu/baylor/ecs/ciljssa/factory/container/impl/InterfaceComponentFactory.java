@@ -11,20 +11,21 @@ import edu.baylor.ecs.ciljssa.model.LanguageFileType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @EqualsAndHashCode
 public class InterfaceComponentFactory extends AbstractContainerFactory {
 
-    private static AbstractContainerFactory INSTANCE;
+    private static InterfaceComponentFactory INSTANCE;
 
     public final ContainerType TYPE = ContainerType.INTERFACE;
 
     private InterfaceComponentFactory() {
     }
 
-    public static AbstractContainerFactory getInstance() {
+    public static InterfaceComponentFactory getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new InterfaceComponentFactory();
         }
@@ -34,7 +35,7 @@ public class InterfaceComponentFactory extends AbstractContainerFactory {
     @Override
     public Component createComponent(ModuleComponent parent, ClassOrInterfaceDeclaration cls, CompilationUnit unit) {
         InterfaceComponent output = new InterfaceComponent();
-        List<AnnotationComponent> annotations = initAnnotations(output, cls);
+        List<Component> annotations = initAnnotations(output, cls);
         output.setAnalysisUnit(unit);
         output.setAnnotations(annotations);
         output.setContainerType(ContainerType.CLASS);
@@ -55,7 +56,11 @@ public class InterfaceComponentFactory extends AbstractContainerFactory {
         List<Component> methods = createMethods(cls, output);
         List<Component> constructors = createConstructors(cls, output);
         output.setMethods(methods);
-        output.setSubComponents(createMetaSubComponentAsList(output, methods, null, annotations, null));
+        List<Component> subComponents = new ArrayList<>();
+        subComponents.addAll(methods);
+        subComponents.addAll(constructors);
+        subComponents.addAll(annotations);
+        output.setSubComponents(subComponents);
         return output;
     }
 

@@ -34,7 +34,7 @@ import java.util.Optional;
 @EqualsAndHashCode(callSuper = true)
 public class ClassComponentFactory extends AbstractContainerFactory {
 
-    private static AbstractContainerFactory INSTANCE;
+    private static ClassComponentFactory INSTANCE;
 
     public final ContainerType TYPE = ContainerType.CLASS;
 
@@ -43,7 +43,7 @@ public class ClassComponentFactory extends AbstractContainerFactory {
     private ClassComponentFactory() {
     }
 
-    public static AbstractContainerFactory getInstance() {
+    public static ClassComponentFactory getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new ClassComponentFactory();
         }
@@ -53,7 +53,7 @@ public class ClassComponentFactory extends AbstractContainerFactory {
     @Override
     public Component createComponent(ModuleComponent parent, ClassOrInterfaceDeclaration cls, CompilationUnit unit) {
         ClassComponent output = new ClassComponent();
-        List<AnnotationComponent> annotations = initAnnotations(output, cls);
+        List<Component> annotations = initAnnotations(output, cls);
         List<ClassComponent> subClasses = createSubClasses(cls);
         output.setAnalysisUnit(unit);
         output.setAnnotations(annotations);
@@ -75,9 +75,15 @@ public class ClassComponentFactory extends AbstractContainerFactory {
                 + LanguageFileType.fromString(parent.getLanguage()).asString().toLowerCase()); //TODO: Use appropriate directory separater for OS
         List<Component> methods = createMethods(cls, output);
         List<Component> constructors = createConstructors(cls, output);
+        output.setRawSource(cls.toString());
+        output.setLineCount(cls.getEnd().map(x -> x.line).orElse(-1));
         output.setMethods(methods);
         output.setConstructors(constructors);
-        output.setSubComponents(createMetaSubComponentAsList(output, methods, constructors, annotations, subClasses));
+        List<Component> subComponents = new ArrayList<>();
+        subComponents.addAll(methods);
+        subComponents.addAll(constructors);
+        subComponents.addAll(annotations);
+        output.setSubComponents(subComponents);
         return output;
     }
 

@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class ClassField extends Component {
 
-    private List<AnnotationComponent> annotations;
+    private List<Component> annotations;
     /**
      * This field is a list because you may declare multiple variables on one line (int x, y, z)
      */

@@ -28,17 +28,26 @@ public class ClassComponent extends ClassOrInterfaceComponent {
         this.instanceType = InstanceType.CLASSCOMPONENT;
     }
 
+    public Component getMethodByLineNumber(int line) {
+        for (Component m : methods) {
+            if (m.asMethodInfoComponent().getLineBegin() == line) {
+                return m;
+            }
+        }
+        return null;
+    }
+
     /**
      * Does the same thing as getInstanceName() however this is more intuitive for users.
      * @return
      */
     @JsonIgnore
     public String getClassName() {
-        return this.instanceName;
+        return this.containerName;
     }
 
     @Override
     public void accept(IComponentVisitor visitor) {
-
+        visitor.accept(visitor);
     }
 }

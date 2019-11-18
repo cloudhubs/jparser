@@ -24,8 +24,6 @@ public class AnnotationComponent extends Component {
 
     @JsonIgnore
     private AnnotationExpr annotation;
-    @JsonIgnore
-    private InstanceType instanceType = InstanceType.ANNOTATIONCOMPONENT;
 
     @JsonProperty(value = "name")
     private String asString;

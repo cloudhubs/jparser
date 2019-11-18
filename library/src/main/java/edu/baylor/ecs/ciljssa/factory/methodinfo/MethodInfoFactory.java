@@ -73,10 +73,14 @@ public class MethodInfoFactory {
             output = methodInfoDeclarations.get(dec);
         } else {
             long id = iterateId();
-            List<AnnotationComponent> annotations = generateAnnotations(output, dec);
+            List<Component> annotations = generateAnnotations(output, dec);
             List<MethodParamComponent> parameters = generateMethodParamComponents(dec.getParameters());
             List<MethodInfoComponent> subMethods = generateSubmethods(dec);
             List<Component> subComponents = flattenSubComponentList(annotations, parameters, subMethods);
+            int begin, end, count;
+            begin = dec.getName().getBegin().map(x -> x.line).orElse(-1); // Get beginning line of constructor
+            end = dec.getEnd().map(x -> x.line).orElse(-1); // Get final line of constructor
+            count = (begin > -1 && end > -1 && end > begin) ? end - begin : -1;
             output = new MethodInfoBuilder().withParentComponent(parent)
                     .withAccessor(AccessorType.fromString(dec.getAccessSpecifier().asString()))
                     .withAnnotations(annotations)
@@ -90,17 +94,20 @@ public class MethodInfoFactory {
                     .withRawSource(dec.getBody().isPresent() ? dec.getBody().get().toString() : "N/A")
                     .withStatements(dec.getBody().isPresent() ? dec.getBody().get().getStatements().stream()
                             .map(Node::toString).collect(Collectors.toList()) : new ArrayList<>())
-                    .withInstanceName(parent.getInstanceName() + "::ModuleComponent::" + id)
+                    .withInstanceName(parent.getInstanceName() + "::MethodInfoComponent::" + id)
                     .withPath(parent.getPath() + "::" + dec.getNameAsString())
                     .withPackageName(parent.getPackageName() + "." + dec.getNameAsString())
                     .withSubComponents(subComponents)
+                    .withLineCount(count)
+                    .withLineBegin(begin)
+                    .withLineEnd(end)
                     .build();
             methodInfoDeclarations.put(dec, output);
         }
         return output;
     }
 
-    private List<Component> flattenSubComponentList(List<AnnotationComponent> annotations,
+    private List<Component> flattenSubComponentList(List<Component> annotations,
                                                           List<MethodParamComponent> parameters,
                                                           List<MethodInfoComponent> subMethods) {
         List<List<Component>> unflattenedMap = new ArrayList<>();
@@ -116,10 +123,14 @@ public class MethodInfoFactory {
             output = constructorInfoDeclarations.get(dec);
         } else {
             long id = iterateId();
-            List<AnnotationComponent> annotations = generateAnnotationsConstructor(output, dec);
+            List<Component> annotations = generateAnnotationsConstructor(output, dec);
             List<MethodParamComponent> parameters = generateMethodParamComponents(dec.getParameters());
             List<MethodInfoComponent> subMethods = generateSubmethodsConstructor(dec);
             List<Component> subComponents = flattenSubComponentList(annotations, parameters, subMethods);
+            int begin, end, count;
+            begin = dec.getName().getBegin().map(x -> x.line).orElse(-1); // Get beginning line of constructor
+            end = dec.getName().getEnd().map(x -> x.line).orElse(-1); // Get final line of constructor
+            count = (begin > -1 && end > -1 && end > begin) ? end - begin : -1;
             output = new MethodInfoBuilder().withParentComponent(parent)
                     .withAccessor(AccessorType.fromString(dec.getAccessSpecifier().asString()))
                     .withAnnotations(annotations)
@@ -133,10 +144,13 @@ public class MethodInfoFactory {
                     .withRawSource(dec.getBody().toString())
                     .withStatements(dec.getBody().getStatements().stream()
                             .map(Node::toString).collect(Collectors.toList()))
-                    .withInstanceName(parent.getInstanceName() + "::ModuleComponent::" + id)
+                    .withInstanceName(parent.getInstanceName() + "::MethodInfoComponent::" + id)
                     .withPath(parent.getPath() + "::" + dec.getNameAsString())
                     .withPackageName(parent.getPackageName() + "." + dec.getNameAsString())
                     .withSubComponents(subComponents)
+                    .withLineCount(count)
+                    .withLineBegin(begin)
+                    .withLineEnd(end)
                     .build();
             constructorInfoDeclarations.put(dec, output);
         }
@@ -159,11 +173,11 @@ public class MethodInfoFactory {
         return output;
     }
 
-    private List<AnnotationComponent> generateAnnotationsConstructor(Component parent, ConstructorDeclaration dec) {
+    private List<Component> generateAnnotationsConstructor(Component parent, ConstructorDeclaration dec) {
         return AnnotationFactory.createAnnotationComponents(parent, dec.getAnnotations());
     }
 
-    private List<AnnotationComponent> generateAnnotations(Component parent, MethodDeclaration dec) {
+    private List<Component> generateAnnotations(Component parent, MethodDeclaration dec) {
         return AnnotationFactory.createAnnotationComponents(parent, dec.getAnnotations());
     }
 

@@ -35,8 +35,8 @@ public class AnnotationFactory {
         return an;
     }
 
-    public static List<AnnotationComponent> createAnnotationComponents(Component parent, NodeList<AnnotationExpr> annotations2) {
-        List<AnnotationComponent> annotations = new ArrayList<>();
+    public static List<Component> createAnnotationComponents(Component parent, NodeList<AnnotationExpr> annotations2) {
+        List<Component> annotations = new ArrayList<>();
         for (AnnotationExpr exp : annotations2) {
             AnnotationComponent y = new AnnotationComponent();
             if (exp instanceof NormalAnnotationExpr) {

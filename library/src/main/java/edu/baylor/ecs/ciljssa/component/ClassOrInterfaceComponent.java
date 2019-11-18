@@ -5,8 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
-import edu.baylor.ecs.ciljssa.component.impl.AnnotationComponent;
-import edu.baylor.ecs.ciljssa.component.impl.MetaSubComponent;
 import edu.baylor.ecs.ciljssa.model.ContainerType;
 import edu.baylor.ecs.ciljssa.model.ContainerStereotype;
 import lombok.Data;
@@ -15,9 +13,6 @@ import java.util.List;
 
 @Data
 public abstract class ClassOrInterfaceComponent extends ContainerComponent {
-
-    @JsonIgnore
-    protected MetaSubComponent metaSubComponent;
 
     @JsonIgnore
     protected ClassOrInterfaceDeclaration cls;
@@ -32,7 +27,7 @@ public abstract class ClassOrInterfaceComponent extends ContainerComponent {
     protected String path;
     @JsonProperty(value = "declaration_type")
     protected ContainerType containerType;
-    protected List<AnnotationComponent> annotations;
+    protected List<Component> annotations;
     protected ContainerStereotype stereotype;
 
 }

@@ -28,12 +28,12 @@ import java.util.stream.Collectors;
 
 public class ModuleComponentFactory extends AbstractContainerFactory {
 
-    private static AbstractContainerFactory INSTANCE;
+    private static ModuleComponentFactory INSTANCE;
 
     private ModuleComponentFactory() {
     }
 
-    public static AbstractContainerFactory getInstance() {
+    public static ModuleComponentFactory getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new ModuleComponentFactory();
         }
@@ -52,7 +52,13 @@ public class ModuleComponentFactory extends AbstractContainerFactory {
         return null;
     }
 
-    public ModuleComponent createComponent(Component parent, DirectoryComponent dir) {
+    public ModuleComponent createComponent(Component parent, Component root) {
+        DirectoryComponent dir;
+        if (root instanceof DirectoryComponent) {
+            dir = (DirectoryComponent) root;
+        } else {
+            return null;
+        }
         long id = getId();
         ModuleComponent module = new ModuleComponent();
         module.setLanguage(dir.getLanguage());

@@ -4,6 +4,7 @@ import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
+import edu.baylor.ecs.ciljssa.component.Component;
 import edu.baylor.ecs.ciljssa.component.impl.AnnotationComponent;
 import edu.baylor.ecs.ciljssa.component.impl.ClassField;
 import edu.baylor.ecs.ciljssa.factory.annotation.AnnotationFactory;
@@ -37,7 +38,7 @@ public class ClassFieldComponentFactory {
                     case DEFAULT: field.setAccessor(AccessorType.DEFAULT); break;
                 }
             }
-            List<AnnotationComponent> annotations = AnnotationFactory.createAnnotationComponents(field, f.getAnnotations());
+            List<Component> annotations = AnnotationFactory.createAnnotationComponents(field, f.getAnnotations());
             field.setAnnotations(annotations);
             output.add(field);
         }

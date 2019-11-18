@@ -35,31 +35,35 @@ public class MethodInfoComponent extends Component {
     private boolean abstractMethod; //
     @JsonProperty(value = "subroutines")
     private List<MethodInfoComponent> subMethods; //
-    private List<AnnotationComponent> annotations; //
+    private List<Component> annotations; //
+    private int lineCount;
+    private int lineBegin;
+    private int lineEnd;
 
     public MethodInfoComponent() {
         this.instanceType = InstanceType.METHODCOMPONENT;
     }
 
-    public List<AnnotationComponent> getAnnotationByNameContains(String name) {
+    public List<Component> getAnnotationByNameContains(String name) {
         if (annotations == null)
             return null;
-        List<AnnotationComponent> list = new ArrayList<>();
-        for (AnnotationComponent a : annotations) {
+        List<Component> list = new ArrayList<>();
+        for (Component a : annotations) {
             // If the name is equal or the name skipping the @ is equal
-            if (a.getAsString().contains(name)) {
+            if (a.asAnnotationComponent().getAsString().contains(name)) { // Should never be null
                 list.add(a);
             }
         }
         return list;
     }
 
-    public AnnotationComponent getAnnotationByName(String name) {
+    public Component getAnnotationByName(String name) {
         if (annotations == null)
             return null;
-        for (AnnotationComponent a : annotations) {
+        for (Component a : annotations) {
             // If the name is equal or the name skipping the @ is equal
-            if (a.getAsString().equals(name) || a.getAsString().substring(1).equals(name)) {
+            if (a.asAnnotationComponent().getAsString().equals(name) ||
+                    a.asAnnotationComponent().getAsString().substring(1).equals(name)) {
                 return a;
             }
         }

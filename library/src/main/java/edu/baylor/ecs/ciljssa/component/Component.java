@@ -4,7 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import edu.baylor.ecs.ciljssa.component.impl.AnnotationComponent;
+import edu.baylor.ecs.ciljssa.component.impl.ClassComponent;
 import edu.baylor.ecs.ciljssa.component.impl.DirectoryComponent;
+import edu.baylor.ecs.ciljssa.component.impl.InterfaceComponent;
+import edu.baylor.ecs.ciljssa.component.impl.MethodInfoComponent;
 import edu.baylor.ecs.ciljssa.model.InstanceType;
 import lombok.Data;
 
@@ -46,4 +50,37 @@ public abstract class Component implements IComponent {
             this.subComponents = new ArrayList<>();
         this.subComponents.add(subComponent);
     }
+
+    public AnnotationComponent asAnnotationComponent() {
+        if (this instanceof AnnotationComponent) {
+            return (AnnotationComponent) this;
+        } else {
+            return null;
+        }
+    }
+
+    public ClassComponent asClassComponent() {
+        if (this instanceof ClassComponent) {
+            return (ClassComponent) this;
+        } else {
+            return null;
+        }
+    }
+
+    public InterfaceComponent asInterfaceComponent() {
+        if (this instanceof InterfaceComponent) {
+            return (InterfaceComponent) this;
+        } else {
+            return null;
+        }
+    }
+
+    public MethodInfoComponent asMethodInfoComponent() {
+        if (this instanceof MethodInfoComponent) {
+            return (MethodInfoComponent) this;
+        } else {
+            return null;
+        }
+    }
+
 }
