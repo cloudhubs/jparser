@@ -4,8 +4,12 @@ import edu.baylor.ecs.ciljssa.component.Component;
 import edu.baylor.ecs.ciljssa.component.impl.DirectoryComponent;
 import edu.baylor.ecs.ciljssa.component.context.AnalysisContext;
 import edu.baylor.ecs.ciljssa.app.context.RequestContext;
+import edu.baylor.ecs.ciljssa.factory.container.AbstractContainerFactory;
+import edu.baylor.ecs.ciljssa.factory.container.ComponentFactoryProducer;
+import edu.baylor.ecs.ciljssa.factory.container.impl.ModuleComponentFactory;
 import edu.baylor.ecs.ciljssa.factory.context.AnalysisContextFactory;
 import edu.baylor.ecs.ciljssa.factory.directory.DirectoryFactory;
+import edu.baylor.ecs.ciljssa.model.ContainerType;
 import lombok.Data;
 import org.springframework.stereotype.Service;
 
@@ -23,11 +27,6 @@ public class RetreivalService {
         this.factory = new AnalysisContextFactory();
     }
 
-//    public AnalysisContext retrieveContextFromPath(RequestContext requestContext) {
-//        File file = new File(requestContext.getFilepath());
-//        return retrieveContextFromFile(file);
-//    }
-
     public Component retreiveAnalysisContextFromGraph(DirectoryComponent doc) {
         Component context = factory.createAnalysisContextFromDirectoryGraph(doc);
         return context;
@@ -39,12 +38,7 @@ public class RetreivalService {
     }
 
     public List<Component> retrieveContextFromFiles(List<File> files, RequestContext requestContext) {
-        //Change to modules
         List<Component> contexts = new ArrayList<>();
-        //Put this functionality inside factory
-
-        // factory.createAnalysisContextFromDirectory();
-        // factory.createAnalysisContextFromFile();
         for (File file : files) {
             DirectoryFactory directoryFactory = new DirectoryFactory();
             DirectoryComponent root = (DirectoryComponent) directoryFactory.createDirectoryGraphOfFile(file);

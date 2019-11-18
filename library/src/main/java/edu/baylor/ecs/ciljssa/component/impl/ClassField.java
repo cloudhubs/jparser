@@ -7,11 +7,17 @@ import edu.baylor.ecs.ciljssa.visitor.IComponentVisitor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 public class ClassField extends Component {
 
-    private AnnotationComponent annotation;
+    private List<Component> annotations;
+    /**
+     * This field is a list because you may declare multiple variables on one line (int x, y, z)
+     */
+    private List<String> variables;
     @JsonProperty(value = "field_name")
     private String fieldName;
     private AccessorType accessor;

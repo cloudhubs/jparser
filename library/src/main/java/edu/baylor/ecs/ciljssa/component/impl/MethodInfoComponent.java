@@ -8,6 +8,7 @@ import edu.baylor.ecs.ciljssa.visitor.IComponentVisitor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -17,6 +18,10 @@ public class MethodInfoComponent extends Component {
 
     @JsonIgnore
     private String rawSource;
+    @JsonIgnore
+    private List<String> rawSourceStripped;
+    @JsonIgnore
+    private List<String> statements; //
 
     private Long id;
     private AccessorType accessor; //
@@ -32,11 +37,39 @@ public class MethodInfoComponent extends Component {
     private boolean abstractMethod; //
     @JsonProperty(value = "subroutines")
     private List<MethodInfoComponent> subMethods; //
-    private List<AnnotationComponent> annotations; //
-    private List<String> statements; //
+    private List<Component> annotations; //
+    private int lineCount;
+    private int lineBegin;
+    private int lineEnd;
 
     public MethodInfoComponent() {
         this.instanceType = InstanceType.METHODCOMPONENT;
+    }
+
+    public List<Component> getAnnotationByNameContains(String name) {
+        if (annotations == null)
+            return null;
+        List<Component> list = new ArrayList<>();
+        for (Component a : annotations) {
+            // If the name is equal or the name skipping the @ is equal
+            if (a.asAnnotationComponent().getAsString().contains(name)) { // Should never be null
+                list.add(a);
+            }
+        }
+        return list;
+    }
+
+    public Component getAnnotationByName(String name) {
+        if (annotations == null)
+            return null;
+        for (Component a : annotations) {
+            // If the name is equal or the name skipping the @ is equal
+            if (a.asAnnotationComponent().getAsString().equals(name) ||
+                    a.asAnnotationComponent().getAsString().substring(1).equals(name)) {
+                return a;
+            }
+        }
+        return null;
     }
 
     @Override

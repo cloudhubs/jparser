@@ -28,26 +28,53 @@ public class ClassComponent extends ClassOrInterfaceComponent {
         this.instanceType = InstanceType.CLASSCOMPONENT;
     }
 
+    public Component getMethodByLineNumber(int line) {
+        for (Component m : methods) {
+            if (m.asMethodInfoComponent().getLineBegin() == line) {
+                return m;
+            }
+        }
+        return null;
+    }
+
+    public Component getConstructorByLineNumber(int line) {
+        for (Component m : constructors) {
+            if (m.asMethodInfoComponent().getLineBegin() == line) {
+                return m;
+            }
+        }
+        return null;
+    }
+
+    public Component getClassFieldByName(String name) {
+        for (Component f : classFields) {
+            if (f.asFieldComponent().getFieldName().equalsIgnoreCase(name)) {
+                return f;
+            }
+        }
+        return null;
+    }
+
+    public Component getMethodByName(String name) {
+        for (Component m : methods) {
+            if (m.asMethodInfoComponent().getMethodName().equalsIgnoreCase(name)) {
+                return m;
+            }
+        }
+        return null;
+    }
+
     /**
      * Does the same thing as getInstanceName() however this is more intuitive for users.
      * @return
      */
     @JsonIgnore
     public String getClassName() {
-        return this.instanceName;
-    }
-
-    @Override
-    public String getPackageName() {
-        if (analysisUnit.getPackageDeclaration().isPresent()) {
-            return analysisUnit.getPackageDeclaration().get().getNameAsString();
-        } else {
-            return "N/A";
-        }
+        return this.containerName;
     }
 
     @Override
     public void accept(IComponentVisitor visitor) {
-
+        visitor.accept(visitor);
     }
 }

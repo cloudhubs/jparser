@@ -5,6 +5,7 @@ import edu.baylor.ecs.ciljssa.factory.container.impl.InterfaceComponentFactory;
 import edu.baylor.ecs.ciljssa.factory.container.impl.ModuleComponentFactory;
 import edu.baylor.ecs.ciljssa.model.ContainerType;
 
+@Deprecated
 public class ComponentFactoryProducer {
 
     public static AbstractContainerFactory getFactory(ContainerType coi) {

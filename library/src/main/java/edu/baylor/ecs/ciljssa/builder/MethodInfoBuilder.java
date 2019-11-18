@@ -14,6 +14,9 @@ import java.util.List;
 public class MethodInfoBuilder {
 
     private long id;
+    private int lineCount;
+    private int lineBegin;
+    private int lineEnd;
     private String path;
     private String rawSource;
     private String methodName;
@@ -24,11 +27,12 @@ public class MethodInfoBuilder {
     private AccessorType accessor;
     private boolean abstractMethod;
     private List<String> statements;
+    private List<String> rawSourceStripped;
     private Component parentComponent;
     private List<Component> subComponents;
     private List<MethodParamComponent> methodParams;
     private List<MethodInfoComponent> subMethods;
-    private List<AnnotationComponent> annotations; // Method annotations
+    private List<Component> annotations; // Method annotations
 
     /**
      * Creates a MethodInfoComponent based on the parameters passed to the builder.
@@ -53,7 +57,31 @@ public class MethodInfoBuilder {
         output.setInstanceName(this.instanceName);
         output.setSubComponents(this.subComponents);
         output.setAbstractMethod(this.abstractMethod);
+        output.setLineBegin(this.lineBegin);
+        output.setLineEnd(this.lineEnd);
+        output.setLineCount(this.lineCount);
+        output.setRawSourceStripped(this.rawSourceStripped);
         return output;
+    }
+
+    public MethodInfoBuilder withRawSourceStripped(List<String> rss) {
+        this.rawSourceStripped = rss;
+        return this;
+    }
+
+    public MethodInfoBuilder withLineCount(int count) {
+        this.lineCount = count;
+        return this;
+    }
+
+    public MethodInfoBuilder withLineBegin(int begin) {
+        this.lineBegin = begin;
+        return this;
+    }
+
+    public MethodInfoBuilder withLineEnd(int end) {
+        this.lineEnd = end;
+        return this;
     }
 
     public MethodInfoBuilder withInstanceName(String name) {
@@ -116,7 +144,7 @@ public class MethodInfoBuilder {
         return this;
     }
 
-    public MethodInfoBuilder withAnnotations(List<AnnotationComponent> anno) {
+    public MethodInfoBuilder withAnnotations(List<Component> anno) {
         this.annotations = anno;
         return this;
     }

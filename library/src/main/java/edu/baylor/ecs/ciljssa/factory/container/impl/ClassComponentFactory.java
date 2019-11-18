@@ -4,13 +4,20 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
+import com.github.javaparser.ast.body.VariableDeclarator;
+import com.github.javaparser.ast.expr.MemberValuePair;
+import com.github.javaparser.ast.nodeTypes.NodeWithName;
+import com.github.javaparser.ast.visitor.VoidVisitor;
+import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import edu.baylor.ecs.ciljssa.component.Component;
 import edu.baylor.ecs.ciljssa.component.impl.AnnotationComponent;
 import edu.baylor.ecs.ciljssa.component.impl.ClassField;
 import edu.baylor.ecs.ciljssa.component.impl.ModuleComponent;
 import edu.baylor.ecs.ciljssa.factory.annotation.AnnotationFactory;
+import edu.baylor.ecs.ciljssa.factory.classfield.ClassFieldComponentFactory;
 import edu.baylor.ecs.ciljssa.factory.container.AbstractContainerFactory;
 import edu.baylor.ecs.ciljssa.model.AccessorType;
+import edu.baylor.ecs.ciljssa.model.AnnotationValuePair;
 import edu.baylor.ecs.ciljssa.model.ContainerType;
 import edu.baylor.ecs.ciljssa.component.impl.ClassComponent;
 import edu.baylor.ecs.ciljssa.model.InstanceType;
@@ -21,12 +28,13 @@ import lombok.EqualsAndHashCode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ClassComponentFactory extends AbstractContainerFactory {
 
-    private static AbstractContainerFactory INSTANCE;
+    private static ClassComponentFactory INSTANCE;
 
     public final ContainerType TYPE = ContainerType.CLASS;
 
@@ -35,7 +43,7 @@ public class ClassComponentFactory extends AbstractContainerFactory {
     private ClassComponentFactory() {
     }
 
-    public static AbstractContainerFactory getInstance() {
+    public static ClassComponentFactory getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new ClassComponentFactory();
         }
@@ -45,7 +53,7 @@ public class ClassComponentFactory extends AbstractContainerFactory {
     @Override
     public Component createComponent(ModuleComponent parent, ClassOrInterfaceDeclaration cls, CompilationUnit unit) {
         ClassComponent output = new ClassComponent();
-        List<AnnotationComponent> annotations = initAnnotations(output, cls);
+        List<Component> annotations = initAnnotations(output, cls);
         List<ClassComponent> subClasses = createSubClasses(cls);
         output.setAnalysisUnit(unit);
         output.setAnnotations(annotations);
@@ -53,47 +61,29 @@ public class ClassComponentFactory extends AbstractContainerFactory {
         output.setCls(cls);
         output.setCompilationUnit(unit);
         output.setId(getId());
-        output.setInstanceName(cls.getName().asString());
+        output.setInstanceName(cls.getName().asString() + "::ClassComponent");
+        output.setContainerName(cls.getName().asString());
         output.setInstanceType(InstanceType.CLASSCOMPONENT);
         output.setMethodDeclarations(cls.getMethods());
-        output.setPackageName("N/A"); // TODO: Set package name
+        output.setPackageName(unit.getPackageDeclaration().map(NodeWithName::getNameAsString).orElse("N/A"));
         output.setParent(parent);
         output.setStereotype(createStereotype(cls));
         output.setId(getId());
-        output.setClassFields(generateClassFields(cls));
+        output.setClassFields(ClassFieldComponentFactory.createClassField(cls.getFields()));
         output.setRawSource(cls.toString());
         output.setPath(parent.getPath() + "/" + cls.getNameAsString() + "."
                 + LanguageFileType.fromString(parent.getLanguage()).asString().toLowerCase()); //TODO: Use appropriate directory separater for OS
         List<Component> methods = createMethods(cls, output);
         List<Component> constructors = createConstructors(cls, output);
+        output.setRawSource(cls.toString());
+        output.setLineCount(cls.getEnd().map(x -> x.line).orElse(-1));
         output.setMethods(methods);
         output.setConstructors(constructors);
-        output.setSubComponents(createMetaSubComponentAsList(output, methods, constructors, annotations, subClasses));
-        return output;
-    }
-
-    private List<ClassField> generateClassFields(ClassOrInterfaceDeclaration cls) {
-        List<ClassField> output = new ArrayList<>();
-        for(FieldDeclaration f : cls.getFields()) {
-            ClassField field = new ClassField();
-            field.setType(f.getCommonType().getMetaModel().getType());
-            field.setAccessor(AccessorType.fromString(f.getAccessSpecifier().asString()));
-            for (Modifier m : f.getModifiers()) {
-                switch(m.getKeyword()) {
-                    case PUBLIC: field.setAccessor(AccessorType.PUBLIC); break;
-                    case FINAL: field.setFinalField(true); break;
-                    case STATIC: field.setStaticField(true); break;
-                    case PROTECTED: field.setAccessor(AccessorType.PROTECTED); break;
-                    case PRIVATE: field.setAccessor(AccessorType.PRIVATE); break;
-                    case DEFAULT: field.setAccessor(AccessorType.DEFAULT); break;
-                }
-            }
-//            f.getElementType().get
-//            for (VariableDeclarator v : f.getVariables()) {
-//                v.get
-//            }
-            AnnotationFactory.createAnnotationComponents(field, f.getAnnotations());
-        }
+        List<Component> subComponents = new ArrayList<>();
+        subComponents.addAll(methods);
+        subComponents.addAll(constructors);
+        subComponents.addAll(annotations);
+        output.setSubComponents(subComponents);
         return output;
     }
 

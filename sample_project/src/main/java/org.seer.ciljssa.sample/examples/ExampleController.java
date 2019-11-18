@@ -3,6 +3,7 @@ package org.seer.ciljssa.sample.examples;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.security.RolesAllowed;
@@ -20,7 +21,7 @@ public class ExampleController {
         this.users = new String[128]; // System supports 128 users
     }
 
-    @RequestMapping(value = "/example")
+    @RequestMapping(value = "/example", method = RequestMethod.GET)
     @RolesAllowed({"user"})
     public String exampleHandshake() {
         return "Hello from ExampleController";
