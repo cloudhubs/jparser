@@ -12,6 +12,8 @@ import java.util.stream.Collectors;
 
 /**
  * TODO: Change to AnalysisComponent
+ *       - Add Jackson dependencies to maven
+ *       - Do submethods last so we can be clever with them
  */
 
 @Data
