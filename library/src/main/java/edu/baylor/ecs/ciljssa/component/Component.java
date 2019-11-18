@@ -61,6 +61,14 @@ public abstract class Component implements IComponent {
         }
     }
 
+    public DirectoryComponent asDirectoryComponent() {
+        if (this instanceof DirectoryComponent) {
+            return (DirectoryComponent) this;
+        } else {
+            return null;
+        }
+    }
+
     public AnnotationComponent asAnnotationComponent() {
         if (this instanceof AnnotationComponent) {
             return (AnnotationComponent) this;

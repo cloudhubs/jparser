@@ -47,7 +47,7 @@ public class AnalysisContextFactory {
         }
     }
 
-    public Component createAnalysisContextFromFile(File file) {
+    public AnalysisContext createAnalysisContextFromFile(File file) {
         Component fileDirectory = new DirectoryFactory().createDirectoryGraphOfFile(file);
         return createAnalysisContextFromDirectoryGraph((DirectoryComponent) fileDirectory);
     }
