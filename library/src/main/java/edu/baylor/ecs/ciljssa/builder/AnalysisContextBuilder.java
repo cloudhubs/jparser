@@ -31,6 +31,7 @@ public class AnalysisContextBuilder {
     private List<Component> methods;
     private List<ModuleComponent> modules;
     private DirectoryComponent directoryComponent;
+    private InstanceType instanceType;
 
     public AnalysisContext build() {
         AnalysisContext context = new AnalysisContext();
@@ -47,6 +48,7 @@ public class AnalysisContextBuilder {
         context.setDirectoryGraph(this.directoryComponent);
         context.setClasses(this.classes);
         context.setInterfaces(this.interfaces);
+        context.setInstanceType(this.instanceType);
         return context;
     }
 
@@ -113,6 +115,11 @@ public class AnalysisContextBuilder {
 
     public AnalysisContextBuilder withDirectoryGraph(DirectoryComponent root) {
         this.directoryComponent = root;
+        return this;
+    }
+
+    public AnalysisContextBuilder withInstanceType(InstanceType type) {
+        this.instanceType = type;
         return this;
     }
 }

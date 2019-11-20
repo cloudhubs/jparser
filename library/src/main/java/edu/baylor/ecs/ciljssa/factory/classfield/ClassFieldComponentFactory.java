@@ -5,27 +5,28 @@ import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import edu.baylor.ecs.ciljssa.component.Component;
-import edu.baylor.ecs.ciljssa.component.impl.AnnotationComponent;
-import edu.baylor.ecs.ciljssa.component.impl.ClassField;
+import edu.baylor.ecs.ciljssa.component.impl.ClassComponent;
+import edu.baylor.ecs.ciljssa.component.impl.FieldComponent;
 import edu.baylor.ecs.ciljssa.factory.annotation.AnnotationFactory;
 import edu.baylor.ecs.ciljssa.model.AccessorType;
+import edu.baylor.ecs.ciljssa.model.InstanceType;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ClassFieldComponentFactory {
 
-    public static List<ClassField> createClassField(List<FieldDeclaration> declarations) {
-        List<ClassField> output = new ArrayList<>();
+    public static List<FieldComponent> createClassField(ClassComponent parent, List<FieldDeclaration> declarations) {
+        List<FieldComponent> output = new ArrayList<>();
         for(FieldDeclaration f : declarations) {
-            ClassField field = new ClassField();
-            field.setType(f.getCommonType().getMetaModel().getType());
+            FieldComponent field = new FieldComponent();
             field.setAccessor(AccessorType.fromString(f.getAccessSpecifier().asString()));
             f.getVariables().accept(new VoidVisitorAdapter<Object>() {
                 @Override
                 public void visit(VariableDeclarator v, Object arg) {
                     super.visit(v, arg);
                     field.setFieldName(v.getName().asString()); // TODO: Does this override for lines like "int x, y, z"?
+                    field.setType(v.getTypeAsString());
                 }
             }, null);
             for (Modifier m : f.getModifiers()) {
@@ -38,6 +39,10 @@ public class ClassFieldComponentFactory {
                     case DEFAULT: field.setAccessor(AccessorType.DEFAULT); break;
                 }
             }
+            field.setInstanceName(parent.getInstanceName() + "::FieldComponent::" + field.getFieldName());
+            field.setInstanceType(InstanceType.FIELDCOMPONENT);
+            field.setPackageName(parent.getPackageName());
+            field.setPath(parent.getPath());
             List<Component> annotations = AnnotationFactory.createAnnotationComponents(field, f.getAnnotations());
             field.setAnnotations(annotations);
             output.add(field);

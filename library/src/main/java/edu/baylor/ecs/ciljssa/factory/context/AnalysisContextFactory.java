@@ -14,6 +14,7 @@ import edu.baylor.ecs.ciljssa.factory.container.impl.ClassComponentFactory;
 import edu.baylor.ecs.ciljssa.factory.container.impl.InterfaceComponentFactory;
 import edu.baylor.ecs.ciljssa.factory.container.impl.ModuleComponentFactory;
 import edu.baylor.ecs.ciljssa.factory.directory.DirectoryFactory;
+import edu.baylor.ecs.ciljssa.model.InstanceType;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -92,6 +93,7 @@ public class AnalysisContextFactory {
                 .withPackageMap(packageMap)
                 .withClasses(classes)
                 .withInterfaces(interfaces)
+                .withInstanceType(InstanceType.ANALYSISCOMPONENT)
                 .build();
         return context;
     }

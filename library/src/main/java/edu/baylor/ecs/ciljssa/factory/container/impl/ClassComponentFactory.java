@@ -1,23 +1,12 @@
 package edu.baylor.ecs.ciljssa.factory.container.impl;
 
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.github.javaparser.ast.body.FieldDeclaration;
-import com.github.javaparser.ast.body.VariableDeclarator;
-import com.github.javaparser.ast.expr.MemberValuePair;
 import com.github.javaparser.ast.nodeTypes.NodeWithName;
-import com.github.javaparser.ast.visitor.VoidVisitor;
-import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import edu.baylor.ecs.ciljssa.component.Component;
-import edu.baylor.ecs.ciljssa.component.impl.AnnotationComponent;
-import edu.baylor.ecs.ciljssa.component.impl.ClassField;
 import edu.baylor.ecs.ciljssa.component.impl.ModuleComponent;
-import edu.baylor.ecs.ciljssa.factory.annotation.AnnotationFactory;
 import edu.baylor.ecs.ciljssa.factory.classfield.ClassFieldComponentFactory;
 import edu.baylor.ecs.ciljssa.factory.container.AbstractContainerFactory;
-import edu.baylor.ecs.ciljssa.model.AccessorType;
-import edu.baylor.ecs.ciljssa.model.AnnotationValuePair;
 import edu.baylor.ecs.ciljssa.model.ContainerType;
 import edu.baylor.ecs.ciljssa.component.impl.ClassComponent;
 import edu.baylor.ecs.ciljssa.model.InstanceType;
@@ -28,7 +17,6 @@ import lombok.EqualsAndHashCode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -69,7 +57,7 @@ public class ClassComponentFactory extends AbstractContainerFactory {
         output.setParent(parent);
         output.setStereotype(createStereotype(cls));
         output.setId(getId());
-        output.setClassFields(ClassFieldComponentFactory.createClassField(cls.getFields()));
+        output.setFieldComponents(ClassFieldComponentFactory.createClassField(output, cls.getFields()));
         output.setRawSource(cls.toString());
         output.setPath(parent.getPath() + "/" + cls.getNameAsString() + "."
                 + LanguageFileType.fromString(parent.getLanguage()).asString().toLowerCase()); //TODO: Use appropriate directory separater for OS

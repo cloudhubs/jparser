@@ -22,7 +22,7 @@ public class ClassComponent extends ClassOrInterfaceComponent {
     @JsonIgnore
     protected CompilationUnit compilationUnit;
     private List<Component> constructors;
-    private List<ClassField> classFields;
+    private List<FieldComponent> fieldComponents;
 
     public ClassComponent() {
         this.instanceType = InstanceType.CLASSCOMPONENT;
@@ -47,7 +47,7 @@ public class ClassComponent extends ClassOrInterfaceComponent {
     }
 
     public Component getClassFieldByName(String name) {
-        for (Component f : classFields) {
+        for (Component f : fieldComponents) {
             if (f.asFieldComponent().getFieldName().equalsIgnoreCase(name)) {
                 return f;
             }
