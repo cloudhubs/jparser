@@ -3,6 +3,7 @@ package edu.baylor.ecs.ciljssa.factory.annotation;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.expr.AnnotationExpr;
+import com.github.javaparser.ast.expr.MarkerAnnotationExpr;
 import com.github.javaparser.ast.expr.MemberValuePair;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.NormalAnnotationExpr;
@@ -53,6 +54,8 @@ public class AnnotationFactory {
             } else if (exp instanceof SingleMemberAnnotationExpr) {
                 SingleMemberAnnotationExpr normalized = (SingleMemberAnnotationExpr) exp;
                 y.setAnnotationValue(normalized.getMemberValue().toString());
+            } else if (exp instanceof MarkerAnnotationExpr) {
+                y.setAnnotationValue(exp.getNameAsString());
             }
             y.setAnnotation(exp);
             y.setParent(parent);

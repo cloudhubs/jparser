@@ -20,6 +20,11 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>edu.baylor.ecs.cloudhubs</groupId>
+            <artifactId>jparser-lib</artifactId>
+            <version>${revision}</version>
+        </dependency>
 
         <dependency>
             <groupId>com.github.javaparser</groupId>
