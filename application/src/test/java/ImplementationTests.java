@@ -1,29 +1,3 @@
-import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.github.javaparser.ast.body.MethodDeclaration;
-import edu.baylor.ecs.ciljssa.component.Component;
-import edu.baylor.ecs.ciljssa.component.impl.ClassComponent;
-import edu.baylor.ecs.ciljssa.component.impl.DirectoryComponent;
-import edu.baylor.ecs.ciljssa.component.impl.InterfaceComponent;
-import edu.baylor.ecs.ciljssa.component.impl.ModuleComponent;
-import edu.baylor.ecs.ciljssa.factory.annotation.AnnotationFactory;
-import edu.baylor.ecs.ciljssa.factory.container.ComponentFactoryProducer;
-import edu.baylor.ecs.ciljssa.factory.container.impl.ClassComponentFactory;
-import edu.baylor.ecs.ciljssa.factory.container.impl.InterfaceComponentFactory;
-import edu.baylor.ecs.ciljssa.factory.container.impl.ModuleComponentFactory;
-import edu.baylor.ecs.ciljssa.factory.context.AnalysisContextFactory;
-import edu.baylor.ecs.ciljssa.factory.directory.DirectoryFactory;
-import edu.baylor.ecs.ciljssa.factory.methodinfo.MethodInfoFactory;
-import edu.baylor.ecs.ciljssa.model.InstanceType;
-import org.junit.Before;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
-
-import java.io.File;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
 /**
  * This class abstractly sets up necessary components for integration tests. Running any empty test extending this class
  * will inherently test initialization.

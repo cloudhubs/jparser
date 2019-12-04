@@ -1,15 +1,10 @@
 package edu.baylor.ecs.ciljssa.app.services;
 
-import edu.baylor.ecs.ciljssa.component.Component;
-import edu.baylor.ecs.ciljssa.component.impl.DirectoryComponent;
-import edu.baylor.ecs.ciljssa.component.context.AnalysisContext;
+import edu.baylor.ecs.jparser.component.Component;
+import edu.baylor.ecs.jparser.component.impl.DirectoryComponent;
 import edu.baylor.ecs.ciljssa.app.context.RequestContext;
-import edu.baylor.ecs.ciljssa.factory.container.AbstractContainerFactory;
-import edu.baylor.ecs.ciljssa.factory.container.ComponentFactoryProducer;
-import edu.baylor.ecs.ciljssa.factory.container.impl.ModuleComponentFactory;
-import edu.baylor.ecs.ciljssa.factory.context.AnalysisContextFactory;
-import edu.baylor.ecs.ciljssa.factory.directory.DirectoryFactory;
-import edu.baylor.ecs.ciljssa.model.ContainerType;
+import edu.baylor.ecs.jparser.factory.context.AnalysisContextFactory;
+import edu.baylor.ecs.jparser.factory.directory.DirectoryFactory;
 import lombok.Data;
 import org.springframework.stereotype.Service;
 
