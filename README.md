@@ -1,3 +1,11 @@
-# cil-jssa
+# JParser
 
-Java Source (code) Security Analysis -&gt; Prototyping the Java source code analysis capabilities for security authorization analysis. Will eventually be merged or rewritten into Seer.
+Wrapper around JavaParser.
+It gets metadata from source code of an enterprise system.
+
+
+
+```bash
+cd library
+mvn -Drevision=0.0.5 clean install package
+```
