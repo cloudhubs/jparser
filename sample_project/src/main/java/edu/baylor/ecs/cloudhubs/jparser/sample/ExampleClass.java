@@ -1,4 +1,4 @@
-package org.seer.ciljssa.sample.examples;
+package edu.baylor.ecs.cloudhubs.jparser.sample;
 
 import lombok.Data;
 
