@@ -1,5 +1,6 @@
 # JParser
 
+<<<<<<< HEAD
 
 Wrapper around JavaParser.
 It gets metadata from source code of an enterprise system.
@@ -26,4 +27,3 @@ Clone branch "version_0.0.3"
             <artifactId>jparser-lib</artifactId>
             <version>0.0.3</version>
         </dependency>
->>>>>>> Updated README
