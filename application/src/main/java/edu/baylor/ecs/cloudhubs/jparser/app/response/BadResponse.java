@@ -1,6 +1,6 @@
-package edu.baylor.ecs.ciljssa.app.response;
+package edu.baylor.ecs.cloudhubs.jparser.app.response;
 
-import edu.baylor.ecs.ciljssa.app.context.AnalysisResultsContext;
+import edu.baylor.ecs.cloudhubs.jparser.app.context.AnalysisResultsContext;
 
 public class BadResponse extends BaseResponse {
 

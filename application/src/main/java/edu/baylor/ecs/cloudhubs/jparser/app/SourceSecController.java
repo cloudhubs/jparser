@@ -1,20 +1,21 @@
-package edu.baylor.ecs.ciljssa.app;
+package edu.baylor.ecs.cloudhubs.jparser.app;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.baylor.ecs.ciljssa.app.response.BadResponse;
-import edu.baylor.ecs.ciljssa.app.response.BaseResponse;
-import edu.baylor.ecs.ciljssa.app.response.OkResponse;
-import edu.baylor.ecs.ciljssa.app.response.ResponseCode;
+
+
+import edu.baylor.ecs.cloudhubs.jparser.app.context.AnalysisResultsContext;
+import edu.baylor.ecs.cloudhubs.jparser.app.context.RequestContext;
+import edu.baylor.ecs.cloudhubs.jparser.app.response.BadResponse;
+import edu.baylor.ecs.cloudhubs.jparser.app.response.BaseResponse;
+import edu.baylor.ecs.cloudhubs.jparser.app.response.OkResponse;
+import edu.baylor.ecs.cloudhubs.jparser.app.response.ResponseCode;
+import edu.baylor.ecs.cloudhubs.jparser.app.services.DirectoryService;
+import edu.baylor.ecs.cloudhubs.jparser.app.services.RetreivalService;
 import edu.baylor.ecs.jparser.component.Component;
+import edu.baylor.ecs.jparser.component.context.AnalysisContext;
 import edu.baylor.ecs.jparser.component.impl.ClassComponent;
 import edu.baylor.ecs.jparser.component.impl.DirectoryComponent;
-import edu.baylor.ecs.jparser.component.context.AnalysisContext;
-import edu.baylor.ecs.ciljssa.app.context.RequestContext;
-import edu.baylor.ecs.ciljssa.app.context.AnalysisResultsContext;
-import edu.baylor.ecs.ciljssa.app.services.DirectoryService;
-import edu.baylor.ecs.ciljssa.app.services.RetreivalService;
 import org.springframework.web.bind.annotation.*;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,12 +42,14 @@ public class SourceSecController {
     }
 
     @RequestMapping("/analysis/file")
-    public @ResponseBody AnalysisContext analysisOfFile(@RequestBody RequestContext requestContext) {
+    public @ResponseBody
+    AnalysisContext analysisOfFile(@RequestBody RequestContext requestContext) {
         return (AnalysisContext) retreivalService.retrieveContextFromFile(new File(requestContext.getFilepath()));
     }
 
     @RequestMapping("/directorygraph")
-    public @ResponseBody Component directoryGraph(@RequestBody RequestContext requestContext) {
+    public @ResponseBody
+    Component directoryGraph(@RequestBody RequestContext requestContext) {
         Component root = retreivalService.retreiveDirectoryGraphFromPath(requestContext.getFilepath());
         return root;
     }
@@ -60,7 +63,8 @@ public class SourceSecController {
     }
 
     @PostMapping(value = "/analysis/rest")
-    public @ResponseBody List<Component> analysisRest(@RequestBody RequestContext requestContext) {
+    public @ResponseBody
+    List<Component> analysisRest(@RequestBody RequestContext requestContext) {
         Component directoryGraph = retreivalService.retreiveDirectoryGraphFromPath(requestContext.getFilepath());
         AnalysisContext context =
                 (AnalysisContext) retreivalService.retreiveAnalysisContextFromGraph((DirectoryComponent) directoryGraph);

@@ -1,4 +1,4 @@
-package edu.baylor.ecs.ciljssa.app.response;
+package edu.baylor.ecs.cloudhubs.jparser.app.response;
 
 public enum ResponseType {
     SUCCESS,

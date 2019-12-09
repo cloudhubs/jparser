@@ -1,4 +1,4 @@
-package edu.baylor.ecs.ciljssa.app.services;
+package edu.baylor.ecs.cloudhubs.jparser.app.services;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

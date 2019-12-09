@@ -1,4 +1,4 @@
-package edu.baylor.ecs.ciljssa.app.context;
+package edu.baylor.ecs.cloudhubs.jparser.app.context;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;

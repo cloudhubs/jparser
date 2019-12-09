@@ -1,4 +1,4 @@
-package edu.baylor.ecs.ciljssa.app.context;
+package edu.baylor.ecs.cloudhubs.jparser.app.context;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

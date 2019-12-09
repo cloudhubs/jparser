@@ -1,8 +1,8 @@
-package edu.baylor.ecs.ciljssa.app;
+package edu.baylor.ecs.cloudhubs.jparser.app;
 
-import edu.baylor.ecs.ciljssa.app.response.BadResponse;
-import edu.baylor.ecs.ciljssa.app.response.BaseResponse;
-import edu.baylor.ecs.ciljssa.app.response.ResponseCode;
+import edu.baylor.ecs.cloudhubs.jparser.app.response.BadResponse;
+import edu.baylor.ecs.cloudhubs.jparser.app.response.BaseResponse;
+import edu.baylor.ecs.cloudhubs.jparser.app.response.ResponseCode;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
