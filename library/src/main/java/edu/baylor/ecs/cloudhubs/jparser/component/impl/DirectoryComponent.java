@@ -1,8 +1,8 @@
-package edu.baylor.ecs.jparser.component.impl;
+package edu.baylor.ecs.cloudhubs.jparser.component.impl;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import edu.baylor.ecs.jparser.component.Component;
-import edu.baylor.ecs.jparser.visitor.IComponentVisitor;
+import edu.baylor.ecs.cloudhubs.jparser.component.Component;
+import edu.baylor.ecs.cloudhubs.jparser.visitor.IComponentVisitor;
 import lombok.Data;
 
 import java.io.File;

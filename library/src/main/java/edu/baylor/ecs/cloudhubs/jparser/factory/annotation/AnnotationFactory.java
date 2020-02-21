@@ -1,4 +1,4 @@
-package edu.baylor.ecs.jparser.factory.annotation;
+package edu.baylor.ecs.cloudhubs.jparser.factory.annotation;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.NodeList;
@@ -8,10 +8,10 @@ import com.github.javaparser.ast.expr.MemberValuePair;
 import com.github.javaparser.ast.expr.NormalAnnotationExpr;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
-import edu.baylor.ecs.jparser.component.Component;
-import edu.baylor.ecs.jparser.component.impl.AnnotationComponent;
-import edu.baylor.ecs.jparser.model.AnnotationValuePair;
-import edu.baylor.ecs.jparser.model.InstanceType;
+import edu.baylor.ecs.cloudhubs.jparser.component.Component;
+import edu.baylor.ecs.cloudhubs.jparser.component.impl.AnnotationComponent;
+import edu.baylor.ecs.cloudhubs.jparser.model.AnnotationValuePair;
+import edu.baylor.ecs.cloudhubs.jparser.model.InstanceType;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;

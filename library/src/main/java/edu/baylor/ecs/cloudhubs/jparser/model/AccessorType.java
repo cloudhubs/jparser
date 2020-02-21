@@ -1,4 +1,4 @@
-package edu.baylor.ecs.jparser.model;
+package edu.baylor.ecs.cloudhubs.jparser.model;
 
 public enum AccessorType {
 

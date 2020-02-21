@@ -2,9 +2,9 @@ package edu.baylor.ecs.cloudhubs.jparser.app.context;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import edu.baylor.ecs.jparser.component.context.AnalysisContext;
-import edu.baylor.ecs.jparser.component.context.JSSAContext;
-import edu.baylor.ecs.jparser.visitor.IComponentVisitor;
+import edu.baylor.ecs.cloudhubs.jparser.component.context.AnalysisContext;
+import edu.baylor.ecs.cloudhubs.jparser.component.context.JSSAContext;
+import edu.baylor.ecs.cloudhubs.jparser.visitor.IComponentVisitor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

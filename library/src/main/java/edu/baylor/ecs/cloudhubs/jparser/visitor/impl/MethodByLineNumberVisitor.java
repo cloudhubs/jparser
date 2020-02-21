@@ -1,16 +1,16 @@
-package edu.baylor.ecs.jparser.visitor.impl;
+package edu.baylor.ecs.cloudhubs.jparser.visitor.impl;
 
-import edu.baylor.ecs.jparser.component.Component;
-import edu.baylor.ecs.jparser.component.context.AnalysisContext;
-import edu.baylor.ecs.jparser.component.impl.AnnotationComponent;
-import edu.baylor.ecs.jparser.component.impl.ClassComponent;
-import edu.baylor.ecs.jparser.component.impl.DirectoryComponent;
-import edu.baylor.ecs.jparser.component.impl.FieldComponent;
-import edu.baylor.ecs.jparser.component.impl.InterfaceComponent;
-import edu.baylor.ecs.jparser.component.impl.MethodInfoComponent;
-import edu.baylor.ecs.jparser.component.impl.MethodParamComponent;
-import edu.baylor.ecs.jparser.component.impl.ModuleComponent;
-import edu.baylor.ecs.jparser.visitor.IComponentVisitor;
+import edu.baylor.ecs.cloudhubs.jparser.component.Component;
+import edu.baylor.ecs.cloudhubs.jparser.component.context.AnalysisContext;
+import edu.baylor.ecs.cloudhubs.jparser.component.impl.AnnotationComponent;
+import edu.baylor.ecs.cloudhubs.jparser.component.impl.ClassComponent;
+import edu.baylor.ecs.cloudhubs.jparser.component.impl.DirectoryComponent;
+import edu.baylor.ecs.cloudhubs.jparser.component.impl.FieldComponent;
+import edu.baylor.ecs.cloudhubs.jparser.component.impl.InterfaceComponent;
+import edu.baylor.ecs.cloudhubs.jparser.component.impl.MethodInfoComponent;
+import edu.baylor.ecs.cloudhubs.jparser.component.impl.MethodParamComponent;
+import edu.baylor.ecs.cloudhubs.jparser.component.impl.ModuleComponent;
+import edu.baylor.ecs.cloudhubs.jparser.visitor.IComponentVisitor;
 
 import java.util.Optional;
 

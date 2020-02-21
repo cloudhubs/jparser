@@ -1,8 +1,8 @@
-package edu.baylor.ecs.jparser.factory.directory;
+package edu.baylor.ecs.cloudhubs.jparser.factory.directory;
 
-import edu.baylor.ecs.jparser.component.Component;
-import edu.baylor.ecs.jparser.component.impl.DirectoryComponent;
-import edu.baylor.ecs.jparser.model.InstanceType;
+import edu.baylor.ecs.cloudhubs.jparser.component.Component;
+import edu.baylor.ecs.cloudhubs.jparser.component.impl.DirectoryComponent;
+import edu.baylor.ecs.cloudhubs.jparser.model.InstanceType;
 
 import java.io.File;
 import java.util.ArrayList;

@@ -1,15 +1,15 @@
-package edu.baylor.ecs.jparser.factory.classfield;
+package edu.baylor.ecs.cloudhubs.jparser.factory.classfield;
 
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
-import edu.baylor.ecs.jparser.component.Component;
-import edu.baylor.ecs.jparser.component.impl.ClassComponent;
-import edu.baylor.ecs.jparser.component.impl.FieldComponent;
-import edu.baylor.ecs.jparser.factory.annotation.AnnotationFactory;
-import edu.baylor.ecs.jparser.model.AccessorType;
-import edu.baylor.ecs.jparser.model.InstanceType;
+import edu.baylor.ecs.cloudhubs.jparser.component.Component;
+import edu.baylor.ecs.cloudhubs.jparser.component.impl.ClassComponent;
+import edu.baylor.ecs.cloudhubs.jparser.component.impl.FieldComponent;
+import edu.baylor.ecs.cloudhubs.jparser.factory.annotation.AnnotationFactory;
+import edu.baylor.ecs.cloudhubs.jparser.model.AccessorType;
+import edu.baylor.ecs.cloudhubs.jparser.model.InstanceType;
 
 import java.util.ArrayList;
 import java.util.List;

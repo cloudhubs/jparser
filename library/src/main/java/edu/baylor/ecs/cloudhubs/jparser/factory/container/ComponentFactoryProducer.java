@@ -1,9 +1,9 @@
-package edu.baylor.ecs.jparser.factory.container;
+package edu.baylor.ecs.cloudhubs.jparser.factory.container;
 
-import edu.baylor.ecs.jparser.factory.container.impl.ClassComponentFactory;
-import edu.baylor.ecs.jparser.factory.container.impl.InterfaceComponentFactory;
-import edu.baylor.ecs.jparser.factory.container.impl.ModuleComponentFactory;
-import edu.baylor.ecs.jparser.model.ContainerType;
+import edu.baylor.ecs.cloudhubs.jparser.factory.container.impl.ClassComponentFactory;
+import edu.baylor.ecs.cloudhubs.jparser.factory.container.impl.InterfaceComponentFactory;
+import edu.baylor.ecs.cloudhubs.jparser.factory.container.impl.ModuleComponentFactory;
+import edu.baylor.ecs.cloudhubs.jparser.model.ContainerType;
 
 @Deprecated
 public class ComponentFactoryProducer {

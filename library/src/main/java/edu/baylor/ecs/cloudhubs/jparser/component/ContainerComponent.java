@@ -1,10 +1,10 @@
-package edu.baylor.ecs.jparser.component;
+package edu.baylor.ecs.cloudhubs.jparser.component;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.github.javaparser.ast.body.MethodDeclaration;
-import edu.baylor.ecs.jparser.model.AccessorType;
-import edu.baylor.ecs.jparser.model.ContainerStereotype;
+import edu.baylor.ecs.cloudhubs.jparser.model.AccessorType;
+import edu.baylor.ecs.cloudhubs.jparser.model.ContainerStereotype;
 import lombok.Data;
 
 import java.util.List;

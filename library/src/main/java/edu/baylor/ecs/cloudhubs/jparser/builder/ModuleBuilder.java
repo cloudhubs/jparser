@@ -1,13 +1,13 @@
-package edu.baylor.ecs.jparser.builder;
+package edu.baylor.ecs.cloudhubs.jparser.builder;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.MethodDeclaration;
-import edu.baylor.ecs.jparser.component.Component;
-import edu.baylor.ecs.jparser.component.impl.MethodInfoComponent;
-import edu.baylor.ecs.jparser.component.impl.ModuleComponent;
-import edu.baylor.ecs.jparser.model.ContainerStereotype;
-import edu.baylor.ecs.jparser.model.InstanceType;
-import edu.baylor.ecs.jparser.model.ModuleStereotype;
+import edu.baylor.ecs.cloudhubs.jparser.component.Component;
+import edu.baylor.ecs.cloudhubs.jparser.component.impl.MethodInfoComponent;
+import edu.baylor.ecs.cloudhubs.jparser.component.impl.ModuleComponent;
+import edu.baylor.ecs.cloudhubs.jparser.model.ContainerStereotype;
+import edu.baylor.ecs.cloudhubs.jparser.model.InstanceType;
+import edu.baylor.ecs.cloudhubs.jparser.model.ModuleStereotype;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 

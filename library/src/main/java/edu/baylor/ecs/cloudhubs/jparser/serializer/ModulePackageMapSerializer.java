@@ -1,10 +1,10 @@
-package edu.baylor.ecs.jparser.serializer;
+package edu.baylor.ecs.cloudhubs.jparser.serializer;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import edu.baylor.ecs.jparser.component.impl.ModuleComponent;
+import edu.baylor.ecs.cloudhubs.jparser.component.impl.ModuleComponent;
 
 import java.io.IOException;
 import java.util.Map;
