@@ -1,16 +1,16 @@
-package edu.baylor.ecs.jparser.component.context;
+package edu.baylor.ecs.cloudhubs.jparser.component.context;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
-import edu.baylor.ecs.jparser.component.Component;
-import edu.baylor.ecs.jparser.component.impl.ClassComponent;
-import edu.baylor.ecs.jparser.component.impl.DirectoryComponent;
-import edu.baylor.ecs.jparser.component.impl.InterfaceComponent;
-import edu.baylor.ecs.jparser.component.impl.ModuleComponent;
-import edu.baylor.ecs.jparser.serializer.ModulePackageMapSerializer;
+import edu.baylor.ecs.cloudhubs.jparser.component.Component;
+import edu.baylor.ecs.cloudhubs.jparser.component.impl.ClassComponent;
+import edu.baylor.ecs.cloudhubs.jparser.component.impl.DirectoryComponent;
+import edu.baylor.ecs.cloudhubs.jparser.component.impl.InterfaceComponent;
+import edu.baylor.ecs.cloudhubs.jparser.component.impl.ModuleComponent;
+import edu.baylor.ecs.cloudhubs.jparser.serializer.ModulePackageMapSerializer;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

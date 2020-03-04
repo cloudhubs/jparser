@@ -1,9 +1,9 @@
-package edu.baylor.ecs.jparser.builder;
+package edu.baylor.ecs.cloudhubs.jparser.builder;
 
-import edu.baylor.ecs.jparser.component.Component;
-import edu.baylor.ecs.jparser.component.impl.MethodParamComponent;
-import edu.baylor.ecs.jparser.model.AccessorType;
-import edu.baylor.ecs.jparser.component.impl.MethodInfoComponent;
+import edu.baylor.ecs.cloudhubs.jparser.component.Component;
+import edu.baylor.ecs.cloudhubs.jparser.component.impl.MethodParamComponent;
+import edu.baylor.ecs.cloudhubs.jparser.model.AccessorType;
+import edu.baylor.ecs.cloudhubs.jparser.component.impl.MethodInfoComponent;
 import lombok.NoArgsConstructor;
 
 import java.util.List;

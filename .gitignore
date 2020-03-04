@@ -4,3 +4,4 @@ META-INF
 */target/**
 *.lst
 *.iml
+.flattened-pom.xml

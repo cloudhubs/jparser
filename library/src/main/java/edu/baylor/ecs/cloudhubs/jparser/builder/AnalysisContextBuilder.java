@@ -1,14 +1,14 @@
-package edu.baylor.ecs.jparser.builder;
+package edu.baylor.ecs.cloudhubs.jparser.builder;
 
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
-import edu.baylor.ecs.jparser.component.Component;
-import edu.baylor.ecs.jparser.component.impl.ClassComponent;
-import edu.baylor.ecs.jparser.component.impl.DirectoryComponent;
-import edu.baylor.ecs.jparser.component.impl.InterfaceComponent;
-import edu.baylor.ecs.jparser.component.impl.ModuleComponent;
-import edu.baylor.ecs.jparser.component.context.AnalysisContext;
-import edu.baylor.ecs.jparser.model.InstanceType;
+import edu.baylor.ecs.cloudhubs.jparser.component.Component;
+import edu.baylor.ecs.cloudhubs.jparser.component.context.AnalysisContext;
+import edu.baylor.ecs.cloudhubs.jparser.component.impl.ClassComponent;
+import edu.baylor.ecs.cloudhubs.jparser.component.impl.DirectoryComponent;
+import edu.baylor.ecs.cloudhubs.jparser.component.impl.InterfaceComponent;
+import edu.baylor.ecs.cloudhubs.jparser.component.impl.ModuleComponent;
+import edu.baylor.ecs.cloudhubs.jparser.model.InstanceType;
 import lombok.NoArgsConstructor;
 
 import java.util.List;

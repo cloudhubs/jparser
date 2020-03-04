@@ -1,4 +1,4 @@
-package edu.baylor.ecs.jparser.component.impl;
+package edu.baylor.ecs.cloudhubs.jparser.component.impl;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -7,9 +7,9 @@ import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.expr.MarkerAnnotationExpr;
 import com.github.javaparser.ast.expr.NormalAnnotationExpr;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
-import edu.baylor.ecs.jparser.component.Component;
-import edu.baylor.ecs.jparser.model.AnnotationValuePair;
-import edu.baylor.ecs.jparser.visitor.IComponentVisitor;
+import edu.baylor.ecs.cloudhubs.jparser.component.Component;
+import edu.baylor.ecs.cloudhubs.jparser.model.AnnotationValuePair;
+import edu.baylor.ecs.cloudhubs.jparser.visitor.IComponentVisitor;
 import lombok.Data;
 
 import java.util.ArrayList;

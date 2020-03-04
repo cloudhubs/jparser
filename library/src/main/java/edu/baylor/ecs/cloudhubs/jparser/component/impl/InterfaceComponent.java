@@ -1,11 +1,11 @@
-package edu.baylor.ecs.jparser.component.impl;
+package edu.baylor.ecs.cloudhubs.jparser.component.impl;
 
 import com.fasterxml.jackson.annotation.*;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import edu.baylor.ecs.jparser.component.ClassOrInterfaceComponent;
-import edu.baylor.ecs.jparser.model.ContainerType;
-import edu.baylor.ecs.jparser.visitor.IComponentVisitor;
+import edu.baylor.ecs.cloudhubs.jparser.component.ClassOrInterfaceComponent;
+import edu.baylor.ecs.cloudhubs.jparser.model.ContainerType;
+import edu.baylor.ecs.cloudhubs.jparser.visitor.IComponentVisitor;
 import lombok.Data;
 
 @Data

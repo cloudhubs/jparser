@@ -1,9 +1,9 @@
-package edu.baylor.ecs.jparser.factory.container;
+package edu.baylor.ecs.cloudhubs.jparser.factory.container;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import edu.baylor.ecs.jparser.component.Component;
-import edu.baylor.ecs.jparser.component.impl.ModuleComponent;
+import edu.baylor.ecs.cloudhubs.jparser.component.Component;
+import edu.baylor.ecs.cloudhubs.jparser.component.impl.ModuleComponent;
 
 public interface IContainerFactory {
 

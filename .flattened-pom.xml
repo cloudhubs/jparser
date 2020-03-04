@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.baylor.ecs.cloudhubs</groupId>
   <artifactId>jparser</artifactId>
-  <version>0.0.4</version>
+  <version>0.0.6</version>
   <packaging>pom</packaging>
   <licenses>
     <license>

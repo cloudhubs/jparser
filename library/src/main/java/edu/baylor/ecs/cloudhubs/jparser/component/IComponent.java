@@ -1,6 +1,6 @@
-package edu.baylor.ecs.jparser.component;
+package edu.baylor.ecs.cloudhubs.jparser.component;
 
-import edu.baylor.ecs.jparser.visitor.IComponentVisitor;
+import edu.baylor.ecs.cloudhubs.jparser.visitor.IComponentVisitor;
 
 public interface IComponent {
 
