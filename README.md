@@ -3,7 +3,6 @@
 ```bash
 cd library
 mvn -Drevision=0.0.6 clean install package
-mvn -Drevision=0.0.6
 ```
 ## Maven Dependency
 
