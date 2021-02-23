@@ -1,9 +1,12 @@
 package edu.baylor.ecs.cloudhubs.jparser.factory.context;
 
+import com.fasterxml.jackson.core.TreeNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import edu.baylor.ecs.cloudhubs.jparser.builder.AnalysisContextBuilder;
 import edu.baylor.ecs.cloudhubs.jparser.component.Component;
+import edu.baylor.ecs.cloudhubs.jparser.component.context.JSSAContext;
 import edu.baylor.ecs.cloudhubs.jparser.component.impl.ClassComponent;
 import edu.baylor.ecs.cloudhubs.jparser.component.impl.DirectoryComponent;
 import edu.baylor.ecs.cloudhubs.jparser.component.impl.InterfaceComponent;
@@ -16,10 +19,17 @@ import edu.baylor.ecs.cloudhubs.jparser.factory.container.impl.ModuleComponentFa
 import edu.baylor.ecs.cloudhubs.jparser.factory.directory.DirectoryFactory;
 import edu.baylor.ecs.cloudhubs.jparser.model.InstanceType;
 
-import java.io.File;
+import java.io.*;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ForkJoinPool;
 import java.util.stream.Collectors;
 
 public class AnalysisContextFactory {
@@ -54,48 +64,78 @@ public class AnalysisContextFactory {
     }
 
     public AnalysisContext createAnalysisContextFromDirectoryGraph(Component inp) {
-        DirectoryComponent root;
-        if (inp instanceof DirectoryComponent) {
-            root = (DirectoryComponent) inp;
-        } else {
+        ObjectMapper objectMapper = new ObjectMapper();
+        HttpRequest.BodyPublisher publisher =
+            HttpRequest.BodyPublishers.ofInputStream(() ->  {
+                PipedInputStream in = new PipedInputStream();
+
+                ForkJoinPool.commonPool().submit(() -> {
+                    try (PipedOutputStream out = new PipedOutputStream(in)) {
+                        objectMapper.writeTree(
+                            objectMapper.getFactory().createGenerator(out),
+                            (TreeNode) inp);
+                    }
+                    return null;
+                });
+
+                return in;
+            });
+
+        var request = HttpRequest.newBuilder(URI.create("http://localhost:8080/ctx"))
+            .setHeader("Content-Type", "application/json")
+            .setHeader("Accept", "application/json")
+            .method("POST", publisher).build();
+        try {
+            AnalysisContext ctx = HttpClient.newHttpClient().send(request, new JsonBodyHandler<>(AnalysisContext.class))
+                .body();
+            return ctx;
+        } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
-        AnalysisContext context = new AnalysisContext();
-        List<ModuleComponent> modules = createModulesFromDirectory(root, context);
-        List<String> classNames = modules.stream().map(ModuleComponent::getClassNames)
-                .flatMap(List::stream).collect(Collectors.toList());
-        List<String> interfaceNames = modules.stream().map(ModuleComponent::getInterfaceNames)
-                .flatMap(List::stream).collect(Collectors.toList());
-        List<ClassComponent> classes = modules.stream().map(ModuleComponent::getClasses)
-                .flatMap(List::stream).collect(Collectors.toList());
-        List<InterfaceComponent> interfaces = modules.stream().map(ModuleComponent::getInterfaces)
-                .flatMap(List::stream).collect(Collectors.toList());
-        Map<ModuleComponent, String> packageMap = modules.stream()
-                .collect(Collectors.toMap(p -> p, ModuleComponent::getPackageName, (p1, p2)->p1)); // Merge
-        List<Component> cls = modules.stream().map(ModuleComponent::getClassesAndInterfaces)
-                .flatMap(List::stream).collect(Collectors.toList());
-        List<ClassOrInterfaceDeclaration> clsd = modules.stream().map(ModuleComponent::getClassOrInterfaceDeclarations)
-                .flatMap(List::stream).collect(Collectors.toList());
-        List<MethodDeclaration> mds = modules.stream().map(ModuleComponent::getMethodDeclarations)
-                .flatMap(List::stream).collect(Collectors.toList());
-        List<Component> methods = modules.stream().map(ModuleComponent::getMethods)
-                .flatMap(List::stream).collect(Collectors.toList());
-        context = new AnalysisContextBuilder()
-                .withModules(modules)
-                .withClassNames(classNames)
-                .withClassesAndInterfaces(cls)
-                .withClassOrInterfaceDeclarations(clsd)
-                .withInterfaceNames(interfaceNames)
-                .withMethodDeclarations(mds)
-                .withMethods(methods)
-                .withRootPath(root.getPath())
-                .withDirectoryGraph(root)
-                .withPackageMap(packageMap)
-                .withClasses(classes)
-                .withInterfaces(interfaces)
-                .withInstanceType(InstanceType.ANALYSISCOMPONENT)
-                .build();
-        return context;
+
+//        DirectoryComponent root;
+//        if (inp instanceof DirectoryComponent) {
+//            root = (DirectoryComponent) inp;
+//        } else {
+//            return null;
+//        }
+//        AnalysisContext context = new AnalysisContext();
+//        List<ModuleComponent> modules = createModulesFromDirectory(root, context);
+//        List<String> classNames = modules.stream().map(ModuleComponent::getClassNames)
+//                .flatMap(List::stream).collect(Collectors.toList());
+//        List<String> interfaceNames = modules.stream().map(ModuleComponent::getInterfaceNames)
+//                .flatMap(List::stream).collect(Collectors.toList());
+//        List<ClassComponent> classes = modules.stream().map(ModuleComponent::getClasses)
+//                .flatMap(List::stream).collect(Collectors.toList());
+//        List<InterfaceComponent> interfaces = modules.stream().map(ModuleComponent::getInterfaces)
+//                .flatMap(List::stream).collect(Collectors.toList());
+//        Map<ModuleComponent, String> packageMap = modules.stream()
+//                .collect(Collectors.toMap(p -> p, ModuleComponent::getPackageName, (p1, p2)->p1)); // Merge
+//        List<Component> cls = modules.stream().map(ModuleComponent::getClassesAndInterfaces)
+//                .flatMap(List::stream).collect(Collectors.toList());
+//        List<ClassOrInterfaceDeclaration> clsd = modules.stream().map(ModuleComponent::getClassOrInterfaceDeclarations)
+//                .flatMap(List::stream).collect(Collectors.toList());
+//        List<MethodDeclaration> mds = modules.stream().map(ModuleComponent::getMethodDeclarations)
+//                .flatMap(List::stream).collect(Collectors.toList());
+//        List<Component> methods = modules.stream().map(ModuleComponent::getMethods)
+//                .flatMap(List::stream).collect(Collectors.toList());
+//        context = new AnalysisContextBuilder()
+//                .withModules(modules)
+//                .withClassNames(classNames)
+//                .withClassesAndInterfaces(cls)
+//                .withClassOrInterfaceDeclarations(clsd)
+//                .withInterfaceNames(interfaceNames)
+//                .withMethodDeclarations(mds)
+//                .withMethods(methods)
+//                .withRootPath(root.getPath())
+//                .withDirectoryGraph(root)
+//                .withPackageMap(packageMap)
+//                .withClasses(classes)
+//                .withInterfaces(interfaces)
+//                .withInstanceType(InstanceType.ANALYSISCOMPONENT)
+//                .build();
+//        return context;
     }
 
     private List<ModuleComponent> createModulesFromDirectory(DirectoryComponent doc, Component parent) {
@@ -122,4 +162,33 @@ public class AnalysisContextFactory {
         return modules;
     }
 
+}
+
+class JsonBodyHandler<W> implements HttpResponse.BodyHandler<W> {
+
+    private Class<W> wClass;
+
+    public JsonBodyHandler(Class<W> wClass) {
+        this.wClass = wClass;
+    }
+
+    @Override
+    public HttpResponse.BodySubscriber<W> apply(HttpResponse.ResponseInfo responseInfo) {
+        return asJSON(wClass);
+    }
+
+    public static <T> HttpResponse.BodySubscriber<T> asJSON(Class<T> targetType) {
+        HttpResponse.BodySubscriber<String> upstream = HttpResponse.BodySubscribers.ofString(StandardCharsets.UTF_8);
+
+        return HttpResponse.BodySubscribers.mapping(
+            upstream,
+            (String body) -> {
+                try {
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    return objectMapper.readValue(body, targetType);
+                } catch (IOException e) {
+                    throw new UncheckedIOException(e);
+                }
+            });
+    }
 }
