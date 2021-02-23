@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class DirectoryFactory {
 
@@ -16,17 +17,14 @@ public class DirectoryFactory {
     public static final String DEFAULT_PARENT_PATH = "DEFAULT_PARENT_PATH";
     public static final String DEFAULT_PARENT_INSTANCE_NAME = "DEFAULT_PARENT_INSTANCE_NAME";
 
-    public static final String DEFAULT_LANGUAGE = "Java";
-
-    private String lang;
-
-    public DirectoryFactory(String language) {
-        this.lang = language;
-    }
-
-    public DirectoryFactory() {
-        this(DEFAULT_LANGUAGE);
-    }
+//    public static final String DEFAULT_LANGUAGE = "Java";
+//    private String lang;
+//    public DirectoryFactory(String language) {
+//        this.lang = language;
+//    }
+//    public DirectoryFactory() {
+//        this(DEFAULT_LANGUAGE);
+//    }
 
     /**
      * Sets up the default parent component so that no DirectoryComponent created in this factory have a null parent,
@@ -35,12 +33,9 @@ public class DirectoryFactory {
      */
     private static DirectoryComponent initializeDefaultParent() {
         DirectoryComponent defaultComponent = new DirectoryComponent();
-        defaultComponent.setParent(null);
         defaultComponent.setInstanceType(InstanceType.DIRECTORYCOMPONENT);
-        defaultComponent.setLanguage(DEFAULT_LANGUAGE);
         defaultComponent.setPath(DEFAULT_PARENT_PATH);
         defaultComponent.setInstanceName(DEFAULT_PARENT_INSTANCE_NAME);
-        defaultComponent.setNumFiles(0);
         return defaultComponent;
     }
 
@@ -55,8 +50,7 @@ public class DirectoryFactory {
 
     public Component createDirectoryGraphOfFile(File file) {
         DirectoryComponent output = createDirectoryComponent(DEFAULT_PARENT, file.getParentFile().getPath());
-        output.setLanguage(DEFAULT_LANGUAGE);
-        output.addFile(file);
+        output.addFile(file.getAbsolutePath());
         return output;
     }
 
@@ -78,7 +72,7 @@ public class DirectoryFactory {
      * @return
      */
     private DirectoryComponent getComponent(String path, DirectoryComponent output) {
-        List<File> files = new ArrayList<>();
+        List<String> files = new ArrayList<>();
         List<DirectoryComponent> subDirectories = new ArrayList<>();
         File file = new File(path);
         if(file.isDirectory()) {
@@ -91,14 +85,12 @@ public class DirectoryFactory {
                         System.out.println("NullPointerException in DirectoryFactory"); //TODO Log
                     }
                 }
-                if (fileTypeMatchesLanguage(f)) {
-                    files.add(f);
-                }
+//                if (fileTypeMatchesLanguage(f)) {
+                    files.add(f.getAbsolutePath());
+//                }
             });
-            output.setLanguage(this.lang);
             output.setFiles(files);
-            output.setSubDirectories(subDirectories);
-            if (subDirectories.size() == 0) output.setHasSubDirectories(false); else output.setHasSubDirectories(true);
+            output.setSubComponents(subDirectories.stream().map(e -> (Component) e).collect(Collectors.toList()));
             return output;
         } else {
             return null;
@@ -110,12 +102,12 @@ public class DirectoryFactory {
      * @param f
      * @return
      */
-    private boolean fileTypeMatchesLanguage(File f) {
-        if (lang.equalsIgnoreCase("java")) {
-            return f.getName().endsWith(".java");
-        }
-        return false;
-    }
+//    private boolean fileTypeMatchesLanguage(File f) {
+//        if (lang.equalsIgnoreCase("java")) {
+//            return f.getName().endsWith(".java");
+//        }
+//        return false;
+//    }
 
     /**
      * Creates a basically empty DirectoryComponent object for the use of the createDirectoryGraph method
@@ -129,7 +121,6 @@ public class DirectoryFactory {
         output.setPackageName(path + "::PackageName");
         output.setPath(path);
         output.setInstanceType(InstanceType.DIRECTORYCOMPONENT);
-        output.setParent(parent);
         return output;
     }
 }

@@ -61,12 +61,12 @@ public class ModuleComponentFactory extends AbstractContainerFactory {
         }
         long id = getId();
         ModuleComponent module = new ModuleComponent();
-        module.setLanguage(dir.getLanguage());
+//        module.setLanguage(dir.getLanguage());
         module.setPath(dir.getPath());
         List<ClassOrInterfaceDeclaration> allClassOrInterfaces = new ArrayList<>();
         List<Component> allCOIComponents = new ArrayList<>();
-        for (File f : dir.getFiles()) {
-            CompilationUnit unit = createCompilationUnit(f);
+        for (String f : dir.getFiles()) {
+            CompilationUnit unit = createCompilationUnit(new File(f));
             List<ClassOrInterfaceDeclaration> cls = createClassOrInterfaceDeclarations(unit);
             allClassOrInterfaces.addAll(cls);
             allCOIComponents.addAll(createClassesAndInterfaces(module, unit, cls));
@@ -77,7 +77,7 @@ public class ModuleComponentFactory extends AbstractContainerFactory {
         List<InterfaceComponent> icd = allCOIComponents.stream()
                 .filter(x -> x instanceof InterfaceComponent)
                 .map(x -> (InterfaceComponent)x).collect(Collectors.toList());
-        module.setParent(parent);
+//        module.setParent(parent);
         module.setInstanceType(InstanceType.MODULECOMPONENT);
         module.setPackageName(dir.getPath()+"::"+id);
         module.setContainerName(dir.getPath());
