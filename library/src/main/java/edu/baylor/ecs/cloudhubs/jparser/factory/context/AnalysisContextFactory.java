@@ -80,7 +80,6 @@ public class AnalysisContextFactory {
 
                 return in;
             });
-        // host.docker.internal vs localhost
         var request = HttpRequest.newBuilder(URI.create("http://parser:8080/ctx"))
             .setHeader("Content-Type", "application/json")
             .setHeader("Accept", "application/json")
