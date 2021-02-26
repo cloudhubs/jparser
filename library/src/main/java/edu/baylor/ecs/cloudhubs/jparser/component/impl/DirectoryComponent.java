@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.baylor.ecs.cloudhubs.jparser.component.Component;
 import edu.baylor.ecs.cloudhubs.jparser.visitor.IComponentVisitor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;

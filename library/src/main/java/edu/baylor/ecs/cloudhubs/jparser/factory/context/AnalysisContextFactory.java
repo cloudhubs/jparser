@@ -1,5 +1,6 @@
 package edu.baylor.ecs.cloudhubs.jparser.factory.context;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
@@ -27,6 +28,7 @@ import java.net.http.HttpResponse;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ForkJoinPool;
@@ -65,29 +67,16 @@ public class AnalysisContextFactory {
 
     public AnalysisContext createAnalysisContextFromDirectoryGraph(Component inp) {
         ObjectMapper objectMapper = new ObjectMapper();
-        HttpRequest.BodyPublisher publisher =
-            HttpRequest.BodyPublishers.ofInputStream(() ->  {
-                PipedInputStream in = new PipedInputStream();
-
-                ForkJoinPool.commonPool().submit(() -> {
-                    try (PipedOutputStream out = new PipedOutputStream(in)) {
-                        objectMapper.writeTree(
-                            objectMapper.getFactory().createGenerator(out),
-                            (TreeNode) inp);
-                    }
-                    return null;
-                });
-
-                return in;
-            });
-        var request = HttpRequest.newBuilder(URI.create("http://parser:8080/ctx"))
-            .setHeader("Content-Type", "application/json")
-            .setHeader("Accept", "application/json")
-            .method("POST", publisher).build();
         try {
-            AnalysisContext ctx = HttpClient.newHttpClient().send(request, new JsonBodyHandler<>(AnalysisContext.class))
+            HttpRequest.BodyPublisher publisher =
+                HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(inp));
+            var request = HttpRequest.newBuilder(URI.create("http://parser:8080/ctx"))
+                .setHeader("Content-Type", "application/json")
+                .setHeader("Accept", "application/json")
+                .method("POST", publisher).build();
+            AnalysisContext ctx = HttpClient.newHttpClient()
+                .send(request, new JsonBodyHandler<>(AnalysisContext.class))
                 .body();
-            System.out.println(ctx);
             return ctx;
         } catch (Exception e) {
             e.printStackTrace();
