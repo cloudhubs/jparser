@@ -13,6 +13,7 @@ import java.util.List;
 @Data
 //@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class MethodInfoComponent extends Component {
 
     @JsonIgnore

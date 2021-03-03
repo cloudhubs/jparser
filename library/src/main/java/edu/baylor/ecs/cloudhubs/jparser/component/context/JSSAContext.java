@@ -32,9 +32,9 @@ public abstract class JSSAContext extends Component {
     @JsonIgnore
     protected DirectoryComponent directoryGraph;
 
-    @JsonProperty(value = "module_package_map")
-    @JsonSerialize(using = ModulePackageMapSerializer.class)
-    protected Map<ModuleComponent, String> packageMap;
+//    @JsonProperty(value = "module_package_map")
+//    @JsonSerialize(using = ModulePackageMapSerializer.class)
+//    protected Map<ModuleComponent, String> packageMap;
 
     @JsonProperty(value = "succeeded")
     protected boolean succeeded = false;

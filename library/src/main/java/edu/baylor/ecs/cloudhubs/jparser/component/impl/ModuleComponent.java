@@ -1,7 +1,9 @@
 package edu.baylor.ecs.cloudhubs.jparser.component.impl;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import edu.baylor.ecs.cloudhubs.jparser.component.Component;
 import edu.baylor.ecs.cloudhubs.jparser.component.ContainerComponent;
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
  * Subcomponents should contain sub-modules
  */
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ModuleComponent extends ContainerComponent {
 
     @JsonIgnore

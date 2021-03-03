@@ -15,7 +15,7 @@ import java.util.List;
  * You must also use getAnnotations() or getMethods() to specify which subcomponent you desire.
  */
 @Data
-//@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class ClassComponent extends ClassOrInterfaceComponent {
 

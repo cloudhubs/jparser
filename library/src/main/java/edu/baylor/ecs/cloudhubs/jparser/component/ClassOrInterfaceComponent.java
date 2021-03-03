@@ -1,6 +1,7 @@
 package edu.baylor.ecs.cloudhubs.jparser.component;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
@@ -12,6 +13,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class ClassOrInterfaceComponent extends ContainerComponent {
 
     @JsonIgnore

@@ -1,5 +1,7 @@
 package edu.baylor.ecs.cloudhubs.jparser.factory.context;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -174,6 +176,7 @@ class JsonBodyHandler<W> implements HttpResponse.BodyHandler<W> {
             (String body) -> {
                 try {
                     ObjectMapper objectMapper = new ObjectMapper();
+                    objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
                     return objectMapper.readValue(body, targetType);
                 } catch (IOException e) {
                     throw new UncheckedIOException(e);

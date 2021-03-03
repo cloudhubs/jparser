@@ -1,5 +1,6 @@
 package edu.baylor.ecs.cloudhubs.jparser.component.impl;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.baylor.ecs.cloudhubs.jparser.component.Component;
 import edu.baylor.ecs.cloudhubs.jparser.model.AccessorType;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class FieldComponent extends Component {
 
     private List<Component> annotations;

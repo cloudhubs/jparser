@@ -22,7 +22,7 @@ public class AnalysisContextBuilder {
     private List<String> classNames;
     private List<String> interfaceNames;
     private boolean succeeded = false;
-    private Map<ModuleComponent, String> packageMap;
+//    private Map<ModuleComponent, String> packageMap;
     private List<Component> classesAndInterfaces;
     private List<ClassOrInterfaceDeclaration> classOrInterfaceDeclarations;
     private List<ClassComponent> classes;
@@ -41,7 +41,7 @@ public class AnalysisContextBuilder {
         context.setInterfaceNames(this.interfaceNames);
         context.setRootPath(this.filePath);
         context.setClassNames(this.classNames);
-        context.setPackageMap(this.packageMap);
+//        context.setPackageMap(this.packageMap);
         context.setMethodDeclarations(this.methodDeclarations);
         context.setMethods(this.methods);
         context.setModules(this.modules);
@@ -67,10 +67,10 @@ public class AnalysisContextBuilder {
         return this;
     }
 
-    public AnalysisContextBuilder withPackageMap(Map<ModuleComponent, String> map) {
-        this.packageMap = map;
-        return this;
-    }
+//    public AnalysisContextBuilder withPackageMap(Map<ModuleComponent, String> map) {
+//        this.packageMap = map;
+//        return this;
+//    }
 
     public AnalysisContextBuilder withClassNames(List<String> classNames) {
         this.classNames = classNames;
