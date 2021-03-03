@@ -24,6 +24,14 @@ public abstract class Component implements IComponent {
     @JsonIgnore
     protected Component parent;
 
+    public Component() {
+        parent = null;
+        path = "";
+        packageName = "";
+        instanceType = InstanceType.ANALYSISCOMPONENT;
+        subComponents = null;
+    }
+
     protected String path;
     @JsonProperty(value = "package_name")
     protected String packageName;
