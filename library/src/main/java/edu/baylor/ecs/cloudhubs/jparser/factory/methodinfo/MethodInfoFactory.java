@@ -14,6 +14,7 @@ import edu.baylor.ecs.cloudhubs.jparser.factory.annotation.AnnotationFactory;
 import edu.baylor.ecs.cloudhubs.jparser.model.AccessorType;
 import edu.baylor.ecs.cloudhubs.jparser.component.impl.AnnotationComponent;
 import edu.baylor.ecs.cloudhubs.jparser.component.impl.MethodInfoComponent;
+import edu.baylor.ecs.cloudhubs.jparser.model.InstanceType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -164,6 +165,7 @@ public class MethodInfoFactory {
             //curr.setParameterType(p.getTypeAsString());
             curr.setParameterName(p.getName().getIdentifier());
             curr.setType(p.getClass());
+            curr.setInstanceType(InstanceType.METHODPARAMCOMPONENT);
             if (p.toString().startsWith("@")) {
                 AnnotationComponent comp = new AnnotationComponent();
                 curr.setAnnotation(AnnotationFactory.createAnnotationFromString(curr, p.toString().substring(p.toString().indexOf(' ') + 1)));

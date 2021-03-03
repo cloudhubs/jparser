@@ -1,15 +1,8 @@
 package edu.baylor.ecs.cloudhubs.jparser.component;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import edu.baylor.ecs.cloudhubs.jparser.component.impl.AnnotationComponent;
-import edu.baylor.ecs.cloudhubs.jparser.component.impl.ClassComponent;
-import edu.baylor.ecs.cloudhubs.jparser.component.impl.DirectoryComponent;
-import edu.baylor.ecs.cloudhubs.jparser.component.impl.FieldComponent;
-import edu.baylor.ecs.cloudhubs.jparser.component.impl.InterfaceComponent;
-import edu.baylor.ecs.cloudhubs.jparser.component.impl.MethodInfoComponent;
+import com.fasterxml.jackson.annotation.*;
+import edu.baylor.ecs.cloudhubs.jparser.component.context.AnalysisContext;
+import edu.baylor.ecs.cloudhubs.jparser.component.impl.*;
 import edu.baylor.ecs.cloudhubs.jparser.model.InstanceType;
 import lombok.Data;
 
@@ -19,6 +12,20 @@ import java.util.List;
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "instanceType")
+@JsonSubTypes({
+    @JsonSubTypes.Type(value = ModuleComponent.class, name="MODULECOMPONENT"),
+    @JsonSubTypes.Type(value = AnnotationComponent.class, name="ANNOTATIONCOMPONENT"),
+    @JsonSubTypes.Type(value = ClassComponent.class, name="CLASSCOMPONENT"),
+    @JsonSubTypes.Type(value = FieldComponent.class, name="FIELDCOMPONENT"),
+    @JsonSubTypes.Type(value = InterfaceComponent.class, name="INTERFACECOMPONENT"),
+    @JsonSubTypes.Type(value = MethodInfoComponent.class, name="METHODCOMPONENT"),
+    @JsonSubTypes.Type(value = MethodParamComponent.class, name="METHODPARAMCOMPONENT"),
+    @JsonSubTypes.Type(value = AnalysisContext.class, name="ANALYSISCOMPONENT"),
+})
 public abstract class Component implements IComponent {
 
     @JsonIgnore
