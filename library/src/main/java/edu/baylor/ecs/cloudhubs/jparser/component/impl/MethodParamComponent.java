@@ -1,5 +1,6 @@
 package edu.baylor.ecs.cloudhubs.jparser.component.impl;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.baylor.ecs.cloudhubs.jparser.component.Component;
 import edu.baylor.ecs.cloudhubs.jparser.visitor.IComponentVisitor;
@@ -12,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MethodParamComponent extends Component {
 
-   // @JsonIgnore
+    @JsonIgnore
     private Class<?> type;
 
     private AnnotationComponent annotation;

@@ -70,7 +70,10 @@ public class ModuleComponent extends ContainerComponent {
     @Override
     public void setSubComponents(List<Component> list) {
         this.subComponents = list;
-        this.subModules = list.stream().map(x -> (ModuleComponent) x).collect(Collectors.toList());
+        this.subModules = list.stream()
+            .filter(x -> x instanceof ModuleComponent)
+            .map(x -> (ModuleComponent) x)
+            .collect(Collectors.toList());
     }
 
     @Override
