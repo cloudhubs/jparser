@@ -44,8 +44,8 @@ public class DirectoryFactory {
      * @param path
      * @return The parent component in the directory graph, null if could not be created or was not directory
      */
-    public Component createDirectoryGraph(String path) {
-        return createDirectoryGraph(DEFAULT_PARENT, path);
+    public Component createDirectoryGraph(String path, List<String> ignorePaths) {
+        return createDirectoryGraph(DEFAULT_PARENT, path, ignorePaths);
     }
 
     public Component createDirectoryGraphOfFile(File file) {
@@ -60,9 +60,9 @@ public class DirectoryFactory {
      * @param path
      * @return
      */
-    private DirectoryComponent createDirectoryGraph(Component parent, String path) {
+    private DirectoryComponent createDirectoryGraph(Component parent, String path, List<String> ignorePaths) {
         DirectoryComponent output = createDirectoryComponent(parent, path);
-        return getComponent(path, output);
+        return getComponent(path, output, ignorePaths);
     }
 
     /**
@@ -71,18 +71,20 @@ public class DirectoryFactory {
      * @param output Parent directory component
      * @return
      */
-    private DirectoryComponent getComponent(String path, DirectoryComponent output) {
+    private DirectoryComponent getComponent(String path, DirectoryComponent output, List<String> ignorePaths) {
         List<String> files = new ArrayList<>();
         List<DirectoryComponent> subDirectories = new ArrayList<>();
         File file = new File(path);
         if(file.isDirectory()) {
             Arrays.stream(Objects.requireNonNull(file.listFiles())).forEach(f -> {
                 if (f.isDirectory()) {
-                    try {
-                        DirectoryComponent sub = createDirectoryGraph(output, f.getPath());
-                        subDirectories.add(sub);
-                    } catch (NullPointerException e) {
-                        System.out.println("NullPointerException in DirectoryFactory"); //TODO Log
+                    if (!ignorePaths.contains(f.getName())) {
+                        try {
+                            DirectoryComponent sub = createDirectoryGraph(output, f.getPath(), ignorePaths);
+                            subDirectories.add(sub);
+                        } catch (NullPointerException e) {
+                            System.out.println("NullPointerException in DirectoryFactory"); //TODO Log
+                        }
                     }
                 }
 //                if (fileTypeMatchesLanguage(f)) {

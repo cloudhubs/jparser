@@ -11,6 +11,7 @@ import edu.baylor.ecs.cloudhubs.jparser.factory.directory.DirectoryFactory;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.FileSystemException;
+import java.util.List;
 
 /**
  * Facade class to make running and using a little bit easier and intuitive.
@@ -102,7 +103,7 @@ public class JParserFacade {
     public static DirectoryComponent createDirectoryComponentFromPath(String path) {
         try {
             validateDirectory(path);
-            return new DirectoryFactory().createDirectoryGraph(path).asDirectoryComponent();
+            return new DirectoryFactory().createDirectoryGraph(path, List.of()).asDirectoryComponent();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -147,7 +148,7 @@ public class JParserFacade {
     public static Component createDirectoryComponentFromPathAsComponent(String path) {
         try {
             validateDirectory(path);
-            return new DirectoryFactory().createDirectoryGraph(path);
+            return new DirectoryFactory().createDirectoryGraph(path, List.of());
         } catch (Exception e) {
             e.printStackTrace();
             return null;
