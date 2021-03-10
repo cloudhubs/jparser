@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BinaryExpr extends Expr {
     private Expr lhs;
-    private Op op;
+    private IOp op;
     private Expr rhs;
 }

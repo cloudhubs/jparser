@@ -1,6 +1,6 @@
 package edu.baylor.ecs.cloudhubs.jparser.ast.expr;
 
-public enum Op {
+public enum Op implements IOp {
     Plus,
     Minus,
     Star,
@@ -46,8 +46,12 @@ public enum Op {
     LessThan,
     LessThanEqualTo,
 
-    Spaceship,
+    Spaceship
+    ;
 
-    // Need to properly handle this..
-    Other,
+    @Override
+    public String getOp() {
+        // TODO
+        return null;
+    }
 }
