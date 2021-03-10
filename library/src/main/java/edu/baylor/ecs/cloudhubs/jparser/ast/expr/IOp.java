@@ -20,7 +20,7 @@ public interface IOp {
 /** We custom deserialize */
 class OperationDeserializer extends JsonDeserializer<IOp> {
     /** Generate a constant, static mapping of all the operations */
-    private static final Map<String, ? extends IOp> ops = new HashMap<>();
+    private static final Map<String, Op> ops = new HashMap<>();
     static {
         for (var op : Op.values()) {
             ops.put(op.getOp(), op);
