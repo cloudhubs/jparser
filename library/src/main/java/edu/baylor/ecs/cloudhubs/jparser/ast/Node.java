@@ -8,6 +8,7 @@ import edu.baylor.ecs.cloudhubs.jparser.ast.expr.*;
 import edu.baylor.ecs.cloudhubs.jparser.ast.stmt.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 @Data
 @NoArgsConstructor
@@ -30,6 +31,7 @@ import lombok.NoArgsConstructor;
     @JsonSubTypes.Type(value = LogExpr.class, name="log_expr"),
     @JsonSubTypes.Type(value = ParenExpr.class, name="paren_expr"),
     @JsonSubTypes.Type(value = UnaryExpr.class, name="unary_expr"),
+    @JsonSubTypes.Type(value = Literal.class, name="literal_expr"),
 
     @JsonSubTypes.Type(value = AssignStmt.class, name="assign_stmt"),
     @JsonSubTypes.Type(value = BreakStmt.class, name="break_stmt"),
@@ -50,5 +52,6 @@ import lombok.NoArgsConstructor;
     @JsonSubTypes.Type(value = WhileStmt.class, name="while_stmt"),
 })
 public abstract class Node {
-    private String type;
+//    @Nullable
+//    private String type;
 }

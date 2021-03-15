@@ -1,6 +1,7 @@
 package edu.baylor.ecs.cloudhubs.jparser.component.impl;
 
 import com.fasterxml.jackson.annotation.*;
+import edu.baylor.ecs.cloudhubs.jparser.ast.Block;
 import edu.baylor.ecs.cloudhubs.jparser.component.Component;
 import edu.baylor.ecs.cloudhubs.jparser.model.AccessorType;
 import edu.baylor.ecs.cloudhubs.jparser.model.InstanceType;
@@ -41,6 +42,7 @@ public class MethodInfoComponent extends Component {
     private int lineCount;
     private int lineBegin;
     private int lineEnd;
+    private Block body;
 
     public MethodInfoComponent() {
         this.instanceType = InstanceType.METHODCOMPONENT;

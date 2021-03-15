@@ -79,6 +79,7 @@ public class AnalysisContextFactory {
             AnalysisContext ctx = HttpClient.newHttpClient()
                 .send(request, new JsonBodyHandler<>(AnalysisContext.class))
                 .body();
+            System.out.println(objectMapper.writeValueAsString(ctx));
             return ctx;
         } catch (Exception e) {
             e.printStackTrace();
