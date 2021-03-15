@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class Ident extends Expr {
-    private Expr name;
+    private String name;
 }

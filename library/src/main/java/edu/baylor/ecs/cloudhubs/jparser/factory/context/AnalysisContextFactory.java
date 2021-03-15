@@ -70,8 +70,10 @@ public class AnalysisContextFactory {
     public AnalysisContext createAnalysisContextFromDirectoryGraph(Component inp) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
+            String req = objectMapper.writeValueAsString(inp);
+            System.out.println("req => " + req);
             HttpRequest.BodyPublisher publisher =
-                HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(inp));
+                HttpRequest.BodyPublishers.ofString(req);
             var request = HttpRequest.newBuilder(URI.create("http://parser:8080/ctx"))
                 .setHeader("Content-Type", "application/json")
                 .setHeader("Accept", "application/json")

@@ -33,6 +33,7 @@ class OperationDeserializer extends JsonDeserializer<IOp> {
         JsonNode node = jp.getCodec().readTree(jp);
         String type = node.get("type").textValue(); // Get the value out of the tree
         if (!ops.containsKey(type)) {
+            if (node.get("op") == null) return null;
             String value = node.get("op").textValue();
             return new OtherOp(value);
         } else {
