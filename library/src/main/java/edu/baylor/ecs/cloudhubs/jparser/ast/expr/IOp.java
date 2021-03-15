@@ -23,7 +23,7 @@ class OperationDeserializer extends JsonDeserializer<IOp> {
     private static final Map<String, Op> ops = new HashMap<>();
     static {
         for (var op : Op.values()) {
-            ops.put(op.getOp(), op);
+            ops.put(op.toString(), op);
         }
     }
 
