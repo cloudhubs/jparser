@@ -20,6 +20,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
     property = "type")
 @JsonSubTypes({
     @JsonSubTypes.Type(value = Block.class, name="block"),
+    @JsonSubTypes.Type(value = AssignExpr.class, name="assign_expr"),
     @JsonSubTypes.Type(value = BinaryExpr.class, name="binary_expr"),
     @JsonSubTypes.Type(value = CallExpr.class, name="call_expr"),
     @JsonSubTypes.Type(value = DotExpr.class, name="dot_expr"),
