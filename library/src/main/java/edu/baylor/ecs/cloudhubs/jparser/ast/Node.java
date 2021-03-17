@@ -34,7 +34,6 @@ import org.checkerframework.checker.nullness.qual.Nullable;
     @JsonSubTypes.Type(value = UnaryExpr.class, name="unary_expr"),
     @JsonSubTypes.Type(value = Literal.class, name="literal_expr"),
 
-    @JsonSubTypes.Type(value = AssignStmt.class, name="assign_stmt"),
     @JsonSubTypes.Type(value = BreakStmt.class, name="break_stmt"),
     @JsonSubTypes.Type(value = CaseStmt.class, name="case_stmt"),
     @JsonSubTypes.Type(value = CatchStmt.class, name="catch_stmt"),
