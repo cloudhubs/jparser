@@ -22,7 +22,7 @@ import java.util.Optional;
 public class AnnotationFactory {
 
     // TODO: Basic, naive, doesn't provide as much info
-    public static AnnotationComponent createAnnotationFromString(Component parent, String annotation) {
+    public static List<AnnotationComponent> createAnnotationFromString(Component parent, String annotation) {
         AnnotationComponent an = new AnnotationComponent();
         an.setParent(parent);
         an.setPath(parent.getPath());
@@ -31,7 +31,7 @@ public class AnnotationFactory {
         an.setAsString(annotation);
         an.setInstanceType(InstanceType.ANNOTATIONCOMPONENT);
         an.setAsString(annotation);
-        return an;
+        return List.of(an);
     }
 
     public static List<Component> createAnnotationComponents(Component parent, NodeList<AnnotationExpr> annotations2) {

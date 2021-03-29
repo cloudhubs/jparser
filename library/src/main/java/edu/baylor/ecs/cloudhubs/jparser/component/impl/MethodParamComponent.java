@@ -1,5 +1,7 @@
 package edu.baylor.ecs.cloudhubs.jparser.component.impl;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.baylor.ecs.cloudhubs.jparser.component.Component;
@@ -16,7 +18,7 @@ public class MethodParamComponent extends Component {
     @JsonIgnore
     private Class<?> type;
 
-    private AnnotationComponent annotation;
+    private List<AnnotationComponent> annotation;
     @JsonProperty(value = "parameter_type")
     private String parameterType;
     @JsonProperty(value = "parameter_name")
