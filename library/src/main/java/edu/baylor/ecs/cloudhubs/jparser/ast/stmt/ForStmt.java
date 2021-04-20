@@ -6,12 +6,14 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 public class ForStmt extends Stmt {
-    private Stmt init;
+    private List<Stmt> init;
     private Expr condition;
-    private Expr post;
+    private List<Expr> post;
     private Block body;
 }

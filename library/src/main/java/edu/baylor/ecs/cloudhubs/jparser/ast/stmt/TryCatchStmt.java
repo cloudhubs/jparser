@@ -16,4 +16,6 @@ public class TryCatchStmt extends Stmt {
     private Block tryBody;
     @JsonProperty("catch_bodies")
     private List<CatchStmt> catchBodies;
+    @JsonProperty("finally_body")
+    private Block finallyBody;
 }
