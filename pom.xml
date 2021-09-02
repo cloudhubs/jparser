@@ -8,7 +8,7 @@
 
     <groupId>edu.baylor.ecs.cloudhubs</groupId>
     <artifactId>jparser</artifactId>
-    <version>${revision}</version>
+    <version>0.0.6</version>
 
     <properties>
         <revision>0.0.6</revision>
@@ -45,7 +45,8 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.8</version>
+            <!-- <version>1.18.8</version> -->
+            <version>1.18.20</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
